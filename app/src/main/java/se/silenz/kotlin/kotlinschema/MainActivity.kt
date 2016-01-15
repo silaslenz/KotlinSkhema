@@ -1,59 +1,47 @@
 package se.silenz.kotlin.kotlinschema
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.text.method.ScrollingMovementMethod
 import android.view.Menu
 import android.view.MenuItem
-import com.github.kittinunf.fuel.Fuel
+import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
+import uk.co.senab.photoview.PhotoViewAttacher
 
 class MainActivity : AppCompatActivity() {
-    fun getNovaIDs(){
-        var urlcode = ""
-        Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=88470&code=151693",
-                listOf()).responseString{ request, response, result ->
-            run {
-                if (response.httpStatusCode==200){
-                    val (d, e) = result
-                    println("something happens")
-                    urlcode = d?.split("WebViewer/")?.get(1)?.split("/printer")!!.get(0)!!
-                    Fuel.post("http://www.novasoftware.se/webviewer/"+urlcode+"/MZDesign1.aspx?schoolid=88470&code=151693",
-                            listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to "1", "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString{ request, response, result ->
 
-                        run {
-                            val (d, e) = result
-                            println(response.url)
-                            val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("<option value=\"");
-                            var toTextView = "";
-                            for (i in 1..15) {
-                                toTextView = toTextView + (nicedata?.get(i)?.split("\"")!!.get(0)) + "\n"
-                                toTextView = toTextView + (nicedata?.get(i)?.split(">")!!.get(1).split("<").get(0)) + "\n\n"
-                                println(toTextView)
-                            }
-                            textViewMain.setText(toTextView)
-
-                        }
-                    }
-                }
+    fun loadSchema() {
+        var prefs = baseContext.getSharedPreferences(
+                "UserData", Context.MODE_PRIVATE)
+        Picasso.with(applicationContext).load(Schema("88470", prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
 
 
-
-            }
-        }
     }
+
+    override fun onResume() {
+        super.onResume()
+        loadSchema()
+
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             run {
-                getNovaIDs()
+                val intent = Intent(this, SelectActivity::class.java)
+                startActivity(intent)
             }
         }
-        textViewMain.setMovementMethod(ScrollingMovementMethod());
+        textViewMain.movementMethod = ScrollingMovementMethod();
 
+        loadSchema() //Load picture into imageview
+        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
 
     }
 
