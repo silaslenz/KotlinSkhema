@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     fun loadSchema() {
         var prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
-        Picasso.with(applicationContext).load(Schema("88470", prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
+        Picasso.with(applicationContext).load(Schema(prefs.getInt("schoolID",0).toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
 
 
     }

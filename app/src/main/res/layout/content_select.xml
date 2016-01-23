@@ -16,7 +16,8 @@
         android:focusableInTouchMode="true"
         android:layout_width="0px"
         android:layout_height="0px"
-        android:id="@+id/linearLayout" />
+        android:id="@+id/linearLayout"
+        android:orientation="horizontal" />
     <android.support.design.widget.TextInputLayout
         android:id="@+id/input_layout_search"
         android:layout_width="match_parent"
@@ -29,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:hint="Sök efter skola eller stad"/>
+            android:hint="@string/school_search"/>
 
     </android.support.design.widget.TextInputLayout>
     <ListView
@@ -43,16 +44,8 @@
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/school_spinner"
-        android:layout_below="@+id/listView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
-    <Spinner
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
         android:id="@+id/type_spinner"
-        android:layout_below="@+id/school_spinner" />
+        android:layout_below="@+id/listView" />
     <Spinner
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="fill_parent"

@@ -2,4 +2,6 @@
     <string name="app_name">KotlinSchema</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_select">SelectActivity</string>
+    <string name="school_search">Sök efter skola eller stad</string>
+    <string name="first_in_id_choise">Välj id</string>
 </resources>
