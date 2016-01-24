@@ -6,15 +6,16 @@
 
     <application
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:fullBackupContent="true"
         android:theme="@style/AppTheme">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Skhema">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +26,16 @@
             android:name=".SelectActivity"
             android:label="@string/title_activity_select"
             android:parentActivityName=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/Skhema">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="se.silenz.kotlin.kotlinschema.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SwitchActivity"
+            android:label="@string/title_activity_switch"
+            android:parentActivityName=".MainActivity"
+            android:theme="@style/Skhema">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.silenz.kotlin.kotlinschema.MainActivity" />

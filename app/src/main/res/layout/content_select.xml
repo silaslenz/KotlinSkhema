@@ -11,46 +11,18 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="se.silenz.kotlin.kotlinschema.SelectActivity"
     tools:showIn="@layout/activity_select">
-    <LinearLayout
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:layout_width="0px"
-        android:layout_height="0px"
-        android:id="@+id/linearLayout"
-        android:orientation="horizontal" />
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/input_layout_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
 
-        <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/searchEditText"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:hint="@string/school_search"/>
-
-    </android.support.design.widget.TextInputLayout>
-    <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/listView"
-        android:layout_below="@+id/input_layout_search"
-        android:layout_toRightOf="@+id/linearLayout"
-        android:layout_toEndOf="@+id/linearLayout" />
     <Spinner
+        android:id="@+id/type_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/type_spinner"
         android:layout_below="@+id/listView" />
     <Spinner
+        android:id="@+id/select_spinner"
         style="@style/Widget.AppCompat.Spinner.Underlined"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/select_spinner"
         android:layout_below="@+id/type_spinner" />
 
 

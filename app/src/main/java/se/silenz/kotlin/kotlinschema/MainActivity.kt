@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
     fun loadSchema() {
         var prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
-        Picasso.with(applicationContext).load(Schema(prefs.getInt("schoolID",0).toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
+        Picasso.with(applicationContext).load(Schema(prefs.getInt("schoolID", 0).toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
 
 
     }
@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(toolbar)
         fab.setOnClickListener { view ->
             run {
-                val intent = Intent(this, SelectActivity::class.java)
+                val intent = Intent(this, SwitchActivity::class.java)
                 startActivity(intent)
             }
         }
@@ -48,7 +48,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-        return true
+
+        return super.onCreateOptionsMenu(menu);
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
