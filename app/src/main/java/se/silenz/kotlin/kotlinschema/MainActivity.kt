@@ -2,9 +2,7 @@ package se.silenz.kotlin.kotlinschema
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.method.ScrollingMovementMethod
 import android.view.Menu
@@ -67,9 +65,9 @@ class MainActivity : AppCompatActivity() {
             return true
         }
         if (id == R.id.action_food) {
-            Snackbar.make(findViewById(android.R.id.content), "It's coming!", Snackbar.LENGTH_LONG)
-                    .setActionTextColor(Color.RED)
-                    .show();
+
+            val intent = Intent(this, FoodActivity::class.java)
+            startActivity(intent)
         }
 
         return super.onOptionsItemSelected(item)
