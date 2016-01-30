@@ -48,6 +48,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="se.silenz.kotlin.kotlinschema.MainActivity" />
         </activity>
+        
     </application>
 
 </manifest>
