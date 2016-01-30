@@ -36,6 +36,10 @@ class SwitchActivity : AppCompatActivity() {
 
         continueWithCurrentButton.setOnClickListener {
             val intent = Intent(baseContext, SelectActivity::class.java)
+            var prefs = baseContext.getSharedPreferences(
+                    "UserData", Context.MODE_PRIVATE)
+            intent.putExtra("schoolID", prefs.getInt("schoolID", 0).toString())
+            intent.putExtra("schoolCode", prefs.getString("schoolCode", ""))
             startActivity(intent)
         }
         searchButton.setOnClickListener {
@@ -82,11 +86,19 @@ class SwitchActivity : AppCompatActivity() {
                         println("data is" + d.toString())
                         var prefs = baseContext.getSharedPreferences(
                                 "UserData", Context.MODE_PRIVATE)
-                        var editor = prefs.edit();
-                        editor.putInt("schoolID", response.get("schoolid") as Int);
-                        editor.putString("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")");
-                        editor.putString("schoolCode", response.get("code").toString());
-                        editor.commit();
+                        //                        var editor = prefs.edit();
+                        val intent = Intent(baseContext, SelectActivity::class.java)
+                        //                        var prefs = baseContext.getSharedPreferences(
+                        //                                "UserData", Context.MODE_PRIVATE)
+                        intent.putExtra("schoolID", response.get("schoolid").toString())
+                        intent.putExtra("schoolCode", response.get("code").toString())
+                        intent.putExtra("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")")
+
+                        startActivity(intent)
+                        //                        editor.putInt("schoolID", response.get("schoolid") as Int);
+                        //                        editor.putString("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")");
+                        //                        editor.putString("schoolCode", response.get("code").toString());
+                        //                        editor.commit();
                     }
                 }
                 val (d, e) = result

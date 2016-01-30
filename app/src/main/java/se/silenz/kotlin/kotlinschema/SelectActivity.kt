@@ -29,12 +29,9 @@ class SelectActivity : AppCompatActivity() {
 
     fun getNovaIDs() {
         var urlcode = ""
-        var prefs = baseContext.getSharedPreferences(
-                "UserData", Context.MODE_PRIVATE)
-        println(prefs.getInt("schoolID",0))
-        println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + prefs.getInt("schoolID", 0).toString() + "&code="+prefs.getString("schoolCode",""))
-        if (prefs.getInt("schoolID",0)!=0 ) {
-            Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + prefs.getInt("schoolID", 0).toString() + "&code=" + prefs.getString("schoolCode", ""),
+        println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
+        if ( intent.getStringExtra("schoolID") != "0") {
+            Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->
                 run {
                     if (response.httpStatusCode == 200) {
@@ -43,7 +40,7 @@ class SelectActivity : AppCompatActivity() {
                         urlcode = d?.split("WebViewer/")?.get(1)?.split("/printer")!![0]
                         var prefs = baseContext.getSharedPreferences(
                                 "UserData", Context.MODE_PRIVATE)
-                        Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + prefs.getInt("schoolID", 0).toString() + "&code=" + prefs.getString("schoolCode", ""),
+                        Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                                 listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to "1", "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString { request, response, result ->
 
                             run {
@@ -54,9 +51,9 @@ class SelectActivity : AppCompatActivity() {
                                 spinnerArray.add(getString(R.string.first_in_id_choise))
                                 for (i in 1..nicedata!!.size - 1) {
 
-                                    spinnerArray.add(nicedata.get(i)?.split(">")!![1].split("<")[0])
-                                    println(kotlin.Pair(nicedata.get(i)?.split(">")!![1].split("<")[0], nicedata.get(i)?.split("\"")!![0]))
-                                    ids.put(nicedata.get(i)?.split(">")!![1].split("<")[0], nicedata.get(i)?.split("\"")!![0])
+                                    spinnerArray.add(nicedata.get(i).split(">")[1].split("<")[0])
+                                    println(kotlin.Pair(nicedata.get(i).split(">")[1].split("<")[0], nicedata.get(i).split("\"")[0]))
+                                    ids.put(nicedata.get(i).split(">")[1].split("<")[0], nicedata.get(i).split("\"")[0])
                                 }
 
 
@@ -67,6 +64,7 @@ class SelectActivity : AppCompatActivity() {
                                 select_spinner.adapter = adapter
                             }
                         }
+
                     } else {
                         println(response.httpStatusCode)
                     }
@@ -88,7 +86,12 @@ class SelectActivity : AppCompatActivity() {
                     println("Overwrite stuff")
                     println(select_spinner.selectedItem.toString())
                     println(ids[select_spinner.selectedItem.toString()])
-                    editor.putString("userID", ids[select_spinner.selectedItem.toString()]);
+                    editor.putString("userID", ids[select_spinner.selectedItem.toString()])
+                    editor.putString("userName", select_spinner.selectedItem.toString())
+
+                    editor.putInt("schoolID", intent.getStringExtra("schoolID").toInt())
+                    editor.putString("schoolName", intent.getStringExtra("schoolName"))
+                    editor.putString("schoolCode", intent.getStringExtra("schoolCode"))
                     editor.commit();
 
                 }

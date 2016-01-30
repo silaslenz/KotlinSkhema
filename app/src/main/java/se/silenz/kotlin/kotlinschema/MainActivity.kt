@@ -2,7 +2,9 @@ package se.silenz.kotlin.kotlinschema
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.text.method.ScrollingMovementMethod
 import android.view.Menu
@@ -49,6 +51,7 @@ class MainActivity : AppCompatActivity() {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
 
+
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -62,6 +65,11 @@ class MainActivity : AppCompatActivity() {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true
+        }
+        if (id == R.id.action_food) {
+            Snackbar.make(findViewById(android.R.id.content), "It's coming!", Snackbar.LENGTH_LONG)
+                    .setActionTextColor(Color.RED)
+                    .show();
         }
 
         return super.onOptionsItemSelected(item)
