@@ -14,12 +14,12 @@ import java.util.*
 /**
  * Created by silenz on 1/30/16.
  */
-class MyAdapter// Provide a suitable constructor (depends on the kind of dataset)
-(private var mDataset: Array<String>) : RecyclerView.Adapter<MyAdapter.ViewHolder>() {
+class FoodAdapter// Provide a suitable constructor (depends on the kind of dataset)
+(private var mDataset: Array<String>) : RecyclerView.Adapter<FoodAdapter.ViewHolder>() {
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): MyAdapter.ViewHolder {
+                                    viewType: Int): FoodAdapter.ViewHolder {
         // create a new view
         val v = LayoutInflater.from(parent.context).inflate(my_text_view, parent, false)
         // set the view's size, margins, paddings and layout parameters

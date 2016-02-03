@@ -12,16 +12,8 @@
     tools:context="se.silenz.kotlin.kotlinschema.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <TextView
-        android:id="@+id/textViewMain"
-        android:maxLines = "100000"
-        android:scrollbars = "vertical"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!" />
-
     <ImageView
+        android:id="@+id/schemaImageView"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/schemaImageView" />
+        android:layout_height="fill_parent" />
 </RelativeLayout>

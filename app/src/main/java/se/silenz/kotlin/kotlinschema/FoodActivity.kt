@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FoodActivity : AppCompatActivity() {
-    var mAdapter: MyAdapter? = null
+    var mAdapter: FoodAdapter? = null
     fun changeDataInList(url: String) {
         Fuel.get(url).responseString { request, response, result ->
             run {
@@ -57,7 +57,7 @@ class FoodActivity : AppCompatActivity() {
         my_recycler_view.layoutManager = mLayoutManager
         var myDataset = arrayOf("Loading")
         // specify an adapter (see also next example)
-        mAdapter = MyAdapter(myDataset)
+        mAdapter = FoodAdapter(myDataset)
         my_recycler_view.adapter = mAdapter
 
         val prefs = baseContext.getSharedPreferences(
