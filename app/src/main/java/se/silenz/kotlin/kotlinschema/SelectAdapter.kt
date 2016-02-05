@@ -19,12 +19,12 @@ data class NovaType(val name: String, val id: String)
 class SelectAdapter// Provide a suitable constructor (depends on the kind of dataset)
 (private var mDataset: Array<String>, private val baseContext: Context, private val intent: Intent) : RecyclerView.Adapter<SelectAdapter.ViewHolder>(), View.OnClickListener {
     override fun onClick(v: View?) {
-        if ((((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString().contains("{")) {
+        val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
+        if (itemtag.contains("{")) {
             //All ids are on the form {str}
-
         } else {
-            println(((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString())
-            getNovaIDs(((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString())
+            println(itemtag)
+            getNovaIDs(itemtag)
         }
     }
 
