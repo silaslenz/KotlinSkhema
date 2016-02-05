@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.FloatingActionButton
 import android.support.v4.view.MenuItemCompat
-import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
@@ -38,17 +37,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onQueryTextSubmit(query: String): Boolean {
         return false
     }
-
-    fun askForType() {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("AppCompatDialog")
-        builder.setMessage("Lorem ipsum dolor...")
-        builder.setPositiveButton("OK", null)
-        builder.setNegativeButton("Cancel", null)
-        builder.show()
-    }
-
-
     fun getNovaTypes(mAdapter: SelectAdapter) {
         var urlcode = ""
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
@@ -61,8 +49,9 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         println(d)
                         if (d != null) {
                             if (d.split("id=\"TypeDropDownList\">").size > 1) {
-                                val typeHTML = d.split("id=\"TypeDropDownList\">")?.get(1)?.split("</select>")?.get(0)
+                                val typeHTML = d.split("id=\"TypeDropDownList\">").get(1).split("</select>").get(0)
                                 if (typeHTML != null) {
+                                    mAdapter.clearAll()
                                     for (i in 2..typeHTML.split("<option").size - 1) {
                                         mAdapter.add(typeHTML.split("\">")[i].split("<")[0], typeHTML.split("value=\"")[i].split("\"")[0])
                                         //                                println(typeHTML.split("\">")?.get(i).split("<")[0])
@@ -109,7 +98,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         select_recycler_view.layoutManager = mLayoutManager
         var myDataset = arrayOf("")
         // specify an adapter (see also next example)
-        mAdapter = SelectAdapter(myDataset, baseContext, intent)
+        mAdapter = SelectAdapter(this, intent)
         select_recycler_view.adapter = mAdapter
         println("Got here")
 
