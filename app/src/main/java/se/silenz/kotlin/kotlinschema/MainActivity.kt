@@ -59,8 +59,12 @@ class MainActivity : AppCompatActivity() {
                 .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
                 .build();
         mAdView.loadAd(adRequest);
-
-
+        var prefs = baseContext.getSharedPreferences(
+                "UserData", Context.MODE_PRIVATE)
+        if (!prefs.contains("userID")) {
+            val intent = Intent(this, SwitchActivity::class.java)
+            startActivity(intent)
+        }
         loadSchema() //Load picture into imageview
         //        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
 
