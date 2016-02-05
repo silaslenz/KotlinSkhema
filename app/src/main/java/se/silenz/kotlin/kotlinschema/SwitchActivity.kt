@@ -14,7 +14,6 @@ import android.widget.ArrayAdapter
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
-import kotlinx.android.synthetic.main.activity_switch.*
 import kotlinx.android.synthetic.main.content_switch.*
 import org.json.JSONObject
 import java.util.*
@@ -38,8 +37,9 @@ class SwitchActivity : AppCompatActivity() {
             val intent = Intent(baseContext, SelectActivity::class.java)
             var prefs = baseContext.getSharedPreferences(
                     "UserData", Context.MODE_PRIVATE)
-            intent.putExtra("schoolID", prefs.getInt("schoolID", 0).toString())
+            intent.putExtra("schoolID", prefs.getString("schoolID", "").toString())
             intent.putExtra("schoolCode", prefs.getString("schoolCode", ""))
+            intent.putExtra("schoolName", prefs.getString("schoolName", ""))
             startActivity(intent)
         }
         searchButton.setOnClickListener {
@@ -144,18 +144,12 @@ class SwitchActivity : AppCompatActivity() {
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
-
-
-        fab.setOnClickListener { view ->
-            run {
-                finish()
-            }
-        }
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         val prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
         if (prefs.contains("schoolName") == false) {
-            continueWithCurrentButton.visibility = View.GONE
+            searchUI.visibility = VISIBLE
+            chooseLayout.visibility = View.GONE
         } else {
             continueWithCurrentButton.text = "Fortsätt med " + prefs.getString("schoolName", "")
         }
