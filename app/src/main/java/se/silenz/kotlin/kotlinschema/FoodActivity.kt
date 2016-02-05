@@ -26,8 +26,8 @@ class FoodActivity : AppCompatActivity() {
                 for (i in 1..d!!.split("<td class=\"date\">").size - 1) {
 
                     var dayStr = ""
-                    for (j in 1..d.split("<td class=\"date\">").get(i).split("<p class=\"item\">").size - 1) {
-                        dayStr += d.split("<td class=\"date\">").get(i).split("<p class=\"item\">")[j].split("</p>").get(0) + "\n"
+                    for (j in 1..d.split("<td class=\"date\">")[i].split("<p class=\"item\">").size - 1) {
+                        dayStr += d.split("<td class=\"date\">")[i].split("<p class=\"item\">")[j].split("</p>")[0] + "\n"
                     }
                     var date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(d.split("<td class=\"date\">")[i].split("<span class=\"date\">")[1].split("</span>")[0])
                     mAdapter?.add(d.split("<td class=\"date\">")[i].split("<span class=\"weekday\">")[1].split("</span>")[0],
