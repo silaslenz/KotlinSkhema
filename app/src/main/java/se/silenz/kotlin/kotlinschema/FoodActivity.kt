@@ -62,7 +62,7 @@ class FoodActivity : AppCompatActivity() {
 
         val prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
-        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + prefs.getInt("schoolID", 0).toString()).responseJson { request, response, result ->
+        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + prefs.getString("schoolID", "").toString()).responseJson { request, response, result ->
 
             run {
                 when (result) {

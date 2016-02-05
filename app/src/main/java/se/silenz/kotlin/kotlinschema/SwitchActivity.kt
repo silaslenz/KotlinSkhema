@@ -37,8 +37,9 @@ class SwitchActivity : AppCompatActivity() {
             val intent = Intent(baseContext, SelectActivity::class.java)
             var prefs = baseContext.getSharedPreferences(
                     "UserData", Context.MODE_PRIVATE)
-            intent.putExtra("schoolID", prefs.getInt("schoolID", 0).toString())
+            intent.putExtra("schoolID", prefs.getString("schoolID", "").toString())
             intent.putExtra("schoolCode", prefs.getString("schoolCode", ""))
+            intent.putExtra("schoolName", prefs.getString("schoolName", ""))
             startActivity(intent)
         }
         searchButton.setOnClickListener {

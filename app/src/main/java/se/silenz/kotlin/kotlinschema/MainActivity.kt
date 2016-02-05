@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
                 "UserData", Context.MODE_PRIVATE)
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
-        Picasso.with(applicationContext).load(Schema(prefs.getInt("schoolID", 0).toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
+        Picasso.with(applicationContext).load(Schema(prefs.getString("schoolID", "").toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
         schemaImageView.setOnMatrixChangeListener { rect ->
             run {
                 if (rect.bottom > (display.height * 0.8)) {
@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onResume() {
+        println("RESUMED")
         super.onResume()
         loadSchema()
 
