@@ -12,18 +12,26 @@
     tools:context="se.silenz.kotlin.kotlinschema.SelectActivity"
     tools:showIn="@layout/activity_select">
 
-    <Spinner
-        android:id="@+id/type_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/listView" />
-    <Spinner
-        android:id="@+id/select_spinner"
-        style="@style/Widget.AppCompat.Spinner.Underlined"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/type_spinner" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/select_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+
+
+    <!--<Spinner-->
+    <!--android:id="@+id/type_spinner"-->
+    <!--style="@style/Widget.AppCompat.Spinner.Underlined"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--/>-->
+    <!--<Spinner-->
+    <!--android:id="@+id/select_spinner"-->
+    <!--style="@style/Widget.AppCompat.Spinner.Underlined"-->
+    <!--android:layout_width="fill_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_below="@+id/type_spinner" />-->
 
 
 

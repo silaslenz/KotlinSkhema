@@ -131,12 +131,9 @@ class SwitchActivity : AppCompatActivity() {
         //
         //        listView.adapter = arrayAdapter;
         listView.adapter = ArrayAdapter<String>(baseContext, android.R.layout.simple_list_item_1, your_array_list)
-        listView.onItemClickListener = object : AdapterView.OnItemClickListener {
-            override fun onItemClick(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                translateBack(listView.getItemAtPosition(position) as String)
-                println(listView.getItemAtPosition(position))
-            }
-
+        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            translateBack(listView.getItemAtPosition(position) as String)
+            println(listView.getItemAtPosition(position))
         }
 
     }

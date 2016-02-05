@@ -15,7 +15,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class FoodActivity : AppCompatActivity() {
-    var mAdapter: MyAdapter? = null
+    var mAdapter: FoodAdapter? = null
     fun changeDataInList(url: String) {
         Fuel.get(url).responseString { request, response, result ->
             run {
@@ -26,8 +26,8 @@ class FoodActivity : AppCompatActivity() {
                 for (i in 1..d!!.split("<td class=\"date\">").size - 1) {
 
                     var dayStr = ""
-                    for (j in 1..d.split("<td class=\"date\">").get(i).split("<p class=\"item\">").size - 1) {
-                        dayStr += d.split("<td class=\"date\">").get(i).split("<p class=\"item\">")[j].split("</p>").get(0) + "\n"
+                    for (j in 1..d.split("<td class=\"date\">")[i].split("<p class=\"item\">").size - 1) {
+                        dayStr += d.split("<td class=\"date\">")[i].split("<p class=\"item\">")[j].split("</p>")[0] + "\n"
                     }
                     var date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(d.split("<td class=\"date\">")[i].split("<span class=\"date\">")[1].split("</span>")[0])
                     mAdapter?.add(d.split("<td class=\"date\">")[i].split("<span class=\"weekday\">")[1].split("</span>")[0],
@@ -57,7 +57,7 @@ class FoodActivity : AppCompatActivity() {
         my_recycler_view.layoutManager = mLayoutManager
         var myDataset = arrayOf("Loading")
         // specify an adapter (see also next example)
-        mAdapter = MyAdapter(myDataset)
+        mAdapter = FoodAdapter(myDataset)
         my_recycler_view.adapter = mAdapter
 
         val prefs = baseContext.getSharedPreferences(
