@@ -6,10 +6,10 @@ import android.support.design.widget.FloatingActionButton
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
+import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -19,18 +19,17 @@ class FoodActivity : AppCompatActivity() {
     fun changeDataInList(url: String) {
         Fuel.get(url).responseString { request, response, result ->
             run {
-                val (d, e) = result
-                //                println("data is"+d)
-                //                println(d!!.split("<td class=\"date\">")?.get(1)?.split("<p class=\"item\">")[position+1]?.split("</p>")?.get(0))
+                val (pagecontent, e) = result
                 mAdapter?.clear()
-                for (i in 1..d!!.split("<td class=\"date\">").size - 1) {
+                for (day in 1..pagecontent!!.split("<td class=\"date\">").size - 1) {
+                    //Loop through all available days
 
                     var dayStr = ""
-                    for (j in 1..d.split("<td class=\"date\">")[i].split("<p class=\"item\">").size - 1) {
-                        dayStr += d.split("<td class=\"date\">")[i].split("<p class=\"item\">")[j].split("</p>")[0] + "\n"
+                    for (item in 1..pagecontent.split("<td class=\"date\">")[day].split("<p class=\"item\">").size - 1) {
+                        dayStr += pagecontent.split("<td class=\"date\">")[day].split("<p class=\"item\">")[item].split("</p>")[0] + "\n"
                     }
-                    var date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(d.split("<td class=\"date\">")[i].split("<span class=\"date\">")[1].split("</span>")[0])
-                    mAdapter?.add(d.split("<td class=\"date\">")[i].split("<span class=\"weekday\">")[1].split("</span>")[0],
+                    var date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(pagecontent.split("<td class=\"date\">")[day].split("<span class=\"date\">")[1].split("</span>")[0])
+                    mAdapter?.add(pagecontent.split("<td class=\"date\">")[day].split("<span class=\"weekday\">")[1].split("</span>")[0],
                             dayStr, date)
                 }
             }
@@ -39,7 +38,6 @@ class FoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
         val fab = findViewById(R.id.fab) as FloatingActionButton
