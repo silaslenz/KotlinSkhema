@@ -2,8 +2,6 @@ package com.silenz.schema
 
 import android.content.Context
 import android.os.Bundle
-import android.support.design.widget.FloatingActionButton
-import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.Fuel
@@ -39,12 +37,6 @@ class FoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
         setSupportActionBar(toolbar)
-
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-
-
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
