@@ -48,7 +48,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                         println(d)
                         if (d != null) {
                             if (d.split("id=\"TypeDropDownList\">").size > 1) {
-                                val typeHTML = d.split("id=\"TypeDropDownList\">").get(1).split("</select>").get(0)
+                                val typeHTML = d.split("id=\"TypeDropDownList\">")[1].split("</select>")[0]
                                 if (typeHTML != null) {
                                     for (i in 2..typeHTML.split("<option").size - 1) {
                                         mAdapter.add(typeHTML.split("\">")[i].split("<")[0], typeHTML.split("value=\"")[i].split("\"")[0])
