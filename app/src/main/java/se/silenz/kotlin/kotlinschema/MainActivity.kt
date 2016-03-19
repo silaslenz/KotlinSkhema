@@ -12,7 +12,10 @@ import com.google.android.gms.ads.AdRequest
 import com.google.android.gms.ads.AdView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.content_main.*
+import org.jetbrains.anko.*
+import org.jetbrains.anko.design.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -45,21 +48,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        fab.setOnClickListener { view ->
-            run {
+        fab.onClick {
                 val intent = Intent(this, SwitchActivity::class.java)
                 startActivity(intent)
             }
-        }
 
 
-        val mAdView = findViewById(R.id.ad_view) as AdView;
-        //        val adRequest = AdRequest.Builder().build();
         val adRequest = AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
                 .build();
-        mAdView.loadAd(adRequest);
+        ad_view.loadAd(adRequest);
         var prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
         if (!prefs.contains("userID")) {
