@@ -1,11 +1,12 @@
 <resources>
-    <string name="app_name">KotlinSchema</string>
+    <string name="app_name">Skhema</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_select">SelectActivity</string>
+    <string name="title_activity_select">Select id</string>
     <string name="school_search">Sök efter skola eller stad</string>
     <string name="first_in_id_choise">Välj id</string>
-    <string name="title_activity_switch">SwitchActivity</string>
+    <string name="title_activity_switch">Select school</string>
     <string name="title_activity_food">Food</string>
     <string name="action_search">Search</string>
     <string name="banner_ad_unit_id">***REMOVED***</string>
+    <string name="write_your_own_id">Input your own id</string>
 </resources>

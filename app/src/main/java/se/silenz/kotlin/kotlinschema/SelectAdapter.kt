@@ -19,7 +19,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 (private val baseContext: Context, private val intent: Intent) : RecyclerView.Adapter<SelectAdapter.ViewHolder>(), View.OnClickListener {
     override fun onClick(v: View?) {
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
-        if (itemtag.contains("{")) {
+        if (itemtag.contains("{")) {//All ids are on the form {str}
             var prefs = baseContext.getSharedPreferences(
                     "UserData", Context.MODE_PRIVATE)
             val editor = prefs.edit()
@@ -30,7 +30,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
             editor.commit()
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-            baseContext.startActivity(intent);            //All ids are on the form {str}
+            baseContext.startActivity(intent)
         } else {
             println(itemtag)
             getNovaIDs(itemtag)
@@ -114,6 +114,9 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
 
     fun getNovaIDs(type: String) {
+        if (type=="custom_id"){
+
+        }
         var urlcode = ""
         clearAll()
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))

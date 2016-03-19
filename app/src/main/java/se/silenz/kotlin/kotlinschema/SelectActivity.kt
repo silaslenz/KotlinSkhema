@@ -44,6 +44,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
             Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->
                 run {
+                    mAdapter.clearAll()
                     if (response.httpStatusCode == 200) {
                         val (d, e) = result
                         println(d)
@@ -51,20 +52,22 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                             if (d.split("id=\"TypeDropDownList\">").size > 1) {
                                 val typeHTML = d.split("id=\"TypeDropDownList\">").get(1).split("</select>").get(0)
                                 if (typeHTML != null) {
-                                    mAdapter.clearAll()
                                     for (i in 2..typeHTML.split("<option").size - 1) {
                                         mAdapter.add(typeHTML.split("\">")[i].split("<")[0], typeHTML.split("value=\"")[i].split("\"")[0])
+                                        println("stuff is" +typeHTML.split("\">")[i].split("<")[0])
                                         //                                println(typeHTML.split("\">")?.get(i).split("<")[0])
                                     }
+
                                 }
                             }
                         }
 
 
                     } else {
-                        println(response.httpStatusCode)
+
                     }
 
+                    mAdapter.add(getString(R.string.write_your_own_id),"custom_id")
 
                 }
             }
@@ -78,15 +81,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setContentView(R.layout.activity_select)
         val toolbar = findViewById(R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
-        val fab = findViewById(R.id.fab) as FloatingActionButton
-        fab.setOnClickListener { view ->
-            run {
-                val intent = Intent(baseContext, MainActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                startActivity(intent)
-            }
-        }
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         // use this setting to improve performance if you know that changes
@@ -100,7 +94,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // specify an adapter (see also next example)
         mAdapter = SelectAdapter(this, intent)
         select_recycler_view.adapter = mAdapter
-        println("Got here")
 
         (mAdapter as SelectAdapter).clear()
         getNovaTypes(mAdapter as SelectAdapter)
