@@ -33,7 +33,7 @@ class SwitchActivity : AppCompatActivity() {
             }
         })
 
-        continueWithCurrentButton.setOnClickListener {
+        continueCardView.setOnClickListener {
             val intent = Intent(baseContext, SelectActivity::class.java)
             var prefs = baseContext.getSharedPreferences(
                     "UserData", Context.MODE_PRIVATE)
@@ -42,7 +42,8 @@ class SwitchActivity : AppCompatActivity() {
             intent.putExtra("schoolName", prefs.getString("schoolName", ""))
             startActivity(intent)
         }
-        searchButton.setOnClickListener {
+
+        searchCardView.setOnClickListener {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         }
@@ -118,18 +119,6 @@ class SwitchActivity : AppCompatActivity() {
         }
 
 
-        // This is the array adapter, it takes the context of the activity as a
-        // first parameter, the type of list view as a second parameter and your
-        // array as a third parameter.
-        //        var arrayAdapter =  object: ArrayAdapter<String>(baseContext, android.R.layout.simple_list_item_1, your_array_list){
-        //            override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View? {
-        //                var view = convertView
-        //                var vi = getSystemService(LAYOUT_INFLATER_SERVICE)
-        //                var v = vi.inflate()
-        //            }
-        //        }
-        //
-        //        listView.adapter = arrayAdapter;
         listView.adapter = ArrayAdapter<String>(baseContext, android.R.layout.simple_list_item_1, your_array_list)
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             translateBack(listView.getItemAtPosition(position) as String)
