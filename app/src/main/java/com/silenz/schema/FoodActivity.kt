@@ -9,6 +9,7 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
+
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -33,31 +34,30 @@ class FoodActivity : AppCompatActivity() {
             }
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
+
         setSupportActionBar(toolbar)
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        my_recycler_view.setHasFixedSize(true)
+        food_recycler_view.setHasFixedSize(true)
 
         // use a linear layout manager
         val mLayoutManager = LinearLayoutManager(this)
-        my_recycler_view.layoutManager = mLayoutManager
+        food_recycler_view.layoutManager = mLayoutManager
         var myDataset = arrayOf("Loading")
         // specify an adapter (see also next example)
         mAdapter = FoodAdapter(myDataset)
-        my_recycler_view.adapter = mAdapter
+        food_recycler_view.adapter = mAdapter
 
-        val prefs = baseContext.getSharedPreferences(
-                "UserData", Context.MODE_PRIVATE)
-        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + prefs.getString("schoolID", "").toString()).responseJson { request, response, result ->
-
+        val prefs = baseContext.getSharedPreferences("UserData", Context.MODE_PRIVATE)
+        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + prefs.getString("schoolID", "").toString()).responseJson {
+            request, response, result ->
             run {
                 when (result) {
                     is Result.Failure -> {
-                        val (d, e) = result
+                        //TODO: Add error handling
                     }
                     is Result.Success -> {
                         val (d, e) = result
@@ -71,7 +71,6 @@ class FoodActivity : AppCompatActivity() {
                         }
                     }
                 }
-                val (d, e) = result
 
             }
         }
