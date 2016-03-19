@@ -1,4 +1,4 @@
-package se.silenz.kotlin.kotlinschema;
+package com.silenz.schema;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="se.silenz.kotlin.schema.SwitchActivity"
+    tools:context="com.silenz.schema.SwitchActivity"
     tools:showIn="@layout/activity_switch">
 
     <LinearLayout

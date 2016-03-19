@@ -1,4 +1,4 @@
-package se.silenz.kotlin.kotlinschema
+package com.silenz.schema
 
 import android.graphics.Color
 import android.graphics.Typeface
@@ -7,7 +7,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
-import se.silenz.kotlin.kotlinschema.R.layout.my_text_view
+import com.silenz.schema.R.layout.my_text_view
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -19,7 +19,7 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): FoodAdapter.ViewHolder {
+                                    viewType: Int): ViewHolder {
         // create a new view
         val v = LayoutInflater.from(parent.context).inflate(my_text_view, parent, false)
         // set the view's size, margins, paddings and layout parameters

@@ -1,4 +1,4 @@
-package se.silenz.kotlin.kotlinschema
+package com.silenz.schema
 
 import android.content.Context
 import android.content.Intent
@@ -40,7 +40,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
-                                    viewType: Int): SelectAdapter.ViewHolder {
+                                    viewType: Int): ViewHolder {
         // create a new view
         val v = LayoutInflater.from(parent.context).inflate(R.layout.switch_item_view, parent, false)
         // set the view's size, margins, paddings and layout parameters

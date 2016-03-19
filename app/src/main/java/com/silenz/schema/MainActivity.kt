@@ -1,4 +1,4 @@
-package se.silenz.kotlin.kotlinschema
+package com.silenz.schema
 
 import android.content.Context
 import android.content.Intent
@@ -9,13 +9,10 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.AdView
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.activity_main.view.*
 import kotlinx.android.synthetic.main.content_main.*
-import org.jetbrains.anko.*
-import org.jetbrains.anko.design.*
+import org.jetbrains.anko.onClick
 
 class MainActivity : AppCompatActivity() {
 

@@ -1,5 +1,6 @@
-package se.silenz.kotlin.kotlinschema
+package com.silenz.schema
 
+import android.R
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -119,7 +120,7 @@ class SwitchActivity : AppCompatActivity() {
         }
 
 
-        listView.adapter = ArrayAdapter<String>(baseContext, android.R.layout.simple_list_item_1, your_array_list)
+        listView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, your_array_list)
         listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             translateBack(listView.getItemAtPosition(position) as String)
             println(listView.getItemAtPosition(position))
@@ -129,8 +130,8 @@ class SwitchActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_switch)
-        val toolbar = findViewById(R.id.toolbar) as Toolbar
+        setContentView(com.silenz.schema.R.layout.activity_switch)
+        val toolbar = findViewById(com.silenz.schema.R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
 
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
