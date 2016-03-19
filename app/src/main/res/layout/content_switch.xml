@@ -43,7 +43,7 @@
                 android:layout_gravity="center"
                 android:clickable="false"
                 android:focusable="false"
-                android:text="Continue with"
+                android:text="@string/continue_with"
                 android:textColor="@android:color/holo_blue_dark" />
         </android.support.v7.widget.CardView>
 
@@ -71,7 +71,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:clickable="false"
-                android:text="Välj en annan"
+                android:text="@string/choose_another"
                 android:textColor="@android:color/holo_blue_dark" />
         </android.support.v7.widget.CardView>
 

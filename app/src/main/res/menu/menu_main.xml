@@ -10,7 +10,7 @@
     <item
         android:id="@+id/action_food"
         android:orderInCategory="1"
-        android:title="Food"
+        android:title="@string/food"
         app:showAsAction="ifRoom" />
 
 </menu>
