@@ -19,15 +19,10 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 (private val baseContext: Context, private val intent: Intent) : RecyclerView.Adapter<SelectAdapter.ViewHolder>(), View.OnClickListener {
     override fun onClick(v: View?) {
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
+        val name = ((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).text.toString()
         if (itemtag.contains("{")) {//All ids are on the form {str}
-            var prefs = baseContext.getSharedPreferences(
-                    "UserData", Context.MODE_PRIVATE)
-            val editor = prefs.edit()
-            editor.putString("userID", itemtag)
-            editor.putString("schoolID", intent.getStringExtra("schoolID"))
-            editor.putString("schoolCode", intent.getStringExtra("schoolCode"))
-            editor.putString("schoolName", intent.getStringExtra("schoolName"))
-            editor.commit()
+
+            SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             baseContext.startActivity(intent)
@@ -128,8 +123,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                         val (d, e) = result
                         println(d)
                         urlcode = d?.split("WebViewer/")?.get(1)?.split("/printer")!![0]
-                        var prefs = baseContext.getSharedPreferences(
-                                "UserData", Context.MODE_PRIVATE)
+
                         Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                                 listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to type, "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString { request, response, result ->
 

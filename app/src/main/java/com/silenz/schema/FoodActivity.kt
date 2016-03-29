@@ -1,6 +1,5 @@
 package com.silenz.schema
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -9,7 +8,6 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
-
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -51,8 +49,8 @@ class FoodActivity : AppCompatActivity() {
         mAdapter = FoodAdapter(myDataset)
         food_recycler_view.adapter = mAdapter
 
-        val prefs = baseContext.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + prefs.getString("schoolID", "").toString()).responseJson {
+
+        Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
             request, response, result ->
             run {
                 when (result) {

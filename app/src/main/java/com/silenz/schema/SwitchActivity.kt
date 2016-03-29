@@ -36,11 +36,9 @@ class SwitchActivity : AppCompatActivity() {
 
         continueCardView.setOnClickListener {
             val intent = Intent(baseContext, SelectActivity::class.java)
-            var prefs = baseContext.getSharedPreferences(
-                    "UserData", Context.MODE_PRIVATE)
-            intent.putExtra("schoolID", prefs.getString("schoolID", "").toString())
-            intent.putExtra("schoolCode", prefs.getString("schoolCode", ""))
-            intent.putExtra("schoolName", prefs.getString("schoolName", ""))
+            intent.putExtra("schoolID", SaveMultipleUsers.getLastSchoolId(baseContext))
+            intent.putExtra("schoolCode", SaveMultipleUsers.getLastSchoolCode(baseContext))
+            intent.putExtra("schoolName", SaveMultipleUsers.getLastSchoolName(baseContext))
             startActivity(intent)
         }
 
@@ -97,10 +95,6 @@ class SwitchActivity : AppCompatActivity() {
                         intent.putExtra("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")")
 
                         startActivity(intent)
-                        //                        editor.putInt("schoolID", response.get("schoolid") as Int);
-                        //                        editor.putString("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")");
-                        //                        editor.putString("schoolCode", response.get("code").toString());
-                        //                        editor.commit();
                     }
                 }
                 val (d, e) = result
@@ -114,18 +108,43 @@ class SwitchActivity : AppCompatActivity() {
 
         //Add all items to array
         if (searchResults?.length() != 0) {
-            (0..searchResults!!.names().length() - 1).forEach { i -> your_array_list.add(searchResults.getJSONObject(searchResults.names().getString(i)).getString("name") + " (" + searchResults.getJSONObject(searchResults.names().getString(i)).getString("location") + ")") }
+            (0..searchResults!!.names().length() - 1).forEach {
+                item ->
+                your_array_list.add(searchResults.getJSONObject(searchResults.names().getString(item)).getString("name") +
+                        " (" + searchResults.getJSONObject(searchResults.names().getString(item)).getString("location") + ")")
+            }
         } else {
             your_array_list.add("Nothing found")
         }
 
 
-        listView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, your_array_list)
-        listView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            translateBack(listView.getItemAtPosition(position) as String)
-            println(listView.getItemAtPosition(position))
+        schoolSearchListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, your_array_list)
+        schoolSearchListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            translateBack(schoolSearchListView.getItemAtPosition(position) as String)
+            println(schoolSearchListView.getItemAtPosition(position))
         }
 
+    }
+
+    fun populateRecentsListView() {
+        val historicalUsersList = SaveMultipleUsers.getUserName(baseContext).reversed() as ArrayList<String>
+
+        println(historicalUsersList)
+        recentsListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, historicalUsersList)
+        recentsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            println(recentsListView.getItemAtPosition(position))
+            println(historicalUsersList.size - (position + 1))
+            SaveMultipleUsers.addUser(baseContext,
+                    recentsListView.getItemAtPosition(position) as String,
+                    SaveMultipleUsers.getUser(baseContext)[SaveMultipleUsers.getUser(baseContext).size - (position + 1)],
+                    SaveMultipleUsers.getSchoolId(baseContext)[SaveMultipleUsers.getSchoolId(baseContext).size - (position + 1)],
+                    SaveMultipleUsers.getSchoolCode(baseContext)[SaveMultipleUsers.getSchoolCode(baseContext).size - (position + 1)],
+                    SaveMultipleUsers.getSchoolName(baseContext)[SaveMultipleUsers.getSchoolName(baseContext).size - (position + 1)])
+            val intent = Intent(baseContext, MainActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            baseContext.startActivity(intent)
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -141,7 +160,8 @@ class SwitchActivity : AppCompatActivity() {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         } else {
-            continueWithCurrentButton.text = "Fortsätt med " + prefs.getString("schoolName", "")
+            continueWithCurrentButton.text = "Fortsätt med " + SaveMultipleUsers.getLastSchoolName(baseContext).toString()
+            populateRecentsListView()
         }
 
         createListeners()

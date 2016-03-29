@@ -17,11 +17,10 @@ import org.jetbrains.anko.onClick
 class MainActivity : AppCompatActivity() {
 
     fun loadSchema() {
-        var prefs = baseContext.getSharedPreferences(
-                "UserData", Context.MODE_PRIVATE)
+
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
-        Picasso.with(applicationContext).load(Schema(prefs.getString("schoolID", "").toString(), prefs.getString("userID", "")).getUrlThisWeek(applicationContext)).into(schemaImageView);
+        Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
         schemaImageView.setOnMatrixChangeListener { rect ->
             run {
                 if (rect.bottom > (display.height * 0.8)) {
@@ -33,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
 
     }
+
 
     override fun onResume() {
         println("RESUMED")
@@ -46,9 +46,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         fab.onClick {
-                val intent = Intent(this, SwitchActivity::class.java)
-                startActivity(intent)
-            }
+            val intent = Intent(this, SwitchActivity::class.java)
+            startActivity(intent)
+        }
 
 
         val adRequest = AdRequest.Builder()
@@ -77,19 +77,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        val id = item.itemId
+        when (item.itemId) {
+            R.id.action_settings -> return true //TODO: When settings are added.
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true
-        }
-        if (id == R.id.action_food) {
-
-            val intent = Intent(this, FoodActivity::class.java)
-            startActivity(intent)
+            R.id.action_food -> {
+                val intent = Intent(this, FoodActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         return super.onOptionsItemSelected(item)
