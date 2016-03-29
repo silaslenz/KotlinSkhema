@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import com.github.kittinunf.fuel.Fuel
-import java.util.*
+import org.apache.commons.lang3.StringEscapeUtils
 
 data class NovaType(val name: String, val id: String)
 
@@ -20,7 +20,8 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
     override fun onClick(v: View?) {
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
         val name = ((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).text.toString()
-        if (itemtag.contains("{")) {//All ids are on the form {str}
+        if (itemtag.contains("{")) {
+            //All ids are on the form {str}
 
             SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
             val intent = Intent(baseContext, MainActivity::class.java)
@@ -44,6 +45,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
         return vh
     }
+
     var titleDataset = arrayOf(NovaType("", ""))
 
     var titleDatasetClone = arrayOf(NovaType("", ""))
@@ -109,56 +111,51 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
 
     fun getNovaIDs(type: String) {
-        if (type=="custom_id"){
+        if (type == "custom_id") {
 
         }
         var urlcode = ""
         clearAll()
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
         if ( intent.getStringExtra("schoolID") != "0") {
+
             Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->
                 run {
                     if (response.httpStatusCode == 200) {
                         val (d, e) = result
-                        println(d)
-                        urlcode = d?.split("WebViewer/")?.get(1)?.split("/printer")!![0]
-
-                        Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
-                                listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to type, "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString { request, response, result ->
-
-                            run {
-                                val (d, e) = result
-                                println(response.url)
-                                val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("</select>")?.get(0)?.split("<option value=\"");
-                                val spinnerArray = ArrayList<String>()
-                                spinnerArray.add("Välj id")
-                                for (i in 1..nicedata!!.size - 1) {
-
-                                    spinnerArray.add(nicedata[i].split(">")[1].split("<")[0])
-                                    println(kotlin.Pair(nicedata[i].split(">")[1].split("<")[0], nicedata[i].split("\"")[0]))
-                                    val name = nicedata[i].split(">")[1].split("<")[0]
-                                    val id = nicedata[i].split("\"")[0]
+                        if (d != null) {
+                            if (hasDropdownselector(d)) {
+                                //Has multiple lists of different types
+                                for (i in 2..getNumberOfDropdownItems(d, type) - 1) {
+                                    val nicedata = d.split("name=\"" + type + "\"")[1].split("</select")[0]
+                                    val name = StringEscapeUtils.unescapeHtml4(nicedata.split(">")[i * 2].split("<")[0])
+                                    val id = nicedata.split("value=\"")[i].split("\"")[0]
                                     add(name, id)
                                 }
+                            } else {
+                                //Has type->list selector type
+                                urlcode = getUrlCode(d)
 
-                                println(spinnerArray);
-                                //                                val adapter = ArrayAdapter<String>(
-                                //                                        this, android.R.layout.simple_spinner_item, spinnerArray)
+                                Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
+                                        listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to type, "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString { request, response, result ->
 
-                                //                                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                                //                                select_spinner.adapter = adapter
+                                    run {
+                                        val (d, e) = result
+                                        val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("</select>")?.get(0)?.split("<option value=\"");
+                                        for (i in 1..nicedata!!.size - 1) {
+                                            val name = StringEscapeUtils.unescapeHtml4(nicedata[i].split(">")[1].split("<")[0])
+                                            val id = nicedata[i].split("\"")[0]
+                                            add(name, id)
+                                        }
+
+                                    }
+                                }
                             }
                         }
-
-                    } else {
-                        println(response.httpStatusCode)
                     }
-
-
                 }
             }
         }
     }
-
 }

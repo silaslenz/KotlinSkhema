@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar
 import android.view.Menu
 import com.github.kittinunf.fuel.Fuel
 import kotlinx.android.synthetic.main.content_select.*
+import org.apache.commons.lang3.StringEscapeUtils
 
 
 class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
@@ -35,6 +36,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     override fun onQueryTextSubmit(query: String): Boolean {
         return false
     }
+
     fun getNovaTypes(mAdapter: SelectAdapter) {
         var urlcode = ""
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
@@ -43,20 +45,41 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                     listOf()).responseString { request, response, result ->
                 run {
                     mAdapter.clearAll()
+
                     if (response.httpStatusCode == 200) {
                         val (d, e) = result
-                        println(d)
                         if (d != null) {
                             if (d.split("id=\"TypeDropDownList\">").size > 1) {
                                 val typeHTML = d.split("id=\"TypeDropDownList\">")[1].split("</select>")[0]
-                                if (typeHTML != null) {
-                                    for (i in 2..typeHTML.split("<option").size - 1) {
-                                        mAdapter.add(typeHTML.split("\">")[i].split("<")[0], typeHTML.split("value=\"")[i].split("\"")[0])
-                                        println("stuff is" +typeHTML.split("\">")[i].split("<")[0])
-                                        //                                println(typeHTML.split("\">")?.get(i).split("<")[0])
-                                    }
-
+                                for (i in 2..typeHTML.split("<option").size - 1) {
+                                    mAdapter.add(StringEscapeUtils.unescapeHtml4(typeHTML.split("\">")[i].split("<")[0]), typeHTML.split("value=\"")[i].split("\"")[0])
+                                    println("stuff is" + typeHTML.split("\">")[i].split("<")[0])
+                                    //                                println(typeHTML.split("\">")?.get(i).split("<")[0])
                                 }
+                            } else if (d.split("<select name=").size > 1) {
+                                println("Found dropdowns")
+
+                                for (i in 1..d.split("<select name=").size - 1) {
+                                    if (d.split("<select name=\"")[i].split("\"")[0].contains("ctl")) {
+                                        mAdapter.add(StringEscapeUtils.unescapeHtml4(
+                                                d.split("<select name=")[i]
+                                                        .split("<option ")[1]
+                                                        .split(">")[1]
+                                                        .split("</")[0]
+                                                        .replace("(", "")
+                                                        .replace(")", "")),
+
+                                                d.split("<select name=\"")[i]
+                                                        .split("\"")[0])
+                                    }
+                                }
+                                println("first: " + StringEscapeUtils.unescapeHtml4(d
+                                        .split("<select name=")[1]
+                                        .split("<option ")[1]
+                                        .split(">")[1]
+                                        .split("</")[0]
+                                        .replace("(", "")
+                                        .replace(")", "")))
                             }
                         }
 
@@ -65,13 +88,12 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
                     }
 
-                    mAdapter.add(getString(R.string.write_your_own_id),"custom_id")
+                    mAdapter.add(getString(R.string.write_your_own_id), "custom_id")
 
                 }
             }
         }
     }
-
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
