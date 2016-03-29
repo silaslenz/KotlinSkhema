@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Context
 
 /**
- * Created by silenz on 3/29/16.
+ * Saves history of userdata, split by '|'
  */
 
 object SaveMultipleUsers {
