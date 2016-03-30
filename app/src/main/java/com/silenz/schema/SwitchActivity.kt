@@ -78,27 +78,19 @@ class SwitchActivity : AppCompatActivity() {
             run {
                 when (result) {
                     is Result.Failure -> {
-                        val (d, e) = result
+                        //TODO: Error handling
                     }
                     is Result.Success -> {
-                        val (d, e) = result
-                        val response = d as JSONObject
-                        println("data is" + d.toString())
-                        var prefs = baseContext.getSharedPreferences(
-                                "UserData", Context.MODE_PRIVATE)
-                        //                        var editor = prefs.edit();
+                        val (response: JSONObject?, e) = result
+
                         val intent = Intent(baseContext, SelectActivity::class.java)
-                        //                        var prefs = baseContext.getSharedPreferences(
-                        //                                "UserData", Context.MODE_PRIVATE)
-                        intent.putExtra("schoolID", response.get("schoolid").toString())
-                        intent.putExtra("schoolCode", response.get("code").toString())
-                        intent.putExtra("schoolName", response.get("name").toString() + " (" + response.get("location").toString() + ")")
+                        intent.putExtra("schoolID", response?.get("schoolid").toString())
+                        intent.putExtra("schoolCode", response?.get("code").toString())
+                        intent.putExtra("schoolName", response?.get("name").toString() + " (" + response?.get("location").toString() + ")")
 
                         startActivity(intent)
                     }
                 }
-                val (d, e) = result
-
             }
         }
     }
@@ -107,11 +99,10 @@ class SwitchActivity : AppCompatActivity() {
         var your_array_list = ArrayList<String>();
 
         //Add all items to array
-        if (searchResults?.length() != 0) {
-            (0..searchResults!!.names().length() - 1).forEach {
+        if (searchResults != null && searchResults.length() != 0 ) {
+            (0..searchResults.names().length() - 1).forEach {
                 item ->
-                your_array_list.add(searchResults.getJSONObject(searchResults.names().getString(item)).getString("name") +
-                        " (" + searchResults.getJSONObject(searchResults.names().getString(item)).getString("location") + ")")
+                your_array_list.add("${searchResults.getJSONObject(searchResults.names().getString(item)).getString("name")} (${searchResults.getJSONObject(searchResults.names().getString(item)).getString("location")})")
             }
         } else {
             your_array_list.add("Nothing found")
@@ -160,7 +151,7 @@ class SwitchActivity : AppCompatActivity() {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         } else {
-            continueWithCurrentButton.text = "Fortsätt med " + SaveMultipleUsers.getLastSchoolName(baseContext).toString()
+            continueWithCurrentButton.text = "Fortsätt med ${SaveMultipleUsers.getLastSchoolName(baseContext).toString()}"
             populateRecentsListView()
         }
 

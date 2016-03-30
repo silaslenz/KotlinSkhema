@@ -8,7 +8,7 @@ fun hasDropdownselector(pageContent: String): Boolean {
 }
 
 fun getUrlCode(pageContent: String): String {
-    return pageContent.split("WebViewer/").get(1).split("/printer")[0]
+    return pageContent.split("WebViewer/")[1].split("/printer")[0]
 }
 
 fun getNumberOfDropdownItems(pageContent: String, type: String): Int {

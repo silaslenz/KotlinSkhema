@@ -12,4 +12,5 @@
     <string name="continue_with">Continue with</string>
     <string name="choose_another">Choose another</string>
     <string name="food">Food</string>
+    <string name="error_network">An error occurred while receiving</string>
 </resources>

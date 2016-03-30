@@ -8,26 +8,30 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
-import java.text.SimpleDateFormat
-import java.util.*
 
 class FoodActivity : AppCompatActivity() {
     var mAdapter: FoodAdapter? = null
     fun changeDataInList(url: String) {
         Fuel.get(url).responseString { request, response, result ->
             run {
-                val (pagecontent, e) = result
-                mAdapter?.clear()
-                for (day in 1..pagecontent!!.split("<td class=\"date\">").size - 1) {
-                    //Loop through all available days
-
-                    var dayStr = ""
-                    for (item in 1..pagecontent.split("<td class=\"date\">")[day].split("<p class=\"item\">").size - 1) {
-                        dayStr += pagecontent.split("<td class=\"date\">")[day].split("<p class=\"item\">")[item].split("</p>")[0] + "\n"
+                when (result) {
+                    is Result.Success -> {
+                        val (pageContent, error) = result
+                        if (pageContent != null) {
+                            mAdapter?.clear()
+                            for (day in 1..getDaysOnPage(pageContent) - 1) {
+                                var dayStr = ""
+                                for (item in 1..getNumberOfItemsOnDay(pageContent, day) - 1) {
+                                    dayStr += getItemInDay(pageContent, day, item)
+                                }
+                                var date = getDateOfDay(pageContent, day)
+                                mAdapter?.add(getDaynameOfDay(day, pageContent), dayStr, date)
+                            }
+                        }
                     }
-                    var date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(pagecontent.split("<td class=\"date\">")[day].split("<span class=\"date\">")[1].split("</span>")[0])
-                    mAdapter?.add(pagecontent.split("<td class=\"date\">")[day].split("<span class=\"weekday\">")[1].split("</span>")[0],
-                            dayStr, date)
+                    is Result.Failure -> {
+                        //TODO: Error handeling
+                    }
                 }
             }
         }
@@ -36,16 +40,15 @@ class FoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
-
         setSupportActionBar(toolbar)
 
         food_recycler_view.setHasFixedSize(true)
 
-        // use a linear layout manager
         val mLayoutManager = LinearLayoutManager(this)
         food_recycler_view.layoutManager = mLayoutManager
+
         var myDataset = arrayOf("Loading")
-        // specify an adapter (see also next example)
+
         mAdapter = FoodAdapter(myDataset)
         food_recycler_view.adapter = mAdapter
 
@@ -55,14 +58,13 @@ class FoodActivity : AppCompatActivity() {
             run {
                 when (result) {
                     is Result.Failure -> {
-                        //TODO: Add error handling
+                        mAdapter?.clear()
+                        mAdapter?.add(getString(R.string.error_network))
                     }
                     is Result.Success -> {
-                        val (d, e) = result
-                        println("data is" + d)
-                        println(d!!.getString("food"))
-                        if (d.getString("food") != "null") {
-                            changeDataInList(d.getString("food"))
+                        val (pageContent, e) = result
+                        if (pageContent?.getString("food") != "null" && pageContent?.getString("food") != null) {
+                            changeDataInList(pageContent?.getString("food")!!)
                         } else {
                             mAdapter?.clear()
                             mAdapter?.add("Denna skola har ännu ingen matsedel kopplad till sig")
