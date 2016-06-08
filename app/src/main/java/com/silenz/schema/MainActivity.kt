@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.onClick
 
 class MainActivity : AppCompatActivity() {
+    var tabsLoaded : Boolean = false
 
     fun loadSchema() {
 
@@ -32,7 +33,36 @@ class MainActivity : AppCompatActivity() {
 //            }
 //        }
 
+        if (!tabsLoaded) {
+            val tabs = findViewById(R.id.tabs) as TabLayout?
+            tabs!!.addTab(tabs.newTab().setText("Mo"))
+            tabs.addTab(tabs.newTab().setText("Tu"))
+            tabs.addTab(tabs.newTab().setText("We"))
+            tabs.addTab(tabs.newTab().setText("Th"))
+            tabs.addTab(tabs.newTab().setText("Fr"))
+            tabs.tabGravity = TabLayout.GRAVITY_FILL
 
+            val viewPager = findViewById(R.id.viewpager) as ViewPager?
+            val adapter: DayPagerAdapter
+            adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
+            viewPager!!.adapter = adapter
+            viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+            tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                override fun onTabSelected(tab: TabLayout.Tab) {
+                    viewPager.currentItem = tab.position
+                }
+
+                override fun onTabUnselected(tab: TabLayout.Tab) {
+
+                }
+
+                override fun onTabReselected(tab: TabLayout.Tab) {
+
+                }
+            })
+            tabsLoaded = true
+
+        }
     }
 
 
@@ -67,32 +97,6 @@ class MainActivity : AppCompatActivity() {
         loadSchema() //Load picture into imageview
         //        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
 
-        val tabs = findViewById(R.id.tabs) as TabLayout?
-        tabs!!.addTab(tabs.newTab().setText("Mo"))
-        tabs.addTab(tabs.newTab().setText("Tu"))
-        tabs.addTab(tabs.newTab().setText("We"))
-        tabs.addTab(tabs.newTab().setText("Th"))
-        tabs.addTab(tabs.newTab().setText("Fr"))
-        tabs.tabGravity = TabLayout.GRAVITY_FILL
-
-        val viewPager = findViewById(R.id.viewpager) as ViewPager?
-        val adapter: DayPagerAdapter
-        adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
-        viewPager!!.adapter = adapter
-        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-        tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab) {
-                viewPager.currentItem = tab.position
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab) {
-
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab) {
-
-            }
-        })
 
     }
 
