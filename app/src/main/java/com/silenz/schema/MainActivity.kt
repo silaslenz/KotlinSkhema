@@ -12,9 +12,13 @@ import android.view.View
 import android.view.WindowManager
 import com.google.android.gms.ads.AdRequest
 import com.squareup.picasso.Picasso
+import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.onClick
+import uk.co.senab.photoview.PhotoViewAttacher
+import com.google.android.gms.ads.AdView;
+
 
 class MainActivity : AppCompatActivity() {
     var tabsLoaded: Boolean = false
@@ -24,23 +28,28 @@ class MainActivity : AppCompatActivity() {
 
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         if (preferences.getBoolean("weekview", false)) {
+            TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.GONE
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
 
             val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
             val display = wm.defaultDisplay
 
+            println("Loading week (picasso)")
             Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
             schemaImageView.setOnMatrixChangeListener { rect ->
                 run {
-                    if (rect.bottom > (display.height * 0.8)) {
-                        ad_view.visibility = View.GONE
+                    TransitionManager.beginDelayedTransition(bottombar);
+                    if (rect.bottom > (display.height * 0.5)) {
+                        adView.visibility = View.GONE
                     } else
-                        ad_view.visibility = View.VISIBLE
+                        adView.visibility = View.VISIBLE
                 }
             }
         } else {
+            TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.VISIBLE
+
 
             viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
             if (!tabsLoaded) {
@@ -87,16 +96,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-//        fab.onClick {
-//            val intent = Intent(this, SwitchActivity::class.java)
-//            startActivity(intent)
-//        }
+        fab.onClick {
+            val intent = Intent(this, SwitchActivity::class.java)
+            startActivity(intent)
+
+        }
 
 
-        val adRequest = AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
-                .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
-                .build();
 //        ad_view.loadAd(adRequest);
         var prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
@@ -105,7 +111,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
         loadSchema() //Load picture into imageview
-        //        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
+        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
+
+        val adRequest = AdRequest.Builder().build();
+        adView.loadAd(adRequest);
 
 
     }
