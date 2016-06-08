@@ -113,6 +113,14 @@ class MainActivity : AppCompatActivity() {
                 val intent = Intent(this, FoodActivity::class.java)
                 startActivity(intent)
             }
+
+            R.id.weekview -> {
+                item.isChecked = !item.isChecked
+                val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+                val editor = preferences.edit()
+                editor.putBoolean("weekview", item.isChecked)
+                editor.commit()
+            }
         }
 
         return super.onOptionsItemSelected(item)

@@ -13,4 +13,8 @@
         android:title="@string/food"
         app:showAsAction="ifRoom" />
 
+        <item android:id="@+id/weekview"
+            android:checkable="true"
+            android:title="Show a full week" />
+
 </menu>

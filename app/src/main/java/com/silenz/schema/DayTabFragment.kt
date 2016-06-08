@@ -19,7 +19,7 @@ class DayTabFragment() : Fragment() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
 
-        Picasso.with(context).load(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), globalTabnum).getUrlThisWeek(context)).into(view.schemaImageView);
+        Picasso.with(context).load(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), globalTabnum).getUrlThisDay(context)).into(view.schemaImageView);
 
         return view
     }
