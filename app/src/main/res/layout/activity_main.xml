@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--Action bar-->
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -20,13 +21,69 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabMode="fixed"
-            app:tabGravity="fill"/>
+            app:tabGravity="fill"
+            app:tabMode="fixed" />
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+
+    <!--Main content-->
+    <ViewFlipper
+        android:id="@+id/viewFlipper"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"  />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <!--Day layout-->
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <!--Week layout-->
+        <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="@dimen/main_activity_vertical_margin"
+            android:paddingLeft="@dimen/main_activity_horizontal_margin"
+            android:paddingRight="@dimen/main_activity_horizontal_margin"
+            android:paddingTop="@dimen/main_activity_vertical_margin"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            tools:context="com.silenz.schema.MainActivity"
+            tools:showIn="@layout/activity_main">
+
+            <uk.co.senab.photoview.PhotoView
+                android:id="@+id/schemaImageView"
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitStart" />
+
+            <LinearLayout
+                android:id="@+id/bottombar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/schemaImageView"
+                android:layout_gravity="bottom|end"
+                android:orientation="vertical">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_margin="@dimen/fab_margin"
+                    android:src="@drawable/ic_mode_edit_white_24dp" />
+
+                <com.google.android.gms.ads.AdView
+                    android:id="@+id/ad_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:adSize="SMART_BANNER"
+                    app:adUnitId="@string/banner_ad_unit_id" />
+            </LinearLayout>
+        </android.support.design.widget.CoordinatorLayout>
+    </ViewFlipper>
 </android.support.design.widget.CoordinatorLayout>
+
+

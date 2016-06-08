@@ -17,51 +17,61 @@ import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.onClick
 
 class MainActivity : AppCompatActivity() {
-    var tabsLoaded : Boolean = false
-
+    var tabsLoaded: Boolean = false
+    val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
+    val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
     fun loadSchema() {
 
-        val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
-//        Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
-//        schemaImageView.setOnMatrixChangeListener { rect ->
-//            run {
-//                if (rect.bottom > (display.height * 0.8)) {
-//                    ad_view.visibility = View.GONE
-//                } else
-//                    ad_view.visibility = View.VISIBLE
-//            }
-//        }
+        val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        if (preferences.getBoolean("weekview", false)) {
+            tabs.visibility = View.GONE
+            viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
 
-        if (!tabsLoaded) {
-            val tabs = findViewById(R.id.tabs) as TabLayout?
-            tabs!!.addTab(tabs.newTab().setText("Mo"))
-            tabs.addTab(tabs.newTab().setText("Tu"))
-            tabs.addTab(tabs.newTab().setText("We"))
-            tabs.addTab(tabs.newTab().setText("Th"))
-            tabs.addTab(tabs.newTab().setText("Fr"))
-            tabs.tabGravity = TabLayout.GRAVITY_FILL
+            val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+            val display = wm.defaultDisplay
 
-            val viewPager = findViewById(R.id.viewpager) as ViewPager?
-            val adapter: DayPagerAdapter
-            adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
-            viewPager!!.adapter = adapter
-            viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-            tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-                override fun onTabSelected(tab: TabLayout.Tab) {
-                    viewPager.currentItem = tab.position
+            Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
+            schemaImageView.setOnMatrixChangeListener { rect ->
+                run {
+                    if (rect.bottom > (display.height * 0.8)) {
+                        ad_view.visibility = View.GONE
+                    } else
+                        ad_view.visibility = View.VISIBLE
                 }
+            }
+        } else {
+            tabs.visibility = View.VISIBLE
 
-                override fun onTabUnselected(tab: TabLayout.Tab) {
+            viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
+            if (!tabsLoaded) {
+                val tabs = findViewById(R.id.tabs) as TabLayout?
+                tabs!!.addTab(tabs.newTab().setText("Mo"))
+                tabs.addTab(tabs.newTab().setText("Tu"))
+                tabs.addTab(tabs.newTab().setText("We"))
+                tabs.addTab(tabs.newTab().setText("Th"))
+                tabs.addTab(tabs.newTab().setText("Fr"))
+                tabs.tabGravity = TabLayout.GRAVITY_FILL
 
-                }
+                val viewPager = findViewById(R.id.viewpager) as ViewPager?
+                val adapter: DayPagerAdapter
+                adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
+                viewPager!!.adapter = adapter
+                viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+                tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                    override fun onTabSelected(tab: TabLayout.Tab) {
+                        viewPager.currentItem = tab.position
+                    }
 
-                override fun onTabReselected(tab: TabLayout.Tab) {
+                    override fun onTabUnselected(tab: TabLayout.Tab) {
 
-                }
-            })
-            tabsLoaded = true
+                    }
 
+                    override fun onTabReselected(tab: TabLayout.Tab) {
+
+                    }
+                })
+                tabsLoaded = true
+            }
         }
     }
 
@@ -103,8 +113,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-
-
+        val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        menu.findItem(R.id.weekview).isChecked = preferences.getBoolean("weekview", false)
         return super.onCreateOptionsMenu(menu);
 
     }
@@ -124,6 +134,7 @@ class MainActivity : AppCompatActivity() {
                 val editor = preferences.edit()
                 editor.putBoolean("weekview", item.isChecked)
                 editor.commit()
+                loadSchema()
             }
         }
 
