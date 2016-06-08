@@ -3,6 +3,8 @@ package com.silenz.schema
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.support.design.widget.TabLayout
+import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
@@ -20,15 +22,15 @@ class MainActivity : AppCompatActivity() {
 
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
-        Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
-        schemaImageView.setOnMatrixChangeListener { rect ->
-            run {
-                if (rect.bottom > (display.height * 0.8)) {
-                    ad_view.visibility = View.GONE
-                } else
-                    ad_view.visibility = View.VISIBLE
-            }
-        }
+//        Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
+//        schemaImageView.setOnMatrixChangeListener { rect ->
+//            run {
+//                if (rect.bottom > (display.height * 0.8)) {
+//                    ad_view.visibility = View.GONE
+//                } else
+//                    ad_view.visibility = View.VISIBLE
+//            }
+//        }
 
 
     }
@@ -45,17 +47,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        fab.onClick {
-            val intent = Intent(this, SwitchActivity::class.java)
-            startActivity(intent)
-        }
+//        fab.onClick {
+//            val intent = Intent(this, SwitchActivity::class.java)
+//            startActivity(intent)
+//        }
 
 
         val adRequest = AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)        // All emulators
                 .addTestDevice("AC98C820A50B4AD8A2106EDE96FB87D4")  // An example device ID
                 .build();
-        ad_view.loadAd(adRequest);
+//        ad_view.loadAd(adRequest);
         var prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
         if (!prefs.contains("userID")) {
@@ -64,6 +66,33 @@ class MainActivity : AppCompatActivity() {
         }
         loadSchema() //Load picture into imageview
         //        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
+
+        val tabs = findViewById(R.id.tabs) as TabLayout?
+        tabs!!.addTab(tabs.newTab().setText("Mo"))
+        tabs.addTab(tabs.newTab().setText("Tu"))
+        tabs.addTab(tabs.newTab().setText("We"))
+        tabs.addTab(tabs.newTab().setText("Th"))
+        tabs.addTab(tabs.newTab().setText("Fr"))
+        tabs.tabGravity = TabLayout.GRAVITY_FILL
+
+        val viewPager = findViewById(R.id.viewpager) as ViewPager?
+        val adapter: DayPagerAdapter
+        adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
+        viewPager!!.adapter = adapter
+        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+        tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab) {
+                viewPager.currentItem = tab.position
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab) {
+
+            }
+
+            override fun onTabReselected(tab: TabLayout.Tab) {
+
+            }
+        })
 
     }
 

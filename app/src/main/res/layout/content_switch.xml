@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:alpha="0.02"
-                android:src="@drawable/ic_school_black_48dp" />
+                android:src="@drawable/ic_child_care_white_24dp" />
 
             <TextView
                 android:id="@+id/continueWithCurrentButton"
