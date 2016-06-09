@@ -29,6 +29,8 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
         return vh
     }
 
+
+
     var titleDataset = arrayOf("");
     var dateDataset = arrayOf("");
     // Replace the contents of a view (invoked by the layout manager)

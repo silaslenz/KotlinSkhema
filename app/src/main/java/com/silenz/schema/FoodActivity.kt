@@ -6,6 +6,7 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
+import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
 
@@ -45,14 +46,17 @@ class FoodActivity : AppCompatActivity() {
         food_recycler_view.setHasFixedSize(true)
 
         val mLayoutManager = LinearLayoutManager(this)
+
         food_recycler_view.layoutManager = mLayoutManager
 
-        var myDataset = arrayOf("Loading")
+        var myDataset = arrayOf("")
 
         mAdapter = FoodAdapter(myDataset)
+
+
         food_recycler_view.adapter = mAdapter
 
-
+        mAdapter?.clear()
         Fuel.get("http://skhemaf-silenz.rhcloud.com/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
             request, response, result ->
             run {
