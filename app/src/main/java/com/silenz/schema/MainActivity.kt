@@ -11,13 +11,12 @@ import android.view.MenuItem
 import android.view.View
 import android.view.WindowManager
 import com.google.android.gms.ads.AdRequest
+import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.content_main.*
 import org.jetbrains.anko.onClick
 import uk.co.senab.photoview.PhotoViewAttacher
-import com.google.android.gms.ads.AdView;
 
 
 class MainActivity : AppCompatActivity() {
@@ -132,7 +131,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> return true //TODO: When settings are added.
+            R.id.action_settings -> {
+                return true
+                val database = FirebaseDatabase.getInstance();
+                val myRef = database.getReference("message");
+
+                myRef.setValue("Hello, World!");
+            } //TODO: When settings are added.
 
             R.id.action_food -> {
                 val intent = Intent(this, FoodActivity::class.java)
