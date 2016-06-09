@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
     fun loadSchema() {
+        val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val display = wm.defaultDisplay
 
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         if (preferences.getBoolean("weekview", false)) {
@@ -32,20 +34,9 @@ class MainActivity : AppCompatActivity() {
             tabs.visibility = View.GONE
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
 
-            val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            val display = wm.defaultDisplay
 
-            println("Loading week (picasso)")
             Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
-            schemaImageView.setOnMatrixChangeListener { rect ->
-                run {
-                    TransitionManager.beginDelayedTransition(bottombar);
-                    if (rect.bottom > (display.height * 0.5)) {
-                        adView.visibility = View.GONE
-                    } else
-                        adView.visibility = View.VISIBLE
-                }
-            }
+
         } else {
             TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.VISIBLE
@@ -82,6 +73,17 @@ class MainActivity : AppCompatActivity() {
                 tabsLoaded = true
             }
         }
+
+        //TODO: This doesn't do anything
+        schemaImageView.setOnMatrixChangeListener { rect ->
+            run {
+                println(rect.bottom)
+                if (rect.bottom > (display.height * 0.7)) {
+                    adView.visibility = View.GONE
+                } else
+                    adView.visibility = View.VISIBLE
+            }
+        }
     }
 
 
@@ -113,7 +115,7 @@ class MainActivity : AppCompatActivity() {
         loadSchema() //Load picture into imageview
         PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
 
-        val adRequest = AdRequest.Builder().build();
+        val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").build();
         adView.loadAd(adRequest);
 
 
