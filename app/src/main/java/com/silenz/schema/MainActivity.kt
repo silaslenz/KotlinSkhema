@@ -117,6 +117,9 @@ class MainActivity : AppCompatActivity() {
         val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").build();
         adView.loadAd(adRequest);
 
+        // Keep a local copy of our database
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+
 
     }
 
@@ -132,11 +135,11 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> {
-                return true
                 val database = FirebaseDatabase.getInstance();
-                val myRef = database.getReference("message");
 
-                myRef.setValue("Hello, World!");
+
+
+                return true
             } //TODO: When settings are added.
 
             R.id.action_food -> {
