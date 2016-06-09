@@ -13,7 +13,7 @@
     tools:context="com.silenz.schema.FoodActivity"
     tools:showIn="@layout/activity_food">
 
-    <com.silenz.schema.MyRecyclerView
+    <com.silenz.schema.AnimatedRecyclerView
         android:id="@+id/food_recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

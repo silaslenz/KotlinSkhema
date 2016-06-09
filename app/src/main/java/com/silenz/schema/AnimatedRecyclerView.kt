@@ -14,7 +14,7 @@ import android.view.WindowManager
 /**
  * @author Leo on 2015/09/03
  */
-class MyRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
+class AnimatedRecyclerView @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) : RecyclerView(context, attrs, defStyle) {
     private var mScrollable: Boolean = false
 
     init {
