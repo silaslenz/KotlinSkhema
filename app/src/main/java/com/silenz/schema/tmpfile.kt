@@ -1,61 +1,113 @@
-//package com.truiton.designsupporttabs
+//package com.silenz.schema
 //
-//import android.os.Bundle
-//import android.support.design.widget.TabLayout
-//import android.support.v4.view.ViewPager
-//import android.support.v7.app.AppCompatActivity
-//import android.support.v7.widget.Toolbar
-//import android.view.Menu
+//import android.content.Context
+//import android.support.design.widget.FloatingActionButton
+//import android.util.AttributeSet
 //import android.view.MenuItem
+//import android.view.View
+//import android.view.animation.Animation
+//import android.view.animation.AnimationUtils
+//import android.view.animation.Interpolator
+//import android.view.animation.ScaleAnimation
 //
-//import com.silenz.schema.DayPagerAdapter
-//import com.silenz.schema.R
+//import com.gordonwong.materialsheetfab.AnimatedFab
 //
+//import io.github.yavski.fabspeeddial.FabSpeedDial
+//import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 //
-//class MainActivity : AppCompatActivity() {
+///**
+// * Created by Gordon Wong on 7/17/2015.
 //
-//    override fun onCreate(savedInstanceState: Bundle?) {
-//        super.onCreate(savedInstanceState)
-//        setContentView(R.layout.activity_main)
-//        val toolbar = findViewById(R.id.toolbar) as Toolbar?
-//        setSupportActionBar(toolbar)
+// * Sample floating action button implementation.
+// */
+//class Fab : FloatingActionButton, AnimatedFab {
 //
-//        val tabLayout = findViewById(R.id.tab_layout) as TabLayout?
-//        tabLayout!!.addTab(tabLayout.newTab().setText("Tab 1"))
-//        tabLayout.addTab(tabLayout.newTab().setText("Tab 2"))
-//        tabLayout.addTab(tabLayout.newTab().setText("Tab 3"))
-//        tabLayout.tabGravity = TabLayout.GRAVITY_FILL
+//    constructor(context: Context) : super(context) {
+//    }
 //
-//        val viewPager = findViewById(R.id.pager) as ViewPager?
-//        val adapter = DayPagerAdapter(supportFragmentManager, tabLayout.tabCount)
-//        viewPager!!.adapter = adapter
-//        viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabLayout))
-//        tabLayout.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab) {
-//                viewPager.currentItem = tab.position
-//            }
+//    constructor(context: Context, attrs: AttributeSet) : super(context, attrs) {
+//    }
 //
-//            override fun onTabUnselected(tab: TabLayout.Tab) {
+//    constructor(context: Context, attrs: AttributeSet, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
+//    }
 //
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab) {
-//
+//    /**
+//     * Shows the FAB.
+//     */
+//    override fun show() {
+//        val fabSpeedDial = findViewById(R.id.fab) as FabSpeedDial
+//        fabSpeedDial.setMenuListener(object : SimpleMenuListenerAdapter() {
+//            override fun onMenuItemSelected(menuItem: MenuItem?): Boolean {
+//                //TODO: Start some activity
+//                return false
 //            }
 //        })
+//        show(0f, 0f)
 //    }
 //
-//    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-//        menuInflater.inflate(R.menu.menu_main, menu)
-//        return true
-//    }
+//    /**
+//     * Shows the FAB and sets the FAB's translation.
 //
-//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-//        val id = item.itemId
-//        if (id == R.id.action_settings) {
-//            return true
+//     * @param translationX translation X value
+//     * *
+//     * @param translationY translation Y value
+//     */
+//    override fun show(translationX: Float, translationY: Float) {
+//        // Set FAB's translation
+//        setTranslation(translationX, translationY)
+//
+//        // Only use scale animation if FAB is hidden
+//        if (visibility != View.VISIBLE) {
+//            // Pivots indicate where the animation begins from
+//            val pivotX = pivotX + translationX
+//            val pivotY = pivotY + translationY
+//
+//            val anim: ScaleAnimation
+//            // If pivots are 0, that means the FAB hasn't been drawn yet so just use the
+//            // center of the FAB
+//            if (pivotX == 0f || pivotY == 0f) {
+//                anim = ScaleAnimation(0f, 1f, 0f, 1f, Animation.RELATIVE_TO_SELF, 0.5f,
+//                        Animation.RELATIVE_TO_SELF, 0.5f)
+//            } else {
+//                anim = ScaleAnimation(0f, 1f, 0f, 1f, pivotX, pivotY)
+//            }
+//
+//            // Animate FAB expanding
+//            anim.duration = FAB_ANIM_DURATION.toLong()
+//            anim.interpolator = interpolator
+//            startAnimation(anim)
 //        }
+//        visibility = View.VISIBLE
+//    }
 //
-//        return super.onOptionsItemSelected(item)
+//    /**
+//     * Hides the FAB.
+//     */
+//    override fun hide() {
+//        // Only use scale animation if FAB is visible
+//        if (visibility == View.VISIBLE) {
+//            // Pivots indicate where the animation begins from
+//            val pivotX = pivotX + translationX
+//            val pivotY = pivotY + translationY
+//
+//            // Animate FAB shrinking
+//            val anim = ScaleAnimation(1f, 0f, 1f, 0f, pivotX, pivotY)
+//            anim.duration = FAB_ANIM_DURATION.toLong()
+//            anim.interpolator = interpolator
+//            startAnimation(anim)
+//        }
+//        visibility = View.INVISIBLE
+//    }
+//
+//    private fun setTranslation(translationX: Float, translationY: Float) {
+//        animate().setInterpolator(interpolator).setDuration(FAB_ANIM_DURATION.toLong()).translationX(translationX).translationY(translationY)
+//    }
+//
+//    private val interpolator: Interpolator
+//        get() = AnimationUtils.loadInterpolator(context, R.interpolator.msf_interpolator)
+//
+//    companion object {
+//
+//        private val FAB_ANIM_DURATION = 200
 //    }
 //}
