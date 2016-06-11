@@ -66,7 +66,8 @@ class FoodActivity : AppCompatActivity() {
                         mAdapter?.add(getString(R.string.error_network))
                     }
                     is Result.Success -> {
-                        val (pageContent, e) = result
+                        val (resultdata, e) = result
+                        val pageContent = resultdata?.obj()
                         if (pageContent?.getString("food") != "null" && pageContent?.getString("food") != null) {
                             changeDataInList(pageContent?.getString("food")!!)
                         } else {

@@ -59,10 +59,12 @@ class SwitchActivity : AppCompatActivity() {
                     is Result.Success -> {
                         val (d, e) = result
                         println("data is" + d)
-                        if (d!!.length() >= 1) {
-                            changeListView(d)
-                        } else {
-                            changeListView(JSONObject())
+                        if (d!=null) {
+                            if (d.obj().length() >= 1) {
+                                changeListView(d.obj())
+                            } else {
+                                changeListView(JSONObject())
+                            }
                         }
                     }
                 }
@@ -81,8 +83,8 @@ class SwitchActivity : AppCompatActivity() {
                         //TODO: Error handling
                     }
                     is Result.Success -> {
-                        val (response: JSONObject?, e) = result
-
+                        val (responseTmp, e) = result
+                        val response = responseTmp?.obj()
                         val intent = Intent(baseContext, SelectActivity::class.java)
                         intent.putExtra("schoolID", response?.get("schoolid").toString())
                         intent.putExtra("schoolCode", response?.get("code").toString())

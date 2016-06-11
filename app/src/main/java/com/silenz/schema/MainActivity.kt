@@ -16,6 +16,7 @@ import com.squareup.picasso.Picasso
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.onClick
+import org.joda.time.DateTime
 import uk.co.senab.photoview.PhotoViewAttacher
 
 
@@ -44,21 +45,24 @@ class MainActivity : AppCompatActivity() {
             viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
             if (!tabsLoaded) {
                 val tabs = findViewById(R.id.tabs) as TabLayout?
-                tabs!!.addTab(tabs.newTab().setText("Mo"))
-                tabs.addTab(tabs.newTab().setText("Tu"))
-                tabs.addTab(tabs.newTab().setText("We"))
-                tabs.addTab(tabs.newTab().setText("Th"))
-                tabs.addTab(tabs.newTab().setText("Fr"))
-                tabs.tabGravity = TabLayout.GRAVITY_FILL
+                tabs?.addTab(tabs.newTab().setText("Mo"))
+                tabs?.addTab(tabs.newTab().setText("Tu"))
+                tabs?.addTab(tabs.newTab().setText("We"))
+                tabs?.addTab(tabs.newTab().setText("Th"))
+                tabs?.addTab(tabs.newTab().setText("Fr"))
+                tabs?.tabGravity = TabLayout.GRAVITY_FILL
 
                 val viewPager = findViewById(R.id.viewpager) as ViewPager?
                 val adapter: DayPagerAdapter
-                adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
-                viewPager!!.adapter = adapter
-                viewPager.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-                tabs.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                if (tabs != null){
+                    adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
+                    viewPager?.adapter = adapter
+                }
+
+                viewPager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
+                tabs?.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab) {
-                        viewPager.currentItem = tab.position
+                        viewPager?.currentItem = tab.position
                     }
 
                     override fun onTabUnselected(tab: TabLayout.Tab) {
@@ -69,6 +73,11 @@ class MainActivity : AppCompatActivity() {
 
                     }
                 })
+                when (DateTime.now().dayOfWeek) {
+                    in 1..5 -> tabs?.getTabAt(DateTime.now().dayOfWeek - 1)?.select()
+                    else -> tabs?.getTabAt(0)?.select()
+                }
+
                 tabsLoaded = true
             }
         }
@@ -133,10 +142,6 @@ class MainActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.action_settings -> {
                 return true
-                val database = FirebaseDatabase.getInstance();
-                val myRef = database.getReference("message");
-
-                myRef.setValue("Hello, World!");
             } //TODO: When settings are added.
 
             R.id.action_food -> {

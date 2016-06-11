@@ -18,23 +18,23 @@ public class DayPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 DayTabFragment tab1 = new DayTabFragment();
-                tab1.setText("1");
+                tab1.setDay("1");
                 return tab1;
             case 1:
                 DayTabFragment tab2 = new DayTabFragment();
-                tab2.setText("2");
+                tab2.setDay("2");
                 return tab2;
             case 2:
                 DayTabFragment tab3 = new DayTabFragment();
-                tab3.setText("4");
+                tab3.setDay("4");
                 return tab3;
             case 3:
                 DayTabFragment tab4 = new DayTabFragment();
-                tab4.setText("8");
+                tab4.setDay("8");
                 return tab4;
             case 4:
                 DayTabFragment tab5 = new DayTabFragment();
-                tab5.setText("16");
+                tab5.setDay("16");
                 return tab5;
             default:
                 return null;
