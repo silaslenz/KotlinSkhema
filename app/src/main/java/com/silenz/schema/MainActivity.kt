@@ -5,17 +5,20 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.*
 import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
+import com.alexvasilkov.gestures.views.GestureImageView
+import com.bumptech.glide.Glide
 import com.google.android.gms.ads.AdRequest
 import com.gordonwong.materialsheetfab.MaterialSheetFab
-import com.squareup.picasso.Picasso
 import com.transitionseverywhere.TransitionManager
-import io.github.yavski.fabspeeddial.FabSpeedDial
-import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
+import org.jetbrains.anko.async
+import org.jetbrains.anko.onClick
 import org.joda.time.DateTime
 
 
@@ -24,7 +27,9 @@ class MainActivity : AppCompatActivity() {
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
     private val materialSheetFab: MaterialSheetFab<Fab>? = null
-
+    fun GestureImageView.loadUrl(url: String) {
+        Glide.with(context).load(url).into(this)
+    }
     fun loadSchema() {
         adView.visibility = View.VISIBLE
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -35,8 +40,7 @@ class MainActivity : AppCompatActivity() {
             TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.GONE
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
-
-            Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
+            schemaImageView.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext))
 
         } else {
             TransitionManager.beginDelayedTransition(main_appbar);
@@ -85,10 +89,16 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        //TODO: This doesn't do anything
+
         schemaImageView.controller.addOnStateChangeListener(object : GestureController.OnStateChangeListener {
             var lastzoom: Float = 0f
             override fun onStateChanged(state: State) {
+                // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
+                if (state.y == 0f) {
+                    swiperefresh.isEnabled = true;
+                } else {
+                    swiperefresh.isEnabled = false;
+                }
                 if (lastzoom != 0f && lastzoom <= state.zoom)
                     adView.visibility = View.INVISIBLE
                 else
@@ -102,15 +112,6 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
-//        schemaImageView.setOnMatrixChangeListener { rect ->
-//            run {
-//                println(rect.bottom)
-//                if (rect.bottom > (display.height * 0.7)) {
-//                    adView.visibility = View.GONE
-//                } else
-//                    adView.visibility = View.VISIBLE
-//            }
-//        }
     }
 
     override fun onResume() {
@@ -125,40 +126,47 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        (fab_speed_dial as FabSpeedDial).setMenuListener(object : SimpleMenuListenerAdapter() {
-            override fun onMenuItemSelected(item: MenuItem): Boolean {
-                when (item.itemId) {
-                    R.id.change_user -> {
-                        val intent = Intent(applicationContext, SwitchActivity::class.java)
-                        startActivity(intent)
-                    }
-                    R.id.select_day -> {
-                        println("Select day")
-                    }
-                }
-                return true
-            }
-        })
-//        fab.onClick {
-//            val intent = Intent(this, SwitchActivity::class.java)
-//            startActivity(intent)
-//        }
 
-//        ad_view.loadAd(adRequest);
         val prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
         if (!prefs.contains("userID")) {
-            val intent = Intent(this, SwitchActivity::class.java)
-            startActivity(intent)
+            changeUser()
         }
         loadSchema() //Load picture into imageview
 
-        val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").build();
+        val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").addTestDevice("77D6C271CDE15F2739509621D41B407B").build();
         adView.loadAd(adRequest);
 
         schemaImageView.controller.settings.gravity = Gravity.TOP
         schemaImageView.controller.settings.maxZoom = 5f
 
+        val swipeRefreshLayout = findViewById(R.id.swiperefresh) as SwipeRefreshLayout
+        swipeRefreshLayout.setOnRefreshListener {
+
+            async() {
+                Log.w("Glide", "Clearing memory")
+                Glide.get(applicationContext).clearDiskCache()
+//                Glide.get(applicationContext).clearMemory()
+                Log.w("Glide", "Memory cleared")
+            }
+            swipeRefreshLayout.isRefreshing = false
+
+
+            // This method performs the actual data-refresh operation.
+            // The method calls setRefreshing(false) when it's finished.
+        }
+
+        fab_action_changeuser.onClick {
+            changeUser()
+        }
+        fab_action_changeday.onClick {
+            //TODO
+        }
+    }
+
+    private fun changeUser() {
+        val intent = Intent(this, SwitchActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -185,14 +193,18 @@ class MainActivity : AppCompatActivity() {
 
             R.id.weekview -> {
                 item.isChecked = !item.isChecked
-                val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
-                val editor = preferences.edit()
-                editor.putBoolean("weekview", item.isChecked)
-                editor.commit()
+                toggleWeekViewSettings(item)
                 loadSchema()
             }
         }
 
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun toggleWeekViewSettings(item: MenuItem) {
+        val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
+        val editor = preferences.edit()
+        editor.putBoolean("weekview", item.isChecked)
+        editor.commit()
     }
 }

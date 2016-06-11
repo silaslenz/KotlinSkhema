@@ -5,13 +5,18 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
-import com.squareup.picasso.Picasso
+import com.alexvasilkov.gestures.views.GestureImageView
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.tab_fragment.view.*
 import java.util.*
 
 class DayTabFragment(input: String) : Fragment() {
     constructor() : this("0") {
 
+    }
+
+    fun GestureImageView.loadUrl(url: String) {
+        Glide.with(context).load(url).into(this)
     }
 
     val input = input;
@@ -29,7 +34,7 @@ class DayTabFragment(input: String) : Fragment() {
 
 
         try {
-            Picasso.with(context).load(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input).getUrlThisDay(context)).into(view?.daySchemaImageView);
+            view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input).getUrlThisDay(context))
         } catch (e: InputMismatchException) {
             Log.w("Schedule loading", "Not yet loaded")
         }

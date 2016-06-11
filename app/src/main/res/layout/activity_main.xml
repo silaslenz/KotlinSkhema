@@ -27,36 +27,44 @@
             app:tabMode="fixed" />
     </android.support.design.widget.AppBarLayout>
 
-
-    <!--Main content-->
-    <ViewFlipper
-        android:id="@+id/viewFlipper"
+    <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/swiperefresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--Day layout-->
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewpager"
+        <!--Main content-->
+        <ViewFlipper
+            android:id="@+id/viewFlipper"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <!--Week layout-->
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.alexvasilkov.gestures.views.GestureImageView
-                android:id="@+id/schemaImageView"
+            <!--Day layout-->
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-        </LinearLayout>
+                android:layout_height="match_parent" />
+
+            <!--Week layout-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <com.alexvasilkov.gestures.views.GestureImageView
+                    android:id="@+id/schemaImageView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
 
-    </ViewFlipper>
+        </ViewFlipper>
+    </android.support.v4.widget.SwipeRefreshLayout>
+    d
 
-    <RelativeLayout
+    <RelativeLayout xmlns:fab="http://schemas.android.com/apk/res-auto"
+
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
@@ -70,25 +78,51 @@
 
 
             ads:adSize="BANNER"
-            ads:adUnitId="@string/banner_ad_unit_id"/>
+            ads:adUnitId="@string/banner_ad_unit_id" />
 
 
-            <io.github.yavski.fabspeeddial.FabSpeedDial
-                android:id="@+id/fab_speed_dial"
+        <com.getbase.floatingactionbutton.FloatingActionsMenu
+            android:id="@+id/multiple_actions_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_above="@id/adView"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="@dimen/fab_margin_bottom"
+            android:layout_marginEnd="@dimen/fab_margin"
+
+
+            android:layout_marginRight="@dimen/fab_margin"
+            android:layout_marginTop="@dimen/fab_margin"
+
+            fab:fab_addButtonColorNormal="@color/white"
+            fab:fab_addButtonColorPressed="@color/white_pressed"
+            fab:fab_addButtonPlusIconColor="@color/half_black"
+            fab:fab_labelStyle="@style/menu_labels_style"
+            fab:fab_labelsPosition="left">
+
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_changeday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/fab_margin"
-                android:layout_above="@id/adView"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                app:fabDrawable="@drawable/ic_settings_white_24dp"
-                app:fabGravity="bottom_end"
-                app:fabMenu="@menu/fab_menu"
-                app:miniFabBackgroundTint="@android:color/white"
-                app:miniFabDrawableTint="?attr/colorPrimaryDark"
-                app:miniFabTitleTextColor="?attr/colorPrimaryDark" />
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_size="mini"
+                fab:fab_title="Switch day" />
 
+            <com.getbase.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab_action_changeuser"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                fab:fab_colorNormal="@color/white"
+                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_icon="@drawable/ic_settings_white_24dp"
+                fab:fab_size="mini"
+                fab:fab_title="Change user" />
 
+        </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>
