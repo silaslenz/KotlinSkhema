@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/select_day"
+        android:icon="@drawable/abc_ab_share_pack_mtrl_alpha"
+        android:title="Select day" />
+    <item
+        android:id="@+id/change_user"
+        android:icon="@drawable/abc_btn_radio_material"
+        android:title="Byt schema" />
+</menu>

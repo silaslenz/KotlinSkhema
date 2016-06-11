@@ -3,10 +3,8 @@ package com.silenz.schema
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.WindowManager
+import android.view.*
+import com.alexvasilkov.gestures.Settings
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.tab_fragment.*
 import kotlinx.android.synthetic.main.tab_fragment.view.*
@@ -19,7 +17,11 @@ class DayTabFragment() : Fragment() {
         val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
 
-        Picasso.with(context).load(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), globalTabDay).getUrlThisDay(context)).into(view.schemaImageView);
+        Picasso.with(context).load(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), globalTabDay).getUrlThisDay(context)).into(view.daySchemaImageView);
+
+        // Image sticks to top of display
+        view.daySchemaImageView.controller.settings.gravity = Gravity.TOP
+        view.daySchemaImageView.controller.settings.maxZoom = 5f
 
         return view
     }

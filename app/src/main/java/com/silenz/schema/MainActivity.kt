@@ -6,24 +6,26 @@ import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuItem
-import android.view.View
-import android.view.WindowManager
+import android.view.*
+import android.widget.ImageView
+import com.alexvasilkov.gestures.Settings
 import com.google.android.gms.ads.AdRequest
-import com.google.firebase.database.FirebaseDatabase
+import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.squareup.picasso.Picasso
 import com.transitionseverywhere.TransitionManager
+import io.github.yavski.fabspeeddial.FabSpeedDial
+import io.github.yavski.fabspeeddial.SimpleMenuListenerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.onClick
+import kotlinx.android.synthetic.main.tab_fragment.view.*
 import org.joda.time.DateTime
-import uk.co.senab.photoview.PhotoViewAttacher
 
 
 class MainActivity : AppCompatActivity() {
     var tabsLoaded: Boolean = false
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
+    private val materialSheetFab : MaterialSheetFab<Fab>? = null
+
     fun loadSchema() {
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
@@ -35,7 +37,7 @@ class MainActivity : AppCompatActivity() {
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
 
 
-            Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into(schemaImageView);
+            Picasso.with(applicationContext).load(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext)).into((schemaImageView as ImageView));
 
         } else {
             TransitionManager.beginDelayedTransition(main_appbar);
@@ -44,6 +46,7 @@ class MainActivity : AppCompatActivity() {
 
             viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
             if (!tabsLoaded) {
+
                 val tabs = findViewById(R.id.tabs) as TabLayout?
                 tabs?.addTab(tabs.newTab().setText("Mo"))
                 tabs?.addTab(tabs.newTab().setText("Tu"))
@@ -78,20 +81,21 @@ class MainActivity : AppCompatActivity() {
                     else -> tabs?.getTabAt(0)?.select()
                 }
 
+
                 tabsLoaded = true
             }
         }
 
         //TODO: This doesn't do anything
-        schemaImageView.setOnMatrixChangeListener { rect ->
-            run {
-                println(rect.bottom)
-                if (rect.bottom > (display.height * 0.7)) {
-                    adView.visibility = View.GONE
-                } else
-                    adView.visibility = View.VISIBLE
-            }
-        }
+//        schemaImageView.setOnMatrixChangeListener { rect ->
+//            run {
+//                println(rect.bottom)
+//                if (rect.bottom > (display.height * 0.7)) {
+//                    adView.visibility = View.GONE
+//                } else
+//                    adView.visibility = View.VISIBLE
+//            }
+//        }
     }
 
 
@@ -106,26 +110,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-        fab.onClick {
-            val intent = Intent(this, SwitchActivity::class.java)
-            startActivity(intent)
-
-        }
-
+        (fab_speed_dial as FabSpeedDial).setMenuListener(object : SimpleMenuListenerAdapter() {
+            override fun onMenuItemSelected(item: MenuItem): Boolean {
+                when (item.itemId){
+                    R.id.change_user -> {
+                        val intent = Intent(applicationContext, SwitchActivity::class.java)
+                        startActivity(intent)
+                    }
+                    R.id.select_day -> {
+                        println("Select day")
+                    }
+                }
+                return true
+            }
+        })
+//        fab.onClick {
+//            val intent = Intent(this, SwitchActivity::class.java)
+//            startActivity(intent)
+//        }
 
 //        ad_view.loadAd(adRequest);
-        var prefs = baseContext.getSharedPreferences(
+        val prefs = baseContext.getSharedPreferences(
                 "UserData", Context.MODE_PRIVATE)
         if (!prefs.contains("userID")) {
             val intent = Intent(this, SwitchActivity::class.java)
             startActivity(intent)
         }
         loadSchema() //Load picture into imageview
-        PhotoViewAttacher(schemaImageView) //Make imageview scroll and zoom
 
         val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").build();
         adView.loadAd(adRequest);
 
+        schemaImageView.controller.settings.gravity = Gravity.TOP
+        schemaImageView.controller.settings.maxZoom = 5f
 
     }
 
@@ -140,7 +157,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
+
             R.id.action_settings -> {
+
                 return true
             } //TODO: When settings are added.
 
