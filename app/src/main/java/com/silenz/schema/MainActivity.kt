@@ -7,6 +7,8 @@ import android.support.design.widget.TabLayout
 import android.support.v4.view.ViewPager
 import android.support.v7.app.AppCompatActivity
 import android.view.*
+import com.alexvasilkov.gestures.GestureController
+import com.alexvasilkov.gestures.State
 import com.google.android.gms.ads.AdRequest
 import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.squareup.picasso.Picasso
@@ -24,6 +26,7 @@ class MainActivity : AppCompatActivity() {
     private val materialSheetFab: MaterialSheetFab<Fab>? = null
 
     fun loadSchema() {
+        adView.visibility = View.VISIBLE
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
 
@@ -83,6 +86,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         //TODO: This doesn't do anything
+        schemaImageView.controller.addOnStateChangeListener(object : GestureController.OnStateChangeListener {
+            var lastzoom: Float = 0f
+            override fun onStateChanged(state: State) {
+                if (lastzoom != 0f && lastzoom <= state.zoom)
+                    adView.visibility = View.INVISIBLE
+                else
+                    adView.visibility = View.VISIBLE
+                lastzoom = state.zoom
+
+            }
+
+            override fun onStateReset(oldState: State?, newState: State?) {
+
+            }
+
+        })
 //        schemaImageView.setOnMatrixChangeListener { rect ->
 //            run {
 //                println(rect.bottom)
