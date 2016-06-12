@@ -97,9 +97,9 @@
             android:layout_marginRight="@dimen/fab_margin"
             android:layout_marginTop="@dimen/fab_margin"
 
-            fab:fab_addButtonColorNormal="@color/white"
-            fab:fab_addButtonColorPressed="@color/white_pressed"
-            fab:fab_addButtonPlusIconColor="@color/half_black"
+            fab:fab_addButtonColorNormal="@color/mdtp_accent_color"
+            fab:fab_addButtonColorPressed="@color/mdtp_accent_color_dark"
+            fab:fab_addButtonPlusIconColor="@color/white_pressed"
             fab:fab_labelStyle="@style/menu_labels_style"
             fab:fab_labelsPosition="left">
 
@@ -107,8 +107,8 @@
                 android:id="@+id/fab_action_changeday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/white"
-                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_colorNormal="@color/theme_default_primary"
+                fab:fab_colorPressed="@color/theme_default_primary_dark"
                 fab:fab_size="mini"
                 fab:fab_title="Switch day" />
 
@@ -116,8 +116,8 @@
                 android:id="@+id/fab_action_changeuser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/white"
-                fab:fab_colorPressed="@color/white_pressed"
+                fab:fab_colorNormal="@color/theme_default_primary"
+                fab:fab_colorPressed="@color/theme_default_primary_dark"
                 fab:fab_icon="@drawable/ic_settings_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_title="Change user" />
