@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
-import com.google.android.gms.ads.AdRequest
 import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
 
@@ -18,7 +17,7 @@ class FoodActivity : AppCompatActivity() {
                 when (result) {
                     is Result.Success -> {
                         val (pageContent, error) = result
-                        if (pageContent != null) {
+                        11                        pageContent?.let{
                             mAdapter?.clear()
                             for (day in 1..getDaysOnPage(pageContent) - 1) {
                                 var dayStr = ""

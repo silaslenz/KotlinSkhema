@@ -2,6 +2,7 @@ package com.silenz.schema
 
 import android.app.Activity
 import android.content.Context
+import android.content.SharedPreferences
 
 /**
  * Saves history of userdata, split by '|'
@@ -14,106 +15,72 @@ object SaveMultipleUsers {
         val sharedPreferences = activity.getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
 
-        var userNameList: String? = sharedPreferences.getString("userName", null)
-        // Append new Favorite item
-        if (userNameList != null) {
-            userNameList = userNameList + "'|'" + userNameItem
-        } else {
-            userNameList = userNameItem
-        }
-        // Save in Shared Preferences
-        editor.putString("userName", userNameList)
+        var identifier = "userName"
+        addItemInSettings(editor, identifier, sharedPreferences, userNameItem)
 
-        var userIdList: String? = sharedPreferences.getString("userID", null)
-        // Append new Favorite item
-        if (userIdList != null) {
-            userIdList = userIdList + "'|'" + userIdItem
-        } else {
-            userIdList = userIdItem
-        }
-        // Save in Shared Preferences
-        editor.putString("userID", userIdList)
+        identifier = "userID"
+        addItemInSettings(editor, identifier, sharedPreferences, userIdItem)
 
 
-        var schoolIdList: String? = sharedPreferences.getString("schoolID", null)
-        // Append new Favorite item
-        if (schoolIdList != null) {
-            schoolIdList = schoolIdList + "'|'" + schoolIdItem
-        } else {
-            schoolIdList = schoolIdItem
-        }
-        // Save in Shared Preferences
-        editor.putString("schoolID", schoolIdList)
+        identifier = "schoolID"
+        addItemInSettings(editor, identifier, sharedPreferences, schoolIdItem)
 
-        var schoolCodeList: String? = sharedPreferences.getString("schoolCode", null)
-        // Append new Favorite item
-        if (schoolCodeList != null) {
-            schoolCodeList = schoolCodeList + "'|'" + schoolCodeItem
-        } else {
-            schoolCodeList = schoolCodeItem
-        }
-        // Save in Shared Preferences
-        editor.putString("schoolCode", schoolCodeList)
+        identifier = "schoolCode"
+        addItemInSettings(editor, identifier, sharedPreferences, schoolCodeItem)
 
-        var schoolNameList: String? = sharedPreferences.getString("schoolName", null)
-        // Append new Favorite item
-        if (schoolNameList != null) {
-            schoolNameList = schoolNameList + "'|'" + schoolNameItem
-        } else {
-            schoolNameList = schoolNameItem
-        }
-        // Save in Shared Preferences
-        editor.putString("schoolName", schoolNameList)
+        identifier = "schoolName"
+        addItemInSettings(editor, identifier, sharedPreferences, schoolNameItem)
+
+
         editor.commit()
     }
 
-    fun getUserName(activity: Context): List<String> {
-        val list = getStringFromPreferences(activity, "userName")
+    private fun addItemInSettings(editor: SharedPreferences.Editor, identifier: String, sharedPreferences: SharedPreferences, userNameItem: String) {
+        var list: String? = sharedPreferences.getString(identifier, null)
+        // Append new Favorite item
+        list = addItemToList(userNameItem, list)
+        // Save in Shared Preferences
+        editor.putString(identifier, list)
+    }
+
+    private fun addItemToList(item: String, list: String?): String? {
+        var userNameList1 = list
+        if (userNameList1 != null) {
+            userNameList1 = userNameList1 + "'|'" + item
+        } else {
+            userNameList1 = item
+        }
+        return userNameList1
+    }
+
+    fun getList(activity: Context, identifier: String): List<String> {
+        val list = getStringFromPreferences(activity, identifier)
         return convertStringToArray(list)
     }
 
-    fun getUser(activity: Context): List<String> {
-        val list = getStringFromPreferences(activity, "userID")
-        return convertStringToArray(list)
-    }
-
-    fun getSchoolId(activity: Context): List<String> {
-        val list = getStringFromPreferences(activity, "schoolID")
-        return convertStringToArray(list)
-    }
-
-    fun getSchoolCode(activity: Context): List<String> {
-        val list = getStringFromPreferences(activity, "schoolCode")
-        return convertStringToArray(list)
-    }
-
-    fun getSchoolName(activity: Context): List<String> {
-        val list = getStringFromPreferences(activity, "schoolName")
-        return convertStringToArray(list)
-    }
 
     fun getLastUserName(activity: Context): String {
-        val list = getUserName(activity)
+        val list = getList(activity, "userName")
         return list[list.size - 1]
     }
 
     fun getLastUser(activity: Context): String {
-        val list = getUser(activity)
+        val list = getList(activity, "userID")
         return list[list.size - 1]
     }
 
     fun getLastSchoolId(activity: Context): String {
-        val list = getSchoolId(activity)
+        val list = getList(activity, "schoolID")
         return list[list.size - 1]
     }
 
     fun getLastSchoolCode(activity: Context): String {
-        val list = getSchoolCode(activity)
+        val list = getList(activity, "schoolCode")
         return list[list.size - 1]
     }
 
     fun getLastSchoolName(activity: Context): String {
-        val list = getSchoolName(activity)
+        val list = getList(activity, "schoolName")
         return list[list.size - 1]
     }
 
