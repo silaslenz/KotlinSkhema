@@ -32,3 +32,5 @@ fun getItemInDay(pageContent: String, day: Int, item: Int) = pageContent.split("
  * @param day index of day
  */
 fun getDaynameOfDay(day: Int, pageContent: String) = pageContent.split("<td class=\"date\">")[day].split("<span class=\"weekday\">")[1].split("</span>")[0]
+
+fun getWeekReason(pageContent: String) = pageContent.split("<span class=\"weekReason\">")[1].split("</")[0]
