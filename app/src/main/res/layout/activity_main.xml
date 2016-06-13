@@ -109,6 +109,7 @@
                 android:layout_height="wrap_content"
                 fab:fab_colorNormal="@color/theme_default_primary"
                 fab:fab_colorPressed="@color/theme_default_primary_dark"
+                fab:fab_icon="@drawable/ic_today_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_title="Switch day" />
 
