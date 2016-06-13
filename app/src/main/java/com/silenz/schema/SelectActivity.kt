@@ -40,7 +40,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     fun getNovaTypes(mAdapter: SelectAdapter) {
         var urlcode = ""
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
-        if ( intent.getStringExtra("schoolID") != "0") {
+        if (intent.getStringExtra("schoolID") != "0") {
             Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->
                 run {
@@ -71,6 +71,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
                                                 d.split("<select name=\"")[i]
                                                         .split("\"")[0])
+                                        mAdapter.add("WTF", "More wtf")
                                     }
                                 }
                                 println("first: " + StringEscapeUtils.unescapeHtml4(d

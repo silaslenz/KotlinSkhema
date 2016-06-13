@@ -48,8 +48,6 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
         // Image sticks to top of display
         view?.daySchemaImageView?.controller?.settings?.gravity = Gravity.TOP
         view?.daySchemaImageView?.controller?.settings?.maxZoom = 5f
-
-
     }
 
 }

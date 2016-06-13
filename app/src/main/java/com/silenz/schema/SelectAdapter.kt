@@ -20,9 +20,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
     override fun onClick(v: View?) {
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
         val name = ((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).text.toString()
-        if (itemtag.contains("{")) {
-            //All ids are on the form {str}
-
+        if (itemtag.contains("{")) { //All ids are on the form {str}
             SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -128,15 +126,16 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                             if (hasDropdownselector(d)) {
                                 //Has multiple lists of different types
                                 for (i in 2..getNumberOfDropdownItems(d, type) - 1) {
-                                    val nicedata = d.split("name=\"" + type + "\"")[1].split("</select")[0]
-                                    val name = StringEscapeUtils.unescapeHtml4(nicedata.split(">")[i * 2].split("<")[0])
-                                    val id = nicedata.split("value=\"")[i].split("\"")[0]
+                                    val nicedata = extractDropdown(d, type, 1)
+                                    val name = getName(i, nicedata)
+                                    val id = getId(i, nicedata)
                                     add(name, id)
                                 }
                             } else {
                                 //Has type->list selector type
                                 urlcode = getUrlCode(d)
 
+                                // Send a request for a new page, with our selected "type". This page contains a new dropdown.
                                 Fuel.post("http://www.novasoftware.se/webviewer/$urlcode/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                                         listOf("__EVENTTARGET" to "TypeDropDownList", "__EVENTARGUMENT" to "", "__LASTFOCUS" to "", "__VIEWSTATE" to "", "TypeDropDownList" to type, "ScheduleIDDropDownList" to "0", "FreeTextBox" to "", "PeriodDropDownList" to "8", "WeekDropDownList" to "52", "__VIEWSTATE" to "")).responseString { request, response, result ->
 
@@ -158,4 +157,6 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
             }
         }
     }
+
+
 }

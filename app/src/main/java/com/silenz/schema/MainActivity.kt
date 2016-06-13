@@ -15,6 +15,7 @@ import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment
 import com.google.android.gms.ads.AdRequest
+
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async

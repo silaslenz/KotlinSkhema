@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.View.VISIBLE
 import android.widget.AdapterView
@@ -17,6 +18,7 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.content_switch.*
 import org.json.JSONObject
+import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 class SwitchActivity : AppCompatActivity() {
@@ -58,13 +60,12 @@ class SwitchActivity : AppCompatActivity() {
                     }
                     is Result.Success -> {
                         val (d, e) = result
-                        println("data is" + d)
-                        d?.let {
-                            if (d.obj().length() >= 1) {
-                                changeListView(d.obj())
-                            } else {
-                                changeListView(JSONObject())
-                            }
+                        println("data is" + d.toString())
+                        try {
+                            changeListView(d?.obj())
+                        } catch (error: InvocationTargetException) {
+                            Log.w("Switch", "Received an InvocationTargetException, probably empty result")
+                            changeListView(JSONObject())
                         }
                     }
                 }
@@ -101,7 +102,7 @@ class SwitchActivity : AppCompatActivity() {
         var your_array_list = ArrayList<String>();
 
         //Add all items to array
-        if (searchResults != null && searchResults.length() != 0 ) {
+        if (searchResults != null && searchResults.length() != 0) {
             (0..searchResults.names().length() - 1).forEach {
                 item ->
                 your_array_list.add("${searchResults.getJSONObject(searchResults.names().getString(item)).getString("name")} (${searchResults.getJSONObject(searchResults.names().getString(item)).getString("location")})")
