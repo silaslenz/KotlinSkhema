@@ -8,10 +8,17 @@ import android.view.*
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.tab_fragment.view.*
+import org.joda.time.DateTime
 import java.util.*
 
-class DayTabFragment(input: String) : Fragment() {
-    constructor() : this("0") {
+class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFragment {
+    override fun update() {
+        throw UnsupportedOperationException()
+    }
+
+    val date = date
+
+    constructor() : this("0", DateTime.now()) {
 
     }
 
@@ -34,7 +41,7 @@ class DayTabFragment(input: String) : Fragment() {
 
 
         try {
-            view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input).getUrlThisDay(context))
+            view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
         } catch (e: InputMismatchException) {
             Log.w("Schedule loading", "Not yet loaded")
         }

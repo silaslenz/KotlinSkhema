@@ -13,16 +13,30 @@ import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
+import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment
 import com.google.android.gms.ads.AdRequest
 import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
 import org.jetbrains.anko.onClick
+import org.jetbrains.anko.uiThread
 import org.joda.time.DateTime
+import java.util.*
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDateSetListener {
+    override fun onDateSet(dialog: CalendarDatePickerDialogFragment?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val date = DateTime(year, monthOfYear + 1, dayOfMonth, 10, 0)
+        when (date.dayOfWeek) {
+            in 1..5 -> tabs?.getTabAt(date.dayOfWeek - 1)?.select()
+            else -> tabs?.getTabAt(0)?.select()
+        }
+        loadSchema(date)
+
+
+    }
+
     var tabsLoaded: Boolean = false
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
@@ -30,7 +44,8 @@ class MainActivity : AppCompatActivity() {
     fun GestureImageView.loadUrl(url: String) {
         Glide.with(context).load(url).into(this)
     }
-    fun loadSchema() {
+
+    fun loadSchema(date: DateTime) {
         adView.visibility = View.VISIBLE
         val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
@@ -40,7 +55,7 @@ class MainActivity : AppCompatActivity() {
             TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.GONE
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
-            schemaImageView.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext)).getUrlThisWeek(applicationContext))
+            schemaImageView.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext), date = date).getUrlThisWeek(applicationContext))
 
         } else {
             TransitionManager.beginDelayedTransition(main_appbar);
@@ -60,7 +75,7 @@ class MainActivity : AppCompatActivity() {
                 val viewPager = findViewById(R.id.viewpager) as ViewPager?
                 val adapter: DayPagerAdapter
                 if (tabs != null) {
-                    adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount)
+                    adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount, date)
                     viewPager?.adapter = adapter
 
                 }
@@ -118,7 +133,7 @@ class MainActivity : AppCompatActivity() {
         println("RESUMED")
 
         super.onResume()
-        loadSchema()
+        loadSchema(DateTime.now())
 
     }
 
@@ -132,7 +147,7 @@ class MainActivity : AppCompatActivity() {
         if (!prefs.contains("userID")) {
             changeUser()
         }
-        loadSchema() //Load picture into imageview
+        loadSchema(DateTime.now()) //Load picture into imageview
 
         val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").addTestDevice("77D6C271CDE15F2739509621D41B407B").build();
         adView.loadAd(adRequest);
@@ -147,9 +162,15 @@ class MainActivity : AppCompatActivity() {
                 Log.w("Glide", "Clearing memory")
                 Glide.get(applicationContext).clearDiskCache()
 //                Glide.get(applicationContext).clearMemory()
+
                 Log.w("Glide", "Memory cleared")
+                uiThread {
+                    swipeRefreshLayout.isRefreshing = false
+                    loadSchema(DateTime.now())
+                }
             }
-            swipeRefreshLayout.isRefreshing = false
+            Glide.get(this).clearMemory()
+
 
 
             // This method performs the actual data-refresh operation.
@@ -160,8 +181,17 @@ class MainActivity : AppCompatActivity() {
             changeUser()
         }
         fab_action_changeday.onClick {
-            //TODO
+
+            val cdp = CalendarDatePickerDialogFragment()
+                    .setOnDateSetListener(this)
+                    .setFirstDayOfWeek(Calendar.MONDAY)
+                    .setDoneText("Select")
+                    .setCancelText("Cancel")
+                    .setThemeLight()
+            cdp.show(supportFragmentManager, "test");
         }
+
+
     }
 
     private fun changeUser() {
@@ -194,7 +224,7 @@ class MainActivity : AppCompatActivity() {
             R.id.weekview -> {
                 item.isChecked = !item.isChecked
                 toggleWeekViewSettings(item)
-                loadSchema()
+                loadSchema(DateTime.now())
             }
         }
 
