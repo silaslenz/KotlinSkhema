@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
     fun GestureImageView.loadUrl(url: String) {
-        Glide.with(context).load(url).into(this)
+        Glide.with(context).load(url).skipMemoryCache(true).into(this)
     }
 
     fun loadSchema(date: DateTime) {
@@ -167,20 +167,14 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             async() {
                 Log.w("Glide", "Clearing memory")
                 Glide.get(applicationContext).clearDiskCache()
-//                Glide.get(applicationContext).clearMemory()
 
                 Log.w("Glide", "Memory cleared")
                 uiThread {
                     swipeRefreshLayout.isRefreshing = false
                     loadSchema(DateTime.now())
+                    adapter?.update(DateTime.now())
                 }
             }
-            Glide.get(this).clearMemory()
-
-
-
-            // This method performs the actual data-refresh operation.
-            // The method calls setRefreshing(false) when it's finished.
         }
 
         fab_action_changeuser.onClick {

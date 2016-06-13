@@ -8,7 +8,6 @@ import org.joda.time.DateTime
 
 class DayPagerAdapter(fm: FragmentManager, internal var mNumOfTabs: Int, internal var date: DateTime) : FragmentStatePagerAdapter(fm) {
 
-
     //call this method to update fragments in ViewPager dynamically
     fun update(date: DateTime) {
         this.date = date

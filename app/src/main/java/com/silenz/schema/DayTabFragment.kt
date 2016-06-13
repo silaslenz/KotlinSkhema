@@ -13,7 +13,9 @@ import java.util.*
 
 class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFragment {
     override fun update(date: DateTime) {
+
         view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
+
     }
 
     val date = date
@@ -23,7 +25,7 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
     }
 
     fun GestureImageView.loadUrl(url: String) {
-        Glide.with(context).load(url).into(this)
+        Glide.with(context).load(url).skipMemoryCache(true).into(this)
     }
 
     val input = input;
