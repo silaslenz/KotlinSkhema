@@ -18,8 +18,6 @@ import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment
 import com.google.android.gms.ads.AdRequest
-import com.mikepenz.aboutlibraries.Libs
-import com.mikepenz.aboutlibraries.LibsBuilder
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
@@ -217,15 +215,6 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_about -> {
-                LibsBuilder()
-                        //provide a style (optional) (LIGHT, DARK, LIGHT_DARK_TOOLBAR)
-                        .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
-                        //start the activity
-                        .start(this);
-
-                return true
-            }
             R.id.action_settings -> {
                 return true
             } //TODO: When settings are added.
