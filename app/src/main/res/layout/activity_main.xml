@@ -61,7 +61,7 @@
 
         </ViewFlipper>
     </android.support.v4.widget.SwipeRefreshLayout>
-    d
+
 
     <RelativeLayout xmlns:fab="http://schemas.android.com/apk/res-auto"
 
