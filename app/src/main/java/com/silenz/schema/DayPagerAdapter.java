@@ -16,6 +16,21 @@ public class DayPagerAdapter extends FragmentStatePagerAdapter {
         this.date = date;
     }
 
+
+    //call this method to update fragments in ViewPager dynamically
+    public void update(DateTime date) {
+        this.date = date;
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        if (object instanceof UpdateableFragment) {
+            ((UpdateableFragment) object).update(date);
+        }
+        //don't return POSITION_NONE, avoid fragment recreation.
+        return super.getItemPosition(object);
+    }
     @Override
     public Fragment getItem(int position) {
 

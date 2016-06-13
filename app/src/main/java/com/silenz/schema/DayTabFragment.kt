@@ -12,8 +12,8 @@ import org.joda.time.DateTime
 import java.util.*
 
 class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFragment {
-    override fun update() {
-        throw UnsupportedOperationException()
+    override fun update(date: DateTime) {
+        view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
     }
 
     val date = date

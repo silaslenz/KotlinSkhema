@@ -15,7 +15,6 @@ import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment
 import com.google.android.gms.ads.AdRequest
-import com.gordonwong.materialsheetfab.MaterialSheetFab
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
@@ -32,15 +31,17 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             in 1..5 -> tabs?.getTabAt(date.dayOfWeek - 1)?.select()
             else -> tabs?.getTabAt(0)?.select()
         }
-        loadSchema(date)
+
+        //Try to send our new date to day-fragments
+        adapter?.update(date)
 
 
     }
 
+    var adapter: DayPagerAdapter? = null
     var tabsLoaded: Boolean = false
     val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
     val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
-    private val materialSheetFab: MaterialSheetFab<Fab>? = null
     fun GestureImageView.loadUrl(url: String) {
         Glide.with(context).load(url).into(this)
     }
@@ -73,7 +74,6 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                 tabs?.addTab(tabs.newTab().setText("Fr"))
                 tabs?.tabGravity = TabLayout.GRAVITY_FILL
                 val viewPager = findViewById(R.id.viewpager) as ViewPager?
-                val adapter: DayPagerAdapter
                 if (tabs != null) {
                     adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount, date)
                     viewPager?.adapter = adapter
