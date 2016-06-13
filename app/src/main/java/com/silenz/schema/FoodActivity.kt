@@ -1,6 +1,7 @@
 package com.silenz.schema
 
 import android.os.Bundle
+import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
@@ -54,7 +55,8 @@ class FoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
         setSupportActionBar(toolbar)
-
+        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
+        toolbar.setNavigationOnClickListener { NavUtils.navigateUpFromSameTask(this) }
 
 
         food_recycler_view.setHasFixedSize(true)
