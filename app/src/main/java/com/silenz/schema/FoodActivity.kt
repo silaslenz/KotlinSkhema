@@ -3,6 +3,7 @@ package com.silenz.schema
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
@@ -17,16 +18,28 @@ class FoodActivity : AppCompatActivity() {
                 when (result) {
                     is Result.Success -> {
                         val (pageContent, error) = result
-                        11                        pageContent?.let{
+                        pageContent?.let {
                             mAdapter?.clear()
                             for (day in 1..getDaysOnPage(pageContent) - 1) {
                                 var dayStr = ""
                                 for (item in 1..getNumberOfItemsOnDay(pageContent, day) - 1) {
                                     dayStr += getItemInDay(pageContent, day, item)
                                 }
-                                var date = getDateOfDay(pageContent, day)
+                                val date = getDateOfDay(pageContent, day)
                                 mAdapter?.add(getDaynameOfDay(day, pageContent), dayStr, date)
+                                Log.i("Food", "Loaded one day")
                             }
+                            if (mAdapter?.titleDataset?.size == 0) {
+                                if (pageContent.contains("weekReason")) {
+                                    mAdapter?.add(getWeekReason(pageContent))
+                                } else {
+                                    mAdapter?.add("Could not load")
+                                }
+                            }
+                            if (mAdapter?.titleDataset?.size == 0) {
+
+                            }
+
                         }
                     }
                     is Result.Failure -> {
@@ -41,6 +54,8 @@ class FoodActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
         setSupportActionBar(toolbar)
+
+
 
         food_recycler_view.setHasFixedSize(true)
 
