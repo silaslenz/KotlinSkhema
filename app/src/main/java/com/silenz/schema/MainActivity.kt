@@ -217,14 +217,16 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-
-            R.id.action_settings -> {
+            R.id.action_about -> {
                 LibsBuilder()
                         //provide a style (optional) (LIGHT, DARK, LIGHT_DARK_TOOLBAR)
                         .withActivityStyle(Libs.ActivityStyle.LIGHT_DARK_TOOLBAR)
                         //start the activity
                         .start(this);
 
+                return true
+            }
+            R.id.action_settings -> {
                 return true
             } //TODO: When settings are added.
 
