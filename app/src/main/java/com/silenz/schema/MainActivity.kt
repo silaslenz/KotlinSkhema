@@ -26,16 +26,21 @@ import java.util.*
 
 
 class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDateSetListener {
+
     override fun onDateSet(dialog: CalendarDatePickerDialogFragment?, year: Int, monthOfYear: Int, dayOfMonth: Int) {
+        val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         val date = DateTime(year, monthOfYear + 1, dayOfMonth, 10, 0)
-        when (date.dayOfWeek) {
-            in 1..5 -> tabs?.getTabAt(date.dayOfWeek - 1)?.select()
-            else -> tabs?.getTabAt(0)?.select()
+        if (preferences.getBoolean("weekview", false)) {
+            loadSchema(date)
+        } else {
+            when (date.dayOfWeek) {
+                in 1..5 -> tabs?.getTabAt(date.dayOfWeek - 1)?.select()
+                else -> tabs?.getTabAt(0)?.select()
+            }
+
+            //Try to send our new date to day-fragments
+            adapter?.update(date)
         }
-
-        //Try to send our new date to day-fragments
-        adapter?.update(date)
-
 
     }
 
