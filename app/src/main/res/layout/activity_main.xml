@@ -15,7 +15,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
+            android:background="@color/colorPrimary"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
@@ -23,6 +23,7 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
             app:tabGravity="fill"
             app:tabMode="fixed" />
     </android.support.design.widget.AppBarLayout>
@@ -107,8 +108,8 @@
                 android:id="@+id/fab_action_changeday"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/theme_default_primary"
-                fab:fab_colorPressed="@color/theme_default_primary_dark"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_icon="@drawable/ic_today_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_title="Switch day" />
@@ -117,8 +118,8 @@
                 android:id="@+id/fab_action_changeuser"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                fab:fab_colorNormal="@color/theme_default_primary"
-                fab:fab_colorPressed="@color/theme_default_primary_dark"
+                fab:fab_colorNormal="@color/colorPrimary"
+                fab:fab_colorPressed="@color/colorPrimaryDark"
                 fab:fab_icon="@drawable/ic_settings_white_24dp"
                 fab:fab_size="mini"
                 fab:fab_title="Change user" />
