@@ -18,8 +18,8 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.search_menu, menu)
 
-        var item = menu.findItem(R.id.action_search);
-        var searchView = MenuItemCompat.getActionView(item) as SearchView
+        val item = menu.findItem(R.id.action_search);
+        val searchView = MenuItemCompat.getActionView(item) as SearchView
         searchView.setOnQueryTextListener(this);
         return super.onCreateOptionsMenu(menu)
 
@@ -28,8 +28,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(query: String): Boolean {
         mAdapter?.filter(query)
-        println(query)
-        // Here is where we are going to implement our filter logic
         return false;
     }
 
@@ -38,8 +36,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
     }
 
     fun getNovaTypes(mAdapter: SelectAdapter) {
-        var urlcode = ""
-        println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
         if (intent.getStringExtra("schoolID") != "0") {
             Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->
@@ -104,21 +100,18 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
+        // Improves performance if layout does not change
         select_recycler_view.setHasFixedSize(true)
 
         // use a linear layout manager
         val mLayoutManager = LinearLayoutManager(this)
         select_recycler_view.layoutManager = mLayoutManager
-        var myDataset = arrayOf("")
-        // specify an adapter (see also next example)
+        // specify an adapter
         mAdapter = SelectAdapter(this, intent)
         select_recycler_view.adapter = mAdapter
 
         (mAdapter as SelectAdapter).clear()
         getNovaTypes(mAdapter as SelectAdapter)
-        //        getNovaIDs()
 
     }
 

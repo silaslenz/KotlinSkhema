@@ -1,6 +1,5 @@
 package com.silenz.schema
 
-import android.app.Activity
 import android.content.Context
 import android.content.SharedPreferences
 
@@ -82,14 +81,6 @@ object SaveMultipleUsers {
     fun getLastSchoolName(activity: Context): String {
         val list = getList(activity, "schoolName")
         return list[list.size - 1]
-    }
-
-    private fun putStringInPreferences(context: Activity, nick: String, key: String): Boolean {
-        val sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        val editor = sharedPreferences.edit()
-        editor.putString(key, nick)
-        editor.commit()
-        return true
     }
 
     private fun getStringFromPreferences(context: Context, key: String): String {

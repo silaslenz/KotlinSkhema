@@ -90,16 +90,14 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
     fun add(title: String, id: String) {
         if (titleDatasetClone.size > titleDataset.size)
             titleDataset = titleDatasetClone
+
         titleDataset = titleDataset.plus(NovaType(title, id))
         titleDatasetClone = titleDataset
         notifyItemInserted(itemCount)
     }
 
-    // Provide a reference to the views for each data item
-    // Complex data items may need more than one view per item, and
-    // you provide access to all the views for a data item in a view holder
+
     class ViewHolder(v: CardView) : RecyclerView.ViewHolder(v) {
-        // each data item is just a string in this case
         var titleTextView: TextView
 
         init {
@@ -115,7 +113,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         var urlcode = ""
         clearAll()
         println("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"))
-        if ( intent.getStringExtra("schoolID") != "0") {
+        if (intent.getStringExtra("schoolID") != "0") {
 
             Fuel.post("http://www.novasoftware.se/webviewer/(S(ol3bnszsognoda45gmbo5hba))/MZDesign1.aspx?schoolid=" + intent.getStringExtra("schoolID") + "&code=" + intent.getStringExtra("schoolCode"),
                     listOf()).responseString { request, response, result ->

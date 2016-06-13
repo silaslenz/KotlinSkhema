@@ -1,6 +1,7 @@
 package com.silenz.schema
 
 import android.content.Context
+import android.util.Log
 import android.view.WindowManager
 import org.joda.time.DateTime
 import java.util.*
@@ -10,15 +11,16 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
     val date = date
     // Get the schedule url for the specified day.
     fun getUrlThisDay(context: Context): String {
-        println("LOADING DAY: " + day)
+        Log.i("Schema", "LOADING DAY: " + day)
+
         val display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         val week = date.weekOfWeekyear
 
         val scale = context.resources.displayMetrics.density;
-        println(scale)
+
         assert(day!="0")
         if (day == "0")
-            throw InputMismatchException("Pls")
+            throw InputMismatchException("Pls... This would load the full week. Make sure you set a day before calling this function.")
         return "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=" + schoolID + "/sv-se&type=1&id=" + userID + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=" + day + "&width=" + (display.width/scale).toInt().toString() + "&height=" + ((display.height/scale)*0.7).toInt().toString()
     }
 

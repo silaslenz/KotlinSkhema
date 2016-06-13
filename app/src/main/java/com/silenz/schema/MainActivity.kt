@@ -8,14 +8,16 @@ import android.support.v4.view.ViewPager
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
 import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
 import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialogFragment
 import com.google.android.gms.ads.AdRequest
-
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.async
@@ -53,22 +55,25 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
     }
 
     fun loadSchema(date: DateTime) {
+        //Add adview back, in case it was hidden while zooming.
         adView.visibility = View.VISIBLE
-        val wm = baseContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
 
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         if (preferences.getBoolean("weekview", false)) {
+            //Animate the disappearance of the tab bar.
             TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.GONE
+
+            //Switch to week and load
             viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
             schemaImageView.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext), date = date).getUrlThisWeek(applicationContext))
 
         } else {
+            //Animate the appearance of the tab bar.
             TransitionManager.beginDelayedTransition(main_appbar);
             tabs.visibility = View.VISIBLE
 
-
+            //Switch to dayview and load tabs
             viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
             if (!tabsLoaded) {
 

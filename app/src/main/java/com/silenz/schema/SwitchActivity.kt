@@ -17,6 +17,9 @@ import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.content_switch.*
+import org.jetbrains.anko.intentFor
+import org.jetbrains.anko.onClick
+import org.jetbrains.anko.onItemClick
 import org.json.JSONObject
 import java.lang.reflect.InvocationTargetException
 import java.util.*
@@ -37,14 +40,13 @@ class SwitchActivity : AppCompatActivity() {
         })
 
         continueCardView.setOnClickListener {
-            val intent = Intent(baseContext, SelectActivity::class.java)
-            intent.putExtra("schoolID", SaveMultipleUsers.getLastSchoolId(baseContext))
-            intent.putExtra("schoolCode", SaveMultipleUsers.getLastSchoolCode(baseContext))
-            intent.putExtra("schoolName", SaveMultipleUsers.getLastSchoolName(baseContext))
-            startActivity(intent)
+            startActivity(intentFor<SelectActivity>(
+                    "schoolID" to SaveMultipleUsers.getLastSchoolId(baseContext),
+                    "schoolCode" to SaveMultipleUsers.getLastSchoolCode(baseContext),
+                    "schoolName" to SaveMultipleUsers.getLastSchoolName(baseContext)))
         }
 
-        searchCardView.setOnClickListener {
+        searchCardView.onClick {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         }
@@ -125,9 +127,7 @@ class SwitchActivity : AppCompatActivity() {
 
         println(historicalUsersList)
         recentsListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, historicalUsersList)
-        recentsListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-            println(recentsListView.getItemAtPosition(position))
-            println(historicalUsersList.size - (position + 1))
+        recentsListView.onItemClick { adapterView, view, position, id ->
             SaveMultipleUsers.addUser(baseContext,
                     recentsListView.getItemAtPosition(position) as String,
                     SaveMultipleUsers.getList(baseContext, "userID")[SaveMultipleUsers.getList(baseContext, "userID").size - (position + 1)],
@@ -146,10 +146,10 @@ class SwitchActivity : AppCompatActivity() {
         setContentView(com.silenz.schema.R.layout.activity_switch)
         val toolbar = findViewById(com.silenz.schema.R.id.toolbar) as Toolbar
         setSupportActionBar(toolbar)
-
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
-        val prefs = baseContext.getSharedPreferences(
-                "UserData", Context.MODE_PRIVATE)
+
+        val prefs = baseContext.getSharedPreferences("UserData", Context.MODE_PRIVATE)
+
         if (prefs.contains("schoolName") == false) {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
