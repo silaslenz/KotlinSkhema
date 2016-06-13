@@ -78,12 +78,13 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             if (!tabsLoaded) {
 
                 val tabs = findViewById(R.id.tabs) as TabLayout?
-                tabs?.addTab(tabs.newTab().setText("Mo"))
-                tabs?.addTab(tabs.newTab().setText("Tu"))
-                tabs?.addTab(tabs.newTab().setText("We"))
-                tabs?.addTab(tabs.newTab().setText("Th"))
-                tabs?.addTab(tabs.newTab().setText("Fr"))
+                tabs?.addTab(tabs.newTab().setText(R.string.monday_short))
+                tabs?.addTab(tabs.newTab().setText(R.string.tuesday_short))
+                tabs?.addTab(tabs.newTab().setText(R.string.wednesday_short))
+                tabs?.addTab(tabs.newTab().setText(R.string.thursday_short))
+                tabs?.addTab(tabs.newTab().setText(R.string.friday_short))
                 tabs?.tabGravity = TabLayout.GRAVITY_FILL
+
                 val viewPager = findViewById(R.id.viewpager) as ViewPager?
                 if (tabs != null) {
                     adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount, date)
