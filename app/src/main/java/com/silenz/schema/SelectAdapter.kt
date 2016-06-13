@@ -5,10 +5,13 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
+import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.afollestad.materialdialogs.MaterialDialog
 import com.github.kittinunf.fuel.Fuel
 import org.apache.commons.lang3.StringEscapeUtils
 
@@ -26,8 +29,26 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             baseContext.startActivity(intent)
         } else {
-            println(itemtag)
-            getNovaIDs(itemtag)
+            Log.i("SelectAdapter", "Item tag is " + itemtag)
+            if (itemtag == "custom_id") {
+                Log.i("SelectAdapter", "Inputting a custom id")
+                MaterialDialog.Builder(baseContext)
+                        .title(R.string.manual_input_title)
+                        .content(R.string.manual_input_description)
+                        .inputType(InputType.TYPE_CLASS_TEXT)
+                        .input(R.string.manual_input_hint, R.string.manual_input_prefill,
+                                MaterialDialog.InputCallback { materialDialog, charSequence ->
+                                    println(charSequence)
+                                    SaveMultipleUsers.addUser(baseContext, charSequence.toString(), charSequence.toString(), intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
+                                    val intent = Intent(baseContext, MainActivity::class.java)
+                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                                    baseContext.startActivity(intent)
+                                }).show();
+            } else {
+                Log.i("SelectAdapter", "Loading IDs for current type")
+                getNovaIDs(itemtag)
+            }
+
         }
     }
 

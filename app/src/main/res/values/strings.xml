@@ -27,5 +27,8 @@
     <string name="aboutLibraries_description_showIcon">true</string>
     <string name="aboutLibraries_description_showVersion">true</string>
     <string name="aboutLibraries_description_text">Place your description here :D</string>
-
+    <string name="manual_input_title">Input ID</string>
+    <string name="manual_input_description">You can write an id manually, if it doesn\'t show up in the list. One example would be your social security number for schools without a student-list.</string>
+    <string name="manual_input_hint">ID</string>
+    <string name="manual_input_prefill" />
 </resources>
