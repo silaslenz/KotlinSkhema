@@ -19,4 +19,7 @@
     <string name="wednesday_short">We</string>
     <string name="thursday_short">Th</string>
     <string name="friday_short">Fr</string>
+
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
 </resources>

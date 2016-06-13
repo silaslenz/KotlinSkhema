@@ -187,12 +187,11 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             changeUser()
         }
         fab_action_changeday.onClick {
-
             val cdp = CalendarDatePickerDialogFragment()
                     .setOnDateSetListener(this)
                     .setFirstDayOfWeek(Calendar.MONDAY)
-                    .setDoneText("Select")
-                    .setCancelText("Cancel")
+                    .setDoneText(getString(R.string.select))
+                    .setCancelText(getString(R.string.cancel))
                     .setThemeLight()
             cdp.show(supportFragmentManager, "test");
         }
