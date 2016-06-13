@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                 }
 
                 viewPager?.addOnPageChangeListener(TabLayout.TabLayoutOnPageChangeListener(tabs))
-                tabs?.setOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+                tabs?.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
                     override fun onTabSelected(tab: TabLayout.Tab) {
                         viewPager?.currentItem = tab.position
                     }
