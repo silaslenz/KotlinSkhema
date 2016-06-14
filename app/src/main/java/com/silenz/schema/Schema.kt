@@ -13,6 +13,7 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
     fun getUrlThisDay(context: Context): String {
         Log.i("Schema", "LOADING DAY: " + day)
 
+
         val display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         var week = ""
         if (SaveMultipleUsers.getLastHasWeek(context)) {
@@ -27,7 +28,9 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
         assert(day!="0")
         if (day == "0")
             throw InputMismatchException("Pls... This would load the full week. Make sure you set a day before calling this function.")
-        return "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=" + schoolID + "/sv-se&type=1&id=" + userID + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=" + day + "&width=" + (display.width/scale).toInt().toString() + "&height=" + ((display.height/scale)*0.7).toInt().toString()
+        val url = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=" + schoolID + "/sv-se&type=1&id=" + userID + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=" + day + "&width=" + (display.width / scale).toInt().toString() + "&height=" + ((display.height / scale) * 0.7).toInt().toString()
+        Log.i("Schema", "URL: " + url)
+        return url
     }
 
     // Get url for the specified week
