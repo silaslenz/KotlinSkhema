@@ -73,10 +73,6 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.code-troopers.betterpickers:library:2.5.6'
     compile 'com.jakewharton:process-phoenix:1.0.2'
-    compile 'com.afollestad.material-dialogs:core:0.8.5.9'
-
-
-
 
     testCompile 'junit:junit:4.12'
 }

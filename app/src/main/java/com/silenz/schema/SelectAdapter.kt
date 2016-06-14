@@ -1,19 +1,21 @@
 package com.silenz.schema
 
 import android.content.Context
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
+import android.support.design.widget.TextInputLayout
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.CardView
 import android.support.v7.widget.RecyclerView
-import android.text.InputType
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import com.afollestad.materialdialogs.MaterialDialog
 import com.github.kittinunf.fuel.Fuel
 import org.apache.commons.lang3.StringEscapeUtils
+import org.jetbrains.anko.editText
 
 data class NovaType(val name: String, val id: String)
 
@@ -32,18 +34,32 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
             Log.i("SelectAdapter", "Item tag is " + itemtag)
             if (itemtag == "custom_id") {
                 Log.i("SelectAdapter", "Inputting a custom id")
-                MaterialDialog.Builder(baseContext)
-                        .title(R.string.manual_input_title)
-                        .content(R.string.manual_input_description)
-                        .inputType(InputType.TYPE_CLASS_TEXT)
-                        .input(R.string.manual_input_hint, R.string.manual_input_prefill,
-                                MaterialDialog.InputCallback { materialDialog, charSequence ->
-                                    println(charSequence)
-                                    SaveMultipleUsers.addUser(baseContext, charSequence.toString(), charSequence.toString(), intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
-                                    val intent = Intent(baseContext, MainActivity::class.java)
-                                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                                    baseContext.startActivity(intent)
-                                }).show();
+
+                val builder = AlertDialog.Builder(baseContext);
+                builder.setTitle(R.string.manual_input_title);
+                builder.setMessage(R.string.manual_input_description)
+                val text = TextInputLayout(baseContext)
+                text.setPadding(10, 10, 10, 10)
+                text.hint = baseContext.resources.getString(R.string.manual_input_hint)
+                text.editText()
+
+                builder.setView(text);
+
+                builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                    println(text.editText?.text?.toString())
+                    if (text.editText != null) {
+                        SaveMultipleUsers.addUser(baseContext, text.editText?.text?.toString()!!, text.editText?.text?.toString()!!, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
+                        val intent = Intent(baseContext, MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                        baseContext.startActivity(intent)
+                    } else {
+                        Log.e("SelectAdapter", "Edittext was null")
+                    }
+                })
+
+                builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> })
+                builder.show()
+
             } else {
                 Log.i("SelectAdapter", "Loading IDs for current type")
                 getNovaIDs(itemtag)
