@@ -14,7 +14,13 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
         Log.i("Schema", "LOADING DAY: " + day)
 
         val display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
-        val week = date.weekOfWeekyear
+        var week = ""
+        if (SaveMultipleUsers.getLastHasWeek(context)) {
+            week = date.weekOfWeekyear.toString()
+        } else {
+            week = ""
+        }
+
 
         val scale = context.resources.displayMetrics.density;
 

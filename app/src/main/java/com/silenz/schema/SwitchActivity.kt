@@ -78,6 +78,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun translateBack(query: String) {
+        Log.i("SwitchActivity", "Translating " + query + " back")
         Fuel.get("http://skhemaf-silenz.rhcloud.com/get?name=" + query).responseJson { request, response, result ->
 
             run {
@@ -91,6 +92,7 @@ class SwitchActivity : AppCompatActivity() {
                         val intent = Intent(baseContext, SelectActivity::class.java)
                         intent.putExtra("schoolID", response?.get("schoolid").toString())
                         intent.putExtra("schoolCode", response?.get("code").toString())
+                        intent.putExtra("hasWeek", response?.get("hasweek").toString())
                         intent.putExtra("schoolName", response?.get("name").toString() + " (" + response?.get("location").toString() + ")")
 
                         startActivity(intent)
@@ -137,7 +139,8 @@ class SwitchActivity : AppCompatActivity() {
                     SaveMultipleUsers.getList(baseContext, "userID")[SaveMultipleUsers.getList(baseContext, "userID").size - (position + 1)],
                     SaveMultipleUsers.getList(baseContext, "schoolID")[SaveMultipleUsers.getList(baseContext, "schoolID").size - (position + 1)],
                     SaveMultipleUsers.getList(baseContext, "schoolCode")[SaveMultipleUsers.getList(baseContext, "schoolCode").size - (position + 1)],
-                    SaveMultipleUsers.getList(baseContext, "schoolName")[SaveMultipleUsers.getList(baseContext, "schoolName").size - (position + 1)])
+                    SaveMultipleUsers.getList(baseContext, "schoolName")[SaveMultipleUsers.getList(baseContext, "schoolName").size - (position + 1)],
+                    SaveMultipleUsers.getList(baseContext, "hasWeek")[SaveMultipleUsers.getList(baseContext, "hasWeek").size - (position + 1)])
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

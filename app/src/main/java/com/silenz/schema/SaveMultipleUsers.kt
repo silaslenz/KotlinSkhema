@@ -9,7 +9,7 @@ import android.content.SharedPreferences
 
 object SaveMultipleUsers {
 
-    fun addUser(activity: Context, userNameItem: String, userIdItem: String, schoolIdItem: String, schoolCodeItem: String, schoolNameItem: String) {
+    fun addUser(activity: Context, userNameItem: String, userIdItem: String, schoolIdItem: String, schoolCodeItem: String, schoolNameItem: String, hasWeekItem: String) {
         //TODO: Move up (don't readd) items that already exist.
         val sharedPreferences = activity.getSharedPreferences("UserData", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -30,6 +30,8 @@ object SaveMultipleUsers {
         identifier = "schoolName"
         addItemInSettings(editor, identifier, sharedPreferences, schoolNameItem)
 
+        identifier = "hasWeek"
+        addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
 
         editor.commit()
     }
@@ -83,10 +85,15 @@ object SaveMultipleUsers {
         return list[list.size - 1]
     }
 
+    fun getLastHasWeek(activity: Context): Boolean {
+        val list = getList(activity, "hasWeek")
+        return list[list.size - 1].toInt() != 0
+    }
+
     private fun getStringFromPreferences(context: Context, key: String): String {
-        val defaultValue = "blää "
+        val defaultValue = "0"
         val sharedPreferences = context.getSharedPreferences("UserData", Context.MODE_PRIVATE)
-        var temp = "test"
+        var temp = "0"
         if (sharedPreferences.contains(key)) {
             temp = sharedPreferences.getString(key, defaultValue)
         }

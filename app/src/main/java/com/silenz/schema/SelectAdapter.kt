@@ -26,7 +26,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
         val name = ((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).text.toString()
         if (itemtag.contains("{")) { //All ids are on the form {str}
-            SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
+            SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"), intent.getStringExtra("hasWeek"))
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
             baseContext.startActivity(intent)
@@ -48,7 +48,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                 builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
                     println(text.editText?.text?.toString())
                     if (text.editText != null) {
-                        SaveMultipleUsers.addUser(baseContext, text.editText?.text?.toString()!!, text.editText?.text?.toString()!!, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"))
+                        SaveMultipleUsers.addUser(baseContext, text.editText?.text?.toString()!!, text.editText?.text?.toString()!!, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"), intent.getStringExtra("hasWeek"))
                         val intent = Intent(baseContext, MainActivity::class.java)
                         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                         baseContext.startActivity(intent)
