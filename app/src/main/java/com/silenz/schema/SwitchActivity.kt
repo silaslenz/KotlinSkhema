@@ -123,13 +123,17 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun populateRecentsListView() {
-        val historicalUsersList = SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>
+        //val historicalUsersList = SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>
+        var historicalUsersList = emptyArray<String>()
+        for (i in 0..(SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>).size - 1) {
+            historicalUsersList = historicalUsersList.plus((SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>)[i] + " (" + (SaveMultipleUsers.getList(baseContext, "schoolName").reversed() as ArrayList<String>)[i] + ")")
 
+        }
         println(historicalUsersList)
         recentsListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, historicalUsersList)
         recentsListView.onItemClick { adapterView, view, position, id ->
             SaveMultipleUsers.addUser(baseContext,
-                    recentsListView.getItemAtPosition(position) as String,
+                    SaveMultipleUsers.getList(baseContext, "userName").reversed()[position],
                     SaveMultipleUsers.getList(baseContext, "userID")[SaveMultipleUsers.getList(baseContext, "userID").size - (position + 1)],
                     SaveMultipleUsers.getList(baseContext, "schoolID")[SaveMultipleUsers.getList(baseContext, "schoolID").size - (position + 1)],
                     SaveMultipleUsers.getList(baseContext, "schoolCode")[SaveMultipleUsers.getList(baseContext, "schoolCode").size - (position + 1)],
