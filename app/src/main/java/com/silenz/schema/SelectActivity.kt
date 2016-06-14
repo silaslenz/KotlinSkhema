@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.SearchView
 import android.support.v7.widget.Toolbar
+import android.util.Log
 import android.view.Menu
 import com.github.kittinunf.fuel.Fuel
 import kotlinx.android.synthetic.main.content_select.*
@@ -53,7 +54,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
                                     //                                println(typeHTML.split("\">")?.get(i).split("<")[0])
                                 }
                             } else if (d.split("<select name=").size > 1) {
-                                println("Found dropdowns")
+                                Log.i("SelectActivity", "Site uses multiple dropdowns for different types")
 
                                 for (i in 1..d.split("<select name=").size - 1) {
                                     if (d.split("<select name=\"")[i].split("\"")[0].contains("ctl")) {
@@ -67,7 +68,6 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
                                                 d.split("<select name=\"")[i]
                                                         .split("\"")[0])
-                                        mAdapter.add("WTF", "More wtf")
                                     }
                                 }
                                 println("first: " + StringEscapeUtils.unescapeHtml4(d
