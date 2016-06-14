@@ -5,8 +5,11 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.*
+import com.alexvasilkov.gestures.GestureController
+import com.alexvasilkov.gestures.State
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
+import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_fragment.view.*
 import org.joda.time.DateTime
 import java.util.*
@@ -50,6 +53,27 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
         // Image sticks to top of display
         view?.daySchemaImageView?.controller?.settings?.gravity = Gravity.TOP
         view?.daySchemaImageView?.controller?.settings?.maxZoom = 5f
+
+        // Only enable pull to refresh on top
+        view?.daySchemaImageView?.controller?.addOnStateChangeListener(object : GestureController.OnStateChangeListener {
+            var lastzoom: Float = 0f
+            override fun onStateChanged(state: State) {
+                // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
+                if (state.y == 0f) {
+                    activity.swiperefresh.isEnabled = true;
+                } else {
+                    activity.swiperefresh.isEnabled = false;
+                }
+
+                lastzoom = state.zoom
+
+            }
+
+            override fun onStateReset(oldState: State?, newState: State?) {
+
+            }
+
+        })
     }
 
 }
