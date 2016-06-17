@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/errorImageView"
             android:gravity="center_horizontal"
-            android:text="Check your network connection" />
+            android:text="@string/networkerror_gui" />
     </RelativeLayout>
 
     <com.alexvasilkov.gestures.views.GestureImageView
