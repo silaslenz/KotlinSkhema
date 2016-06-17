@@ -32,6 +32,7 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
 
     fun GestureImageView.loadUrl(url: String) {
         view?.loadingPanel?.visibility = View.VISIBLE
+        view?.noNetWorkError?.visibility = View.GONE
         Glide
                 .with(context)
                 .load(url)
