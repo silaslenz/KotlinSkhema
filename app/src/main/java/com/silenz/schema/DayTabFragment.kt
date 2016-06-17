@@ -9,6 +9,9 @@ import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
 import com.alexvasilkov.gestures.views.GestureImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_fragment.view.*
 import org.joda.time.DateTime
@@ -28,12 +31,32 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
     }
 
     fun GestureImageView.loadUrl(url: String) {
-        Glide.with(context).load(url).skipMemoryCache(true).into(this)
+        view?.loadingPanel?.visibility = View.VISIBLE
+        Glide
+                .with(context)
+                .load(url)
+                .skipMemoryCache(true)
+                .listener(
+                        object : RequestListener<String, GlideDrawable> {
+                            override fun onException(e: Exception, model: String, target: Target<GlideDrawable>,
+                                                     isFirstResource: Boolean): Boolean {
+                                view?.noNetWorkError?.visibility = View.VISIBLE
+                                view?.loadingPanel?.visibility = View.GONE
+                                return false
+                            }
+
+                            override fun onResourceReady(resource: GlideDrawable, model: String, target: Target<GlideDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                                view?.loadingPanel?.visibility = View.GONE
+                                return false
+                            }
+                        })
+                .into(this)
     }
 
     val input = input;
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.tab_fragment, container, false)
+
         retainInstance = true;
 
         return view
@@ -59,10 +82,14 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
             var lastzoom: Float = 0f
             override fun onStateChanged(state: State) {
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
-                if (state.y == 0f) {
-                    activity.swiperefresh.isEnabled = true;
-                } else {
-                    activity.swiperefresh.isEnabled = false;
+                try {
+                    if (state.y == 0f) {
+                        activity.swiperefresh.isEnabled = true;
+                    } else {
+                        activity.swiperefresh.isEnabled = false;
+                    }
+                } catch (e: NullPointerException) {
+                    Log.w("DayTabFragment", "swiperefresh not yet instantiated")
                 }
 
                 lastzoom = state.zoom

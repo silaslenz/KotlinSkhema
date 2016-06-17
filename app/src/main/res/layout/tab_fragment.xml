@@ -5,6 +5,41 @@
 
     android:orientation="vertical">
 
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center_horizontal"
+        android:paddingTop="@dimen/fab_margin">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/noNetWorkError"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="top|center_horizontal"
+        android:paddingTop="@dimen/fab_margin"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/errorImageView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_error_white_24dp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/errorImageView"
+            android:gravity="center_horizontal"
+            android:text="Check your network connection" />
+    </RelativeLayout>
+
     <com.alexvasilkov.gestures.views.GestureImageView
         android:id="@+id/daySchemaImageView"
         android:layout_width="fill_parent"
