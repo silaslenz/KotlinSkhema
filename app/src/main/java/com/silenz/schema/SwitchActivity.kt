@@ -127,8 +127,9 @@ class SwitchActivity : AppCompatActivity() {
     fun populateRecentsListView() {
         //val historicalUsersList = SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>
         var historicalUsersList = emptyArray<String>()
-        for (i in 0..(SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>).size - 1) {
-            historicalUsersList = historicalUsersList.plus((SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>)[i] + " (" + (SaveMultipleUsers.getList(baseContext, "schoolName").reversed() as ArrayList<String>)[i] + ")")
+        Log.d("Switch", SaveMultipleUsers.getList(baseContext, "userName").toString())
+        for (i in 0..(SaveMultipleUsers.getList(baseContext, "userName").reversed()).size - 1) {
+            historicalUsersList = historicalUsersList.plus((SaveMultipleUsers.getList(baseContext, "userName").reversed())[i] + " (" + (SaveMultipleUsers.getList(baseContext, "schoolName").reversed())[i] + ")")
 
         }
         println(historicalUsersList)
