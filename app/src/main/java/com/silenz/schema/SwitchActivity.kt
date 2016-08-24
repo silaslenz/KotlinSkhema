@@ -20,6 +20,7 @@ import kotlinx.android.synthetic.main.content_switch.*
 import org.jetbrains.anko.intentFor
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.onItemClick
+import org.json.JSONException
 import org.json.JSONObject
 import java.lang.reflect.InvocationTargetException
 import java.util.*
@@ -35,7 +36,10 @@ class SwitchActivity : AppCompatActivity() {
             }
 
             override fun afterTextChanged(s: Editable?) {
-                getSearchResults(s.toString())
+                if (s.toString() != "")
+                    getSearchResults(s.toString())
+                else
+                    changeListView(JSONObject())
             }
         })
 
@@ -62,10 +66,12 @@ class SwitchActivity : AppCompatActivity() {
                     }
                     is Result.Success -> {
                         val (d, e) = result
+
                         println("data is" + d.toString())
+
                         try {
                             changeListView(d?.obj())
-                        } catch (error: InvocationTargetException) {
+                        } catch (error: JSONException) {
                             Log.w("Switch", "Received an InvocationTargetException, probably empty result")
                             changeListView(JSONObject())
                         }
@@ -84,12 +90,14 @@ class SwitchActivity : AppCompatActivity() {
             run {
                 when (result) {
                     is Result.Failure -> {
+                        Log.e("Switch", "Response failure for " + "http://skhemaf-silenz.rhcloud.com/get?name=" + query)
                         //TODO: Error handling
                     }
                     is Result.Success -> {
                         val (responseTmp, e) = result
                         val response = responseTmp?.obj()
                         val intent = Intent(baseContext, SelectActivity::class.java)
+                        Log.i("Switch", "Setting hasweek")
                         intent.putExtra("schoolID", response?.get("schoolid").toString())
                         intent.putExtra("schoolCode", response?.get("code").toString())
                         intent.putExtra("hasWeek", response?.get("hasweek").toString())
@@ -103,7 +111,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun changeListView(searchResults: JSONObject?) {
-        var your_array_list = ArrayList<String>();
+        val your_array_list = ArrayList<String>();
 
         //Add all items to array
         if (searchResults != null && searchResults.length() != 0) {
