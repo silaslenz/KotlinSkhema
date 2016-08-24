@@ -20,7 +20,7 @@ import com.codetroopers.betterpickers.calendardatepicker.CalendarDatePickerDialo
 import com.google.android.gms.ads.AdRequest
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.async
+import org.jetbrains.anko.doAsync
 import org.jetbrains.anko.onClick
 import org.jetbrains.anko.uiThread
 import org.joda.time.DateTime
@@ -170,7 +170,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         val swipeRefreshLayout = findViewById(R.id.swiperefresh) as SwipeRefreshLayout
         swipeRefreshLayout.setOnRefreshListener {
 
-            async() {
+            doAsync() {
                 Log.w("Glide", "Clearing memory")
                 Glide.get(applicationContext).clearDiskCache()
 
