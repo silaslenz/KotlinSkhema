@@ -24,19 +24,20 @@ apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 24
-    buildToolsVersion '24'
+    buildToolsVersion '24.0.1'
 
     defaultConfig {
         applicationId "com.silenz.schema"
         minSdkVersion 15
         targetSdkVersion 24
-        versionCode 24
+        versionCode 26
         versionName "2.0"
     }
     buildTypes {
         release {
-            minifyEnabled true
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'),
+                    'proguard-rules.pro'
         }
     }
     sourceSets {
@@ -56,9 +57,9 @@ dependencies {
     compile 'com.android.support:cardview-v7:24.2.0'
     compile 'com.android.support:recyclerview-v7:24.2.0'
     compile 'com.google.android.gms:play-services-ads-lite:9.4.0'
-    compile 'org.jetbrains.anko:anko-sdk15:0.8.3'
-    compile 'org.jetbrains.anko:anko-support-v4:0.8.3'
-    compile 'org.jetbrains.anko:anko-appcompat-v7:0.8.3'
+    compile 'org.jetbrains.anko:anko-sdk15:0.9' // sdk19, sdk21, sdk23 are also available
+    compile 'org.jetbrains.anko:anko-support-v4:0.9' // In case you need support-v4 bindings
+    compile 'org.jetbrains.anko:anko-appcompat-v7:0.9' // For appcompat-v7 bindings
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.andkulikov:transitionseverywhere:1.6.3'
     compile 'net.danlew:android.joda:2.9.3.1'
@@ -70,6 +71,7 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.code-troopers.betterpickers:library:2.5.6'
     compile 'com.jakewharton:process-phoenix:1.0.2'
+    compile 'com.google.firebase:firebase-core:9.4.0'
 
     testCompile 'junit:junit:4.12'
 }
