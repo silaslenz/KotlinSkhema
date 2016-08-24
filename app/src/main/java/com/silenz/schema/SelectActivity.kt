@@ -19,9 +19,9 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.search_menu, menu)
 
-        val item = menu.findItem(R.id.action_search);
+        val item = menu.findItem(R.id.action_search)
         val searchView = MenuItemCompat.getActionView(item) as SearchView
-        searchView.setOnQueryTextListener(this);
+        searchView.setOnQueryTextListener(this)
         return super.onCreateOptionsMenu(menu)
 
 
@@ -29,7 +29,7 @@ class SelectActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
 
     override fun onQueryTextChange(query: String): Boolean {
         mAdapter?.filter(query)
-        return false;
+        return false
     }
 
     override fun onQueryTextSubmit(query: String): Boolean {

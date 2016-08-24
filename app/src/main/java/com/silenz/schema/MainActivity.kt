@@ -61,7 +61,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         if (preferences.getBoolean("weekview", false)) {
             //Animate the disappearance of the tab bar.
-            TransitionManager.beginDelayedTransition(main_appbar);
+            TransitionManager.beginDelayedTransition(main_appbar)
             tabs.visibility = View.GONE
 
             //Switch to week and load
@@ -70,7 +70,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
         } else {
             //Animate the appearance of the tab bar.
-            TransitionManager.beginDelayedTransition(main_appbar);
+            TransitionManager.beginDelayedTransition(main_appbar)
             tabs.visibility = View.VISIBLE
 
             //Switch to dayview and load tabs
@@ -122,9 +122,9 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             override fun onStateChanged(state: State) {
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
                 if (state.y == 0f) {
-                    swiperefresh.isEnabled = true;
+                    swiperefresh.isEnabled = true
                 } else {
-                    swiperefresh.isEnabled = false;
+                    swiperefresh.isEnabled = false
                 }
                 if (lastzoom != 0f && lastzoom <= state.zoom)
                     adView.visibility = View.INVISIBLE
@@ -161,8 +161,8 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         }
         loadSchema(DateTime.now()) //Load picture into imageview
 
-        val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").addTestDevice("77D6C271CDE15F2739509621D41B407B").build();
-        adView.loadAd(adRequest);
+        val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").addTestDevice("77D6C271CDE15F2739509621D41B407B").build()
+        adView.loadAd(adRequest)
 
         schemaImageView.controller.settings.gravity = Gravity.TOP
         schemaImageView.controller.settings.maxZoom = 5f
@@ -193,7 +193,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                     .setDoneText(getString(R.string.select))
                     .setCancelText(getString(R.string.cancel))
                     .setThemeLight()
-            cdp.show(supportFragmentManager, "test");
+            cdp.show(supportFragmentManager, "test")
         }
 
 
@@ -209,7 +209,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         menuInflater.inflate(R.menu.menu_main, menu)
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         menu.findItem(R.id.weekview).isChecked = preferences.getBoolean("weekview", false)
-        return super.onCreateOptionsMenu(menu);
+        return super.onCreateOptionsMenu(menu)
 
     }
 

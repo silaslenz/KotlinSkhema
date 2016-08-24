@@ -6,9 +6,8 @@ import android.view.WindowManager
 import org.joda.time.DateTime
 import java.util.*
 
-class Schema(var schoolID: String, var userID: String, val day: String = "0", date: DateTime) {
+class Schema(var schoolID: String, var userID: String, val day: String = "0", val date: DateTime) {
 
-    val date = date
     // Get the schedule url for the specified day.
     fun getUrlThisDay(context: Context): String {
         Log.i("Schema", "LOADING DAY: " + day)
@@ -23,7 +22,7 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
         }
 
 
-        val scale = context.resources.displayMetrics.density;
+        val scale = context.resources.displayMetrics.density
 
         assert(day!="0")
         if (day == "0")
@@ -43,7 +42,7 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", da
         } else {
             week = ""
         }
-        val scale = context.resources.displayMetrics.density / 1.3;
+        val scale = context.resources.displayMetrics.density / 1.3
 
         return "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=" + schoolID + "/sv-se&type=1&id=" + userID + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=0&clock=0&foot=0&day=0&width=" + (display.width/scale).toInt().toString() + "&height=" + ((display.height/scale)*0.8).toInt().toString()
     }

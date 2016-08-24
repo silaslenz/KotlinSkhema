@@ -22,7 +22,6 @@ import org.jetbrains.anko.onClick
 import org.jetbrains.anko.onItemClick
 import org.json.JSONException
 import org.json.JSONObject
-import java.lang.reflect.InvocationTargetException
 import java.util.*
 
 class SwitchActivity : AppCompatActivity() {
@@ -111,7 +110,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun changeListView(searchResults: JSONObject?) {
-        val your_array_list = ArrayList<String>();
+        val your_array_list = ArrayList<String>()
 
         //Add all items to array
         if (searchResults != null && searchResults.length() != 0) {

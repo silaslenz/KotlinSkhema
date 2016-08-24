@@ -31,8 +31,8 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
 
 
 
-    var titleDataset = arrayOf("");
-    var dateDataset = arrayOf("");
+    var titleDataset = arrayOf("")
+    var dateDataset = arrayOf("")
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
@@ -42,7 +42,7 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
         holder.mTextView.text = mDataset[position]
         holder.titleTextView.text = titleDataset[position]
         holder.titleTextView.setTypeface(null, Typeface.BOLD)
-        holder.mTextView.setTextColor(Color.GRAY);
+        holder.mTextView.setTextColor(Color.GRAY)
         holder.dateTextView.text = dateDataset[position]
 
 

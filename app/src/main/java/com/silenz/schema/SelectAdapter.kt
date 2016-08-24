@@ -39,17 +39,17 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
             if (itemtag == "custom_id") {
                 Log.i("SelectAdapter", "Inputting a custom id")
 
-                val builder = AlertDialog.Builder(baseContext);
-                builder.setTitle(R.string.manual_input_title);
+                val builder = AlertDialog.Builder(baseContext)
+                builder.setTitle(R.string.manual_input_title)
                 builder.setMessage(R.string.manual_input_description)
                 val text = TextInputLayout(baseContext)
                 text.setPadding(10, 10, 10, 10)
                 text.hint = baseContext.resources.getString(R.string.manual_input_hint)
                 text.editText()
 
-                builder.setView(text);
+                builder.setView(text)
 
-                builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialogInterface, i ->
+                builder.setPositiveButton("OK", { dialogInterface, i ->
                     println(text.editText?.text?.toString())
                     if (text.editText != null) {
                         SaveMultipleUsers.addUser(baseContext, text.editText?.text?.toString()!!, text.editText?.text?.toString()!!, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"), intent.getStringExtra("hasWeek"))
@@ -61,7 +61,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                     }
                 })
 
-                builder.setNegativeButton("Cancel", DialogInterface.OnClickListener { dialogInterface, i -> })
+                builder.setNegativeButton("Cancel", { dialogInterface, i -> })
                 builder.show()
 
             } else {
@@ -181,7 +181,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
                                     run {
                                         val (d, e) = result
-                                        val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("</select>")?.get(0)?.split("<option value=\"");
+                                        val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("</select>")?.get(0)?.split("<option value=\"")
                                         for (i in 1..nicedata!!.size - 1) {
                                             val name = StringEscapeUtils.unescapeHtml4(nicedata[i].split(">")[1].split("<")[0])
                                             val id = nicedata[i].split("\"")[0]

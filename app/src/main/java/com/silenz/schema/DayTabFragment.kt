@@ -17,14 +17,12 @@ import kotlinx.android.synthetic.main.tab_fragment.view.*
 import org.joda.time.DateTime
 import java.util.*
 
-class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFragment {
+class DayTabFragment(val input: String, val date: DateTime) : Fragment(), UpdateableFragment {
     override fun update(date: DateTime) {
 
         view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
 
     }
-
-    val date = date
 
     constructor() : this("0", DateTime.now()) {
 
@@ -54,11 +52,10 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
                 .into(this)
     }
 
-    val input = input;
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater!!.inflate(R.layout.tab_fragment, container, false)
 
-        retainInstance = true;
+        retainInstance = true
 
         return view
     }
@@ -85,9 +82,9 @@ class DayTabFragment(input: String, date: DateTime) : Fragment(), UpdateableFrag
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
                 try {
                     if (state.y == 0f) {
-                        activity.swiperefresh.isEnabled = true;
+                        activity.swiperefresh.isEnabled = true
                     } else {
-                        activity.swiperefresh.isEnabled = false;
+                        activity.swiperefresh.isEnabled = false
                     }
                 } catch (e: NullPointerException) {
                     Log.w("DayTabFragment", "swiperefresh not yet instantiated")
