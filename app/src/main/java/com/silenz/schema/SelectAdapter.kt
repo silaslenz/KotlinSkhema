@@ -26,6 +26,10 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         val itemtag = (((v as ViewGroup).getChildAt(0)as ViewGroup).getChildAt(0)as TextView).tag.toString()
         val name = ((v.getChildAt(0)as ViewGroup).getChildAt(0)as TextView).text.toString()
         if (itemtag.contains("{")) { //All ids are on the form {str}
+            Log.i("SelectAdapter",  intent.getStringExtra("schoolID"))
+            Log.i("SelectAdapter",  intent.getStringExtra("schoolCode"))
+            Log.i("SelectAdapter",  intent.getStringExtra("schoolName"))
+            Log.i("SelectAdapter",  intent.getStringExtra("hasWeek"))
             SaveMultipleUsers.addUser(baseContext, name, itemtag, intent.getStringExtra("schoolID"), intent.getStringExtra("schoolCode"), intent.getStringExtra("schoolName"), intent.getStringExtra("hasWeek"))
             val intent = Intent(baseContext, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
@@ -113,9 +117,9 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
     fun filter(query: String) {
         clear()
-        for (item in titleDatasetClone) {
-            if (item.name.toLowerCase().contains(query.toLowerCase()))
-                addWithoutClean(item.name, item.id)
+        for ((name, id) in titleDatasetClone) {
+            if (name.toLowerCase().contains(query.toLowerCase()))
+                addWithoutClean(name, id)
         }
     }
 
@@ -143,7 +147,8 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
     }
 
 
-    fun getNovaIDs(type: String) {
+    fun
+            getNovaIDs(type: String) {
         if (type == "custom_id") {
 
         }
