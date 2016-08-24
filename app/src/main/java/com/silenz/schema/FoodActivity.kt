@@ -73,7 +73,7 @@ class FoodActivity : AppCompatActivity() {
 
         food_recycler_view.layoutManager = mLayoutManager
 
-        var myDataset = arrayOf("")
+        val myDataset = arrayOf("")
 
         mAdapter = FoodAdapter(myDataset)
 
