@@ -238,6 +238,6 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         val editor = preferences.edit()
         editor.putBoolean("weekview", item.isChecked)
-        editor.commit()
+        editor.apply()
     }
 }

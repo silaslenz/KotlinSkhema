@@ -33,7 +33,7 @@ object SaveMultipleUsers {
         identifier = "hasWeek"
         addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
 
-        editor.commit()
+        editor.apply()
     }
 
     private fun addItemInSettings(editor: SharedPreferences.Editor, identifier: String, sharedPreferences: SharedPreferences, userNameItem: String) {
