@@ -31,7 +31,13 @@ object SaveMultipleUsers {
         addItemInSettings(editor, identifier, sharedPreferences, schoolNameItem)
 
         identifier = "hasWeek"
-        addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
+        if (hasWeekItem == "true")
+            addItemInSettings(editor, identifier, sharedPreferences, "1")
+        else if (hasWeekItem == "false")
+            addItemInSettings(editor, identifier, sharedPreferences, "0")
+        else
+            addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
+
 
         editor.apply()
     }
@@ -87,7 +93,7 @@ object SaveMultipleUsers {
 
     fun getLastHasWeek(activity: Context): Boolean {
         val list = getList(activity, "hasWeek")
-        return list[list.size - 1].toBoolean()
+        return list[list.size - 1].toInt() == 1
     }
 
     private fun getStringFromPreferences(context: Context, key: String): String {
