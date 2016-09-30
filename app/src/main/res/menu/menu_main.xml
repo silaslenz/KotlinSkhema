@@ -2,11 +2,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.silenz.schema.MainActivity">
-    <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="99"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+    <!--<item-->
+    <!--android:id="@+id/action_settings"-->
+    <!--android:orderInCategory="99"-->
+    <!--android:title="@string/action_settings"-->
+    <!--app:showAsAction="never" />-->
 
     <item
         android:id="@+id/action_food"
@@ -16,6 +16,7 @@
 
         <item android:id="@+id/weekview"
             android:checkable="true"
-            android:title="Show a full week" />
+            android:title="@string/show_a_full_week"
+            app:showAsAction="never" />
 
 </menu>
