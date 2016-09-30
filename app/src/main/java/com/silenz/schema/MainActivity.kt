@@ -142,8 +142,6 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
     }
 
     override fun onResume() {
-        println("RESUMED")
-
         super.onResume()
         loadSchema(DateTime.now())
 
@@ -215,10 +213,6 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.action_settings -> {
-                return true
-            } //TODO: When settings are added.
-
             R.id.action_food -> {
                 val intent = Intent(this, FoodActivity::class.java)
                 startActivity(intent)
