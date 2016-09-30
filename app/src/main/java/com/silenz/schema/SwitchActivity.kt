@@ -45,6 +45,7 @@ class SwitchActivity : AppCompatActivity() {
         continueCardView.setOnClickListener {
             startActivity(intentFor<SelectActivity>(
                     "schoolID" to SaveMultipleUsers.getLastSchoolId(baseContext),
+                    "hasWeek" to SaveMultipleUsers.getLastHasWeek(baseContext).toString(),
                     "schoolCode" to SaveMultipleUsers.getLastSchoolCode(baseContext),
                     "schoolName" to SaveMultipleUsers.getLastSchoolName(baseContext)))
         }
@@ -99,6 +100,7 @@ class SwitchActivity : AppCompatActivity() {
                         Log.i("Switch", "Setting hasweek")
                         intent.putExtra("schoolID", response?.get("schoolid").toString())
                         intent.putExtra("schoolCode", response?.get("code").toString())
+                        println(response?.get("hasweek").toString())
                         intent.putExtra("hasWeek", response?.get("hasweek").toString())
                         intent.putExtra("schoolName", response?.get("name").toString() + " (" + response?.get("location").toString() + ")")
 

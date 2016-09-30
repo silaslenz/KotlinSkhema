@@ -87,7 +87,7 @@ object SaveMultipleUsers {
 
     fun getLastHasWeek(activity: Context): Boolean {
         val list = getList(activity, "hasWeek")
-        return list[list.size - 1].toInt() != 0
+        return list[list.size - 1].toBoolean()
     }
 
     private fun getStringFromPreferences(context: Context, key: String): String {
