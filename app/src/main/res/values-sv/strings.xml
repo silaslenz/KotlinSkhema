@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Skhema</string>
+    <string name="action_settings">Inställningar</string>
+    <string name="action_about">Om</string>
+    <string name="title_activity_select">Välj id</string>
+    <string name="school_search">Sök efter skola eller stad</string>
+    <string name="first_in_id_choise">Välj id</string>
+    <string name="title_activity_switch">Välj skola</string>
+    <string name="title_activity_food">Mat</string>
+    <string name="action_search">Sök</string>
+    <string name="banner_ad_unit_id">***REMOVED***</string>
+    <string name="write_your_own_id">Input your own id</string>
+    <string name="continue_with">Fortsätt med</string>
+    <string name="choose_another">Välj en annan</string>
+    <string name="food">Mat</string>
+    <string name="error_network">Ett fel uppstod under hämtningen</string>
+
+    <string name="monday_short">Må</string>
+    <string name="tuesday_short">Ti</string>
+    <string name="wednesday_short">On</string>
+    <string name="thursday_short">To</string>
+    <string name="friday_short">Fr</string>
+
+    <string name="select">Välj</string>
+    <string name="cancel">Avbryt</string>
+
+    <string name="aboutLibraries_description_showIcon">true</string>
+    <string name="aboutLibraries_description_showVersion">true</string>
+    <string name="aboutLibraries_description_text">Place your description here :D</string>
+    <string name="manual_input_title">Input ID</string>
+    <string name="manual_input_description">Du kan skriva in ett id manuellt, om det inte dyker upp i listan. Ett exempel är personnummer för skolor utan elevlista.</string>
+    <string name="manual_input_hint">ID</string>
+    <string name="manual_input_prefill" />
+    <string name="networkerror_gui">Kontrollera din internetuppkoppling. Dra sedan neråt för att försöka igen.</string>
+</resources>

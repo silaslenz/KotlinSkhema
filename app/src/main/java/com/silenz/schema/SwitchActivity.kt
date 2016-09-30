@@ -171,7 +171,7 @@ class SwitchActivity : AppCompatActivity() {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         } else {
-            continueWithCurrentButton.text = "Fortsätt med ${SaveMultipleUsers.getLastSchoolName(baseContext).toString()}"
+            continueWithCurrentButton.text = getResources().getString(com.silenz.schema.R.string.continue_with) + " " + SaveMultipleUsers.getLastSchoolName(baseContext).toString()
             populateRecentsListView()
         }
 
