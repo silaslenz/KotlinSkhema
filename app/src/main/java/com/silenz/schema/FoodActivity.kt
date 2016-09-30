@@ -96,7 +96,7 @@ class FoodActivity : AppCompatActivity() {
                             changeDataInList(pageContent?.getString("food")!!)
                         } else {
                             mAdapter?.clear()
-                            mAdapter?.add("Denna skola har ännu ingen matsedel kopplad till sig")
+                            mAdapter?.add(getString(R.string.no_food_yet))
                         }
                     }
                 }

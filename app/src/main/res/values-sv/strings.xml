@@ -32,4 +32,6 @@
     <string name="manual_input_hint">ID</string>
     <string name="manual_input_prefill" />
     <string name="networkerror_gui">Kontrollera din internetuppkoppling. Dra sedan neråt för att försöka igen.</string>
+    <string name="no_food_yet">"Denna skola har ännu ingen matsedel kopplad till sig"</string>
+    <string name="show_a_full_week">Visa en hel vecka</string>
 </resources>
