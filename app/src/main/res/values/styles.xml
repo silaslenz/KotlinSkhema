@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#008000</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -18,7 +18,7 @@
     <style name="AppTheme.PopupOverlay" parent="Theme.AppCompat.Light" />
 
     <style name="Skhema" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="colorPrimary">@color/material_deep_teal_200</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
     </style>
 
 
