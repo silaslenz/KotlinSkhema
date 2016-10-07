@@ -30,8 +30,8 @@ android {
         applicationId "com.silenz.schema"
         minSdkVersion 23
         targetSdkVersion 24
-        versionCode 27
-        versionName "2.0"
+        versionCode 28
+        versionName "2.0.1"
     }
     buildTypes {
         release {
