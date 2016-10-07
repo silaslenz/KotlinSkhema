@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         val preferences = getSharedPreferences("Preferences", Context.MODE_PRIVATE)
         val date = DateTime(year, monthOfYear + 1, dayOfMonth, 10, 0)
         if (preferences.getBoolean("weekview", false)) {
-            loadSchema(date)
+            loadSchema(getNextWorkDay(date))
         } else {
             when (date.dayOfWeek) {
                 in 1..5 -> tabs?.getTabAt(date.dayOfWeek - 1)?.select()
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             }
 
             //Try to send our new date to day-fragments
-            adapter?.update(date)
+            adapter?.update(getNextWorkDay(date))
         }
 
     }
@@ -143,8 +143,21 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     override fun onResume() {
         super.onResume()
-        loadSchema(DateTime.now())
+        loadSchema(getNextWorkDay(DateTime.now()))
 
+    }
+
+    fun getNextWorkDay(date: DateTime): DateTime {
+        // If weekend
+        if (date.dayOfWeek > 5) {
+            Log.d("Datetime", "It's the weekend now")
+            var now = date
+            now = now.plusDays(8 - date.dayOfWeek) // Move to monday
+            Log.d("DatetimeChanged", now.dayOfWeek.toString())
+            return now
+        } else {
+            return date
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -157,7 +170,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         if (!prefs.contains("userID")) {
             changeUser()
         }
-        loadSchema(DateTime.now()) //Load picture into imageview
+        loadSchema(getNextWorkDay(DateTime.now()))
 
         val adRequest = AdRequest.Builder().addTestDevice("91BFA35BF06E88B5A3E55F10C761F502").addTestDevice("77D6C271CDE15F2739509621D41B407B").build()
         adView.loadAd(adRequest)
@@ -175,7 +188,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                 Log.w("Glide", "Memory cleared")
                 uiThread {
                     swipeRefreshLayout.isRefreshing = false
-                    loadSchema(DateTime.now())
+                    loadSchema(getNextWorkDay(DateTime.now()))
                     adapter?.update(DateTime.now())
                 }
             }
@@ -221,7 +234,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             R.id.weekview -> {
                 item.isChecked = !item.isChecked
                 toggleWeekViewSettings(item)
-                loadSchema(DateTime.now())
+                loadSchema(getNextWorkDay(DateTime.now()))
             }
         }
 
