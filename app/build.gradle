@@ -26,12 +26,12 @@ android {
     compileSdkVersion 25
     buildToolsVersion '24.0.3'
 
-    defaultConfig {
+    defaultConfig { 
         applicationId "com.silenz.schema"
         minSdkVersion 21
         targetSdkVersion 25
-        versionCode 28
-        versionName "2.0.1"
+        versionCode 29
+        versionName "2.1.0"
     }
     buildTypes {
         release {
