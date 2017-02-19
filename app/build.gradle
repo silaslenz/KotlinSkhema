@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId "com.silenz.schema"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 28
         versionName "2.0.1"
