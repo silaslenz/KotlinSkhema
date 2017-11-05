@@ -75,7 +75,7 @@ class FoodActivity : AppCompatActivity() {
         food_recycler_view.adapter = mAdapter
 
         mAdapter?.clear()
-        Fuel.get("http://api.skhema.silenz.se/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
+        Fuel.get("https://api.skhema.silenz.se/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
             request, response, result ->
             run {
                 when (result) {

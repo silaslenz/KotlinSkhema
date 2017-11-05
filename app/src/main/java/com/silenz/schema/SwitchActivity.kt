@@ -54,7 +54,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun getSearchResults(query: String) {
-        Fuel.get("http://api.skhema.silenz.se/get?query=" + query).responseJson { request, response, result ->
+        Fuel.get("https://api.skhema.silenz.se/get?query=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
@@ -82,7 +82,7 @@ class SwitchActivity : AppCompatActivity() {
 
     private fun translateBack(query: String) {
         Log.i("SwitchActivity", "Translating $query back")
-        Fuel.get("http://api.skhema.silenz.se/get?name=" + query).responseJson { request, response, result ->
+        Fuel.get("https://api.skhema.silenz.se/get?name=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
