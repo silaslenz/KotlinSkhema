@@ -1,10 +1,12 @@
 package com.silenz.schema
 
-import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.util.Log
-import android.view.*
+import android.view.Gravity
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import com.alexvasilkov.gestures.GestureController
 import com.alexvasilkov.gestures.State
 import com.alexvasilkov.gestures.views.GestureImageView
@@ -59,8 +61,6 @@ class DayTabFragment(private val input: String, val date: DateTime) : Fragment()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val wm = context!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val display = wm.defaultDisplay
 
 
         try {

@@ -52,6 +52,9 @@ android {
         javaMaxHeapSize "4g"
 
     }
+    lintOptions{
+        abortOnError false
+    }
 }
 
 
@@ -111,7 +114,6 @@ dependencies {
     compile 'com.wdullaer:materialdatetimepicker:3.3.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.code-troopers.betterpickers:library:3.1.0'
-    compile 'com.jakewharton:process-phoenix:2.0.0'
     compile 'com.google.firebase:firebase-core:11.4.2'
     testCompile 'junit:junit:4.12'
 }
