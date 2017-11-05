@@ -2,19 +2,21 @@ buildscript {
 
     repositories {
         mavenCentral()
+        google()
     }
     dependencies {
 // Here because of https://youtrack.jetbrains.com/issue/KT-12431
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.android.tools.build:gradle:2.2.3'
-        classpath 'com.google.gms:google-services:3.0.0'
+        classpath 'com.android.tools.build:gradle:3.1.0-alpha02'
+        classpath 'com.google.gms:google-services:3.1.1'
     }
 }
 repositories {
     mavenCentral()
     maven { url "https://jitpack.io" }
 
+    google()
 }
 
 apply plugin: 'com.android.application'
@@ -23,13 +25,14 @@ apply plugin: 'kotlin-android-extensions'
 
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion '24.0.3'
+    compileSdkVersion 27
+    buildToolsVersion '27.0.0'
 
-    defaultConfig { 
+    defaultConfig {
+        multiDexEnabled true
         applicationId "com.silenz.schema"
         minSdkVersion 21
-        targetSdkVersion 25
+        targetSdkVersion 27
         versionCode 29
         versionName "2.1.0"
     }
@@ -40,42 +43,75 @@ android {
                     'proguard-rules.pro'
         }
     }
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    //sourceSets {
+    //    main.java.srcDirs += 'src/main/kotlin'
+    //}
+    dexOptions {
+
+        jumboMode true
+        javaMaxHeapSize "4g"
+
     }
 }
 
+
+
 dependencies {
+    ext.anko_version = '0.10.2'
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     // sdk19, sdk21, sdk23 are also available
     // In case you need support-v4 bindings
     // For appcompat-v7 bindings
-    compile 'com.android.support:appcompat-v7:25.1.1'
-    compile 'com.android.support:design:25.1.1'
+    compile 'com.android.support:support-v13:27.0.0'
+    compile 'com.android.support:appcompat-v7:27.0.0'
+    compile 'com.android.support:design:27.0.0'
     compile 'com.github.kittinunf.fuel:fuel-android:1.5.0'
-    compile 'com.android.support:cardview-v7:25.1.1'
-    compile 'com.android.support:recyclerview-v7:25.1.1'
-    compile 'com.google.android.gms:play-services-ads-lite:10.2.0'
-    compile 'org.jetbrains.anko:anko-sdk21:0.9.1' // sdk19, sdk21, sdk23 are also available
-    compile 'org.jetbrains.anko:anko-support-v4:0.9.1' // In case you need support-v4 bindings
-    compile 'org.jetbrains.anko:anko-appcompat-v7:0.9.1' // For appcompat-v7 bindings
+    compile 'com.android.support:cardview-v7:27.0.0'
+    compile 'com.android.support:recyclerview-v7:27.0.0'
+    compile 'com.google.android.gms:play-services-ads-lite:11.4.2'
+
+    compile "org.jetbrains.anko:anko:0.10.2"
+    // Appcompat-v7 (only Anko Commons)
+    compile "org.jetbrains.anko:anko-appcompat-v7-commons:$anko_version"
+
+    // Appcompat-v7 (Anko Layouts)
+    compile "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+    compile "org.jetbrains.anko:anko-coroutines:$anko_version"
+    compile "org.jetbrains.anko:anko-sdk25:$anko_version"
+    compile "org.jetbrains.anko:anko-sdk25-listeners:$anko_version"
+    // CardView-v7
+    compile "org.jetbrains.anko:anko-cardview-v7:$anko_version"
+
+    // Design
+    compile "org.jetbrains.anko:anko-design:$anko_version"
+    compile "org.jetbrains.anko:anko-design-coroutines:$anko_version"
+
+    // GridLayout-v7
+    compile "org.jetbrains.anko:anko-gridlayout-v7:$anko_version"
+
+    // Percent
+    compile "org.jetbrains.anko:anko-percent:$anko_version"
+
+    // RecyclerView-v7
+    compile "org.jetbrains.anko:anko-recyclerview-v7:$anko_version"
+    compile "org.jetbrains.anko:anko-recyclerview-v7-coroutines:$anko_version"
+
+    // Support-v4 (only Anko Commons)
+    compile "org.jetbrains.anko:anko-support-v4-commons:$anko_version"
+
+    // Support-v4 (Anko Layouts)
+    compile "org.jetbrains.anko:anko-support-v4:$anko_version"
     compile 'org.apache.commons:commons-lang3:3.5'
-    compile 'com.andkulikov:transitionseverywhere:1.7.0'
-    compile 'net.danlew:android.joda:2.9.5.1'
-    compile 'com.alexvasilkov:gesture-views:2.2.0'
+    compile 'com.andkulikov:transitionseverywhere:1.7.6'
+    compile 'net.danlew:android.joda:2.9.9'
+    compile 'com.alexvasilkov:gesture-views:2.3.2'
     compile 'io.github.yavski:fab-speed-dial:1.0.6'
     compile 'com.github.bumptech.glide:glide:3.7.0'
-    compile 'com.android.support:support-v4:25.1.1'
-    compile 'com.wdullaer:materialdatetimepicker:3.1.2'
+    compile 'com.android.support:support-v4:27.0.0'
+    compile 'com.wdullaer:materialdatetimepicker:3.3.1'
     compile 'com.getbase:floatingactionbutton:1.10.1'
     compile 'com.code-troopers.betterpickers:library:3.1.0'
-    compile 'com.jakewharton:process-phoenix:1.1.1'
-    compile 'com.google.firebase:firebase-core:10.2.0'
-
+    compile 'com.jakewharton:process-phoenix:2.0.0'
+    compile 'com.google.firebase:firebase-core:11.4.2'
     testCompile 'junit:junit:4.12'
 }
-
-
-
-apply plugin: 'com.google.gms.google-services'

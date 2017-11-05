@@ -86,9 +86,9 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
         var dateTextView: TextView
 
         init {
-            mTextView = v.findViewById(R.id.mTextView) as TextView
-            titleTextView = v.findViewById(R.id.titleTextView) as TextView
-            dateTextView = v.findViewById(R.id.dateTextView) as TextView
+            mTextView = v.findViewById(R.id.mTextView)
+            titleTextView = v.findViewById(R.id.titleTextView)
+            dateTextView = v.findViewById(R.id.dateTextView)
         }
     }
 

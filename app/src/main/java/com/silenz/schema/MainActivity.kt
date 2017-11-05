@@ -21,7 +21,7 @@ import com.google.android.gms.ads.AdRequest
 import com.transitionseverywhere.TransitionManager
 import kotlinx.android.synthetic.main.activity_main.*
 import org.jetbrains.anko.doAsync
-import org.jetbrains.anko.onClick
+import org.jetbrains.anko.sdk25.listeners.onClick
 import org.jetbrains.anko.uiThread
 import org.joda.time.DateTime
 import java.util.*
@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
             if (!tabsLoaded) {
 
-                val tabs = findViewById(R.id.tabs) as TabLayout?
+                val tabs = findViewById<TabLayout?>(R.id.tabs)
                 tabs?.addTab(tabs.newTab().setText(R.string.monday_short))
                 tabs?.addTab(tabs.newTab().setText(R.string.tuesday_short))
                 tabs?.addTab(tabs.newTab().setText(R.string.wednesday_short))
@@ -85,7 +85,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                 tabs?.addTab(tabs.newTab().setText(R.string.friday_short))
                 tabs?.tabGravity = TabLayout.GRAVITY_FILL
 
-                val viewPager = findViewById(R.id.viewpager) as ViewPager?
+                val viewPager = findViewById<ViewPager?>(R.id.viewpager)
                 if (tabs != null) {
                     adapter = DayPagerAdapter(supportFragmentManager, tabs.tabCount, date)
                     viewPager?.adapter = adapter
@@ -178,7 +178,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         schemaImageView.controller.settings.gravity = Gravity.TOP
         schemaImageView.controller.settings.maxZoom = 5f
 
-        val swipeRefreshLayout = findViewById(R.id.swiperefresh) as SwipeRefreshLayout
+        val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
         swipeRefreshLayout.setOnRefreshListener {
 
             doAsync() {

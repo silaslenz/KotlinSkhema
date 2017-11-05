@@ -18,8 +18,8 @@ import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
 import kotlinx.android.synthetic.main.content_switch.*
 import org.jetbrains.anko.intentFor
-import org.jetbrains.anko.onClick
-import org.jetbrains.anko.onItemClick
+import org.jetbrains.anko.sdk25.listeners.onClick
+import org.jetbrains.anko.sdk25.listeners.onItemClick
 import org.json.JSONException
 import org.json.JSONObject
 import java.util.*
@@ -57,7 +57,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun getSearchResults(query: String) {
-        Fuel.get("http://skhemaf-silenz.rhcloud.com/get?query=" + query).responseJson { request, response, result ->
+        Fuel.get("https://api.skhema.silenz.se/get?query=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
@@ -85,12 +85,12 @@ class SwitchActivity : AppCompatActivity() {
 
     fun translateBack(query: String) {
         Log.i("SwitchActivity", "Translating " + query + " back")
-        Fuel.get("http://skhemaf-silenz.rhcloud.com/get?name=" + query).responseJson { request, response, result ->
+        Fuel.get("https://api.skhema.silenz.se/get?name=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
                     is Result.Failure -> {
-                        Log.e("Switch", "Response failure for " + "http://skhemaf-silenz.rhcloud.com/get?name=" + query)
+                        Log.e("Switch", "Response failure for " + "https://api.skhema.silenz.se/get?name=" + query)
                         //TODO: Error handling
                     }
                     is Result.Success -> {
@@ -161,7 +161,7 @@ class SwitchActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.silenz.schema.R.layout.activity_switch)
-        val toolbar = findViewById(com.silenz.schema.R.id.toolbar) as Toolbar
+        val toolbar = findViewById<Toolbar>(com.silenz.schema.R.id.toolbar)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 

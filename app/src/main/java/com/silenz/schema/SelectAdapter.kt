@@ -1,7 +1,6 @@
 package com.silenz.schema
 
 import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Typeface
 import android.support.design.widget.TextInputLayout
@@ -142,7 +141,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         var titleTextView: TextView
 
         init {
-            titleTextView = v.findViewById(R.id.titleTextView) as TextView
+            titleTextView = v.findViewById(R.id.titleTextView)
         }
     }
 

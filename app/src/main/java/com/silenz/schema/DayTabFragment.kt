@@ -20,7 +20,7 @@ import java.util.*
 class DayTabFragment(val input: String, val date: DateTime) : Fragment(), UpdateableFragment {
     override fun update(date: DateTime) {
 
-        view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
+        view?.daySchemaImageView?.loadUrl(Schema(context?.let { SaveMultipleUsers.getLastSchoolId(it) }!!, SaveMultipleUsers.getLastUser(context!!), input, date).getUrlThisDay(context!!))
 
     }
 
@@ -52,8 +52,8 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
                 .into(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater!!.inflate(R.layout.tab_fragment, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater.inflate(R.layout.tab_fragment, container, false)
 
         retainInstance = true
 
@@ -62,12 +62,12 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val wm = context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+        val wm = context!!.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val display = wm.defaultDisplay
 
 
         try {
-            view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context), SaveMultipleUsers.getLastUser(context), input, date).getUrlThisDay(context))
+            view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context!!), SaveMultipleUsers.getLastUser(context!!), input, date).getUrlThisDay(context!!))
         } catch (e: InputMismatchException) {
             Log.w("Schedule loading", "Not yet loaded")
         }
@@ -82,9 +82,9 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
                 try {
                     if (state.y == 0f) {
-                        activity.swiperefresh.isEnabled = true
+                        activity!!.swiperefresh.isEnabled = true
                     } else {
-                        activity.swiperefresh.isEnabled = false
+                        activity!!.swiperefresh.isEnabled = false
                     }
                 } catch (e: NullPointerException) {
                     Log.w("DayTabFragment", "swiperefresh not yet instantiated")

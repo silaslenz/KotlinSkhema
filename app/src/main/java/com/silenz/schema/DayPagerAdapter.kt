@@ -14,7 +14,7 @@ class DayPagerAdapter(fm: FragmentManager, internal var mNumOfTabs: Int, interna
         notifyDataSetChanged()
     }
 
-    override fun getItemPosition(`object`: Any?): Int {
+    override fun getItemPosition(`object`: Any): Int {
         if (`object` is UpdateableFragment) {
             `object`.update(date)
         }
