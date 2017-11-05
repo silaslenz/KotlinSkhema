@@ -10,7 +10,7 @@
     <string name="action_search">Sök</string>
     <string name="banner_ad_unit_id">***REMOVED***</string>
     <string name="write_your_own_id">Input your own id</string>
-    <string name="continue_with">Fortsätt med</string>
+    <string name="continue_with">Fortsätt med %1$s</string>
     <string name="choose_another">Välj en annan</string>
     <string name="food">Mat</string>
     <string name="error_network">Ett fel uppstod under hämtningen</string>

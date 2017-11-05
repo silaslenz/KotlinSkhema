@@ -31,12 +31,11 @@ object SaveMultipleUsers {
         addItemInSettings(editor, identifier, sharedPreferences, schoolNameItem)
 
         identifier = "hasWeek"
-        if (hasWeekItem == "true")
-            addItemInSettings(editor, identifier, sharedPreferences, "1")
-        else if (hasWeekItem == "false")
-            addItemInSettings(editor, identifier, sharedPreferences, "0")
-        else
-            addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
+        when (hasWeekItem) {
+            "true" -> addItemInSettings(editor, identifier, sharedPreferences, "1")
+            "false" -> addItemInSettings(editor, identifier, sharedPreferences, "0")
+            else -> addItemInSettings(editor, identifier, sharedPreferences, hasWeekItem)
+        }
 
 
         editor.apply()
@@ -52,10 +51,10 @@ object SaveMultipleUsers {
 
     private fun addItemToList(item: String, list: String?): String? {
         var userNameList1 = list
-        if (userNameList1 != null) {
-            userNameList1 = userNameList1 + "'|'" + item
+        userNameList1 = if (userNameList1 != null) {
+            userNameList1 + "'|'" + item
         } else {
-            userNameList1 = item
+            item
         }
         return userNameList1
     }
@@ -65,11 +64,6 @@ object SaveMultipleUsers {
         return convertStringToArray(list)
     }
 
-
-    fun getLastUserName(activity: Context): String {
-        val list = getList(activity, "userName")
-        return list[list.size - 1]
-    }
 
     fun getLastUser(activity: Context): String {
         val list = getList(activity, "userID")
@@ -106,8 +100,5 @@ object SaveMultipleUsers {
         return temp
     }
 
-    private fun convertStringToArray(str: String): List<String> {
-        val arr = str.split("'|'")
-        return arr
-    }
+    private fun convertStringToArray(str: String): List<String> = str.split("'|'")
 }

@@ -79,14 +79,13 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         val v = LayoutInflater.from(parent.context).inflate(R.layout.switch_item_view, parent, false)
         // set the view's size, margins, paddings and layout parameters
         v.setOnClickListener(this)
-        val vh = ViewHolder(v as CardView)
 
-        return vh
+        return ViewHolder(v as CardView)
     }
 
-    var titleDataset = arrayOf(NovaType("", ""))
+    private var titleDataset = arrayOf(NovaType("", ""))
 
-    var titleDatasetClone = arrayOf(NovaType("", ""))
+    private var titleDatasetClone = arrayOf(NovaType("", ""))
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
@@ -99,9 +98,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount(): Int {
-        return titleDataset.size
-    }
+    override fun getItemCount(): Int = titleDataset.size
 
     fun clear() {
         titleDataset = arrayOf()
@@ -122,7 +119,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
         }
     }
 
-    fun addWithoutClean(title: String, id: String) {
+    private fun addWithoutClean(title: String, id: String) {
         titleDataset = titleDataset.plus(NovaType(title, id))
         notifyItemInserted(itemCount)
     }
@@ -138,15 +135,12 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
 
 
     class ViewHolder(v: CardView) : RecyclerView.ViewHolder(v) {
-        var titleTextView: TextView
+        var titleTextView: TextView = v.findViewById(R.id.titleTextView)
 
-        init {
-            titleTextView = v.findViewById(R.id.titleTextView)
-        }
     }
 
 
-    fun
+    private fun
             getNovaIDs(type: String) {
         if (type == "custom_id") {
 
@@ -164,7 +158,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                         if (d != null) {
                             if (hasDropdownselector(d)) {
                                 //Has multiple lists of different types
-                                for (i in 2..getNumberOfDropdownItems(d, type) - 1) {
+                                for (i in 2 until getNumberOfDropdownItems(d, type)) {
                                     val nicedata = extractDropdown(d, type, 1)
                                     val name = getName(i, nicedata)
                                     val id = getId(i, nicedata)
@@ -181,7 +175,7 @@ class SelectAdapter// Provide a suitable constructor (depends on the kind of dat
                                     run {
                                         val (d, e) = result
                                         val nicedata = d?.split("ScheduleIDDropDownList")?.get(2)?.split("</select>")?.get(0)?.split("<option value=\"")
-                                        for (i in 1..nicedata!!.size - 1) {
+                                        for (i in 1 until nicedata!!.size) {
                                             val name = StringEscapeUtils.unescapeHtml4(nicedata[i].split(">")[1].split("<")[0])
                                             val id = nicedata[i].split("\"")[0]
                                             add(name, id)

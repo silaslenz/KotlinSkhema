@@ -26,20 +26,17 @@ import java.util.*
 
 class SwitchActivity : AppCompatActivity() {
 
-    fun createListeners() {
+    private fun createListeners() {
         searchEditText.addTextChangedListener(object : TextWatcher {
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
 
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            }
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) =
+                    Unit
 
-            override fun afterTextChanged(s: Editable?) {
-                if (s.toString() != "")
-                    getSearchResults(s.toString())
-                else
-                    changeListView(JSONObject())
-            }
+            override fun afterTextChanged(s: Editable?) = if (s.toString() != "")
+                getSearchResults(s.toString())
+            else
+                changeListView(JSONObject())
         })
 
         continueCardView.setOnClickListener {
@@ -57,7 +54,7 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun getSearchResults(query: String) {
-        Fuel.get("https://api.skhema.silenz.se/get?query=" + query).responseJson { request, response, result ->
+        Fuel.get("http://api.skhema.silenz.se/get?query=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
@@ -83,9 +80,9 @@ class SwitchActivity : AppCompatActivity() {
         }
     }
 
-    fun translateBack(query: String) {
-        Log.i("SwitchActivity", "Translating " + query + " back")
-        Fuel.get("https://api.skhema.silenz.se/get?name=" + query).responseJson { request, response, result ->
+    private fun translateBack(query: String) {
+        Log.i("SwitchActivity", "Translating $query back")
+        Fuel.get("http://api.skhema.silenz.se/get?name=" + query).responseJson { request, response, result ->
 
             run {
                 when (result) {
@@ -112,20 +109,20 @@ class SwitchActivity : AppCompatActivity() {
     }
 
     fun changeListView(searchResults: JSONObject?) {
-        val your_array_list = ArrayList<String>()
+        val arrayList = ArrayList<String>()
 
         //Add all items to array
         if (searchResults != null && searchResults.length() != 0) {
-            (0..searchResults.names().length() - 1).forEach {
+            (0 until searchResults.names().length()).forEach {
                 item ->
-                your_array_list.add("${searchResults.getJSONObject(searchResults.names().getString(item)).getString("name")} (${searchResults.getJSONObject(searchResults.names().getString(item)).getString("location")})")
+                arrayList.add("${searchResults.getJSONObject(searchResults.names().getString(item)).getString("name")} (${searchResults.getJSONObject(searchResults.names().getString(item)).getString("location")})")
             }
         } else {
-            your_array_list.add("Nothing found")
+            arrayList.add("Nothing found")
         }
 
 
-        schoolSearchListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, your_array_list)
+        schoolSearchListView.adapter = ArrayAdapter<String>(baseContext, R.layout.simple_list_item_1, arrayList)
         schoolSearchListView.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
             translateBack(schoolSearchListView.getItemAtPosition(position) as String)
             println(schoolSearchListView.getItemAtPosition(position))
@@ -133,11 +130,11 @@ class SwitchActivity : AppCompatActivity() {
 
     }
 
-    fun populateRecentsListView() {
+    private fun populateRecentsListView() {
         //val historicalUsersList = SaveMultipleUsers.getList(baseContext, "userName").reversed() as ArrayList<String>
         var historicalUsersList = emptyArray<String>()
         Log.d("Switch", SaveMultipleUsers.getList(baseContext, "userName").toString())
-        for (i in 0..(SaveMultipleUsers.getList(baseContext, "userName").reversed()).size - 1) {
+        for (i in 0 until (SaveMultipleUsers.getList(baseContext, "userName").reversed()).size) {
             historicalUsersList = historicalUsersList.plus((SaveMultipleUsers.getList(baseContext, "userName").reversed())[i] + " (" + (SaveMultipleUsers.getList(baseContext, "schoolName").reversed())[i] + ")")
 
         }
@@ -167,11 +164,11 @@ class SwitchActivity : AppCompatActivity() {
 
         val prefs = baseContext.getSharedPreferences("UserData", Context.MODE_PRIVATE)
 
-        if (prefs.contains("schoolName") == false) {
+        if (!prefs.contains("schoolName")) {
             searchUI.visibility = VISIBLE
             chooseLayout.visibility = View.GONE
         } else {
-            continueWithCurrentButton.text = getResources().getString(com.silenz.schema.R.string.continue_with) + " " + SaveMultipleUsers.getLastSchoolName(baseContext).toString()
+            continueWithCurrentButton.text = resources.getString(com.silenz.schema.R.string.continue_with, SaveMultipleUsers.getLastSchoolName(baseContext))
             populateRecentsListView()
         }
 

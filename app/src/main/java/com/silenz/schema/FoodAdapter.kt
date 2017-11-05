@@ -24,15 +24,13 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
         val v = LayoutInflater.from(parent.context).inflate(my_text_view, parent, false)
         // set the view's size, margins, paddings and layout parameters
 
-        val vh = ViewHolder(v as CardView)
-
-        return vh
+        return ViewHolder(v as CardView)
     }
 
 
 
     var titleDataset = arrayOf("")
-    var dateDataset = arrayOf("")
+    private var dateDataset = arrayOf("")
     // Replace the contents of a view (invoked by the layout manager)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         // - get element from your dataset at this position
@@ -49,9 +47,7 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
     }
 
     // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount(): Int {
-        return mDataset.size
-    }
+    override fun getItemCount(): Int = mDataset.size
 
     fun clear() {
         mDataset = arrayOf()
@@ -81,15 +77,10 @@ class FoodAdapter// Provide a suitable constructor (depends on the kind of datas
     // you provide access to all the views for a data item in a view holder
     class ViewHolder(v: CardView) : RecyclerView.ViewHolder(v) {
         // each data item is just a string in this case
-        var mTextView: TextView
-        var titleTextView: TextView
-        var dateTextView: TextView
+        var mTextView: TextView = v.findViewById(R.id.mTextView)
+        var titleTextView: TextView = v.findViewById(R.id.titleTextView)
+        var dateTextView: TextView = v.findViewById(R.id.dateTextView)
 
-        init {
-            mTextView = v.findViewById(R.id.mTextView)
-            titleTextView = v.findViewById(R.id.titleTextView)
-            dateTextView = v.findViewById(R.id.dateTextView)
-        }
     }
 
 }

@@ -21,13 +21,12 @@ class AnimatedRecyclerView @JvmOverloads constructor(context: Context, attrs: At
         mScrollable = false
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
-        return !mScrollable || super.dispatchTouchEvent(ev)
-    }
+    override fun dispatchTouchEvent(ev: MotionEvent): Boolean =
+            !mScrollable || super.dispatchTouchEvent(ev)
 
     override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int) {
         super.onLayout(changed, l, t, r, b)
-        for (i in 0..childCount - 1) {
+        for (i in 0 until childCount) {
             animate(getChildAt(i), i)
 
             if (i == childCount - 1) {

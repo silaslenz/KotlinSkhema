@@ -1,19 +1,17 @@
 package com.silenz.schema
 
 import android.os.Bundle
-import android.support.v4.app.NavUtils
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.android.extension.responseJson
 import com.github.kittinunf.result.Result
-import kotlinx.android.synthetic.main.activity_food.*
 import kotlinx.android.synthetic.main.content_food.*
 
 class FoodActivity : AppCompatActivity() {
-    var mAdapter: FoodAdapter? = null
-    fun changeDataInList(url: String) {
+    private var mAdapter: FoodAdapter? = null
+    private fun changeDataInList(url: String) {
         Fuel.get(url).responseString { request, response, result ->
             run {
                 when (result) {
@@ -21,9 +19,9 @@ class FoodActivity : AppCompatActivity() {
                         val (pageContent, error) = result
                         pageContent?.let {
                             mAdapter?.clear()
-                            for (day in 1..getDaysOnPage(pageContent) - 1) {
+                            for (day in 1 until getDaysOnPage(pageContent)) {
                                 var dayStr = ""
-                                for (item in 1..getNumberOfItemsOnDay(pageContent, day) - 1) {
+                                for (item in 1 until getNumberOfItemsOnDay(pageContent, day)) {
                                     dayStr += getItemInDay(pageContent, day, item)
                                 }
                                 print(pageContent)
@@ -62,10 +60,6 @@ class FoodActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_food)
-        setSupportActionBar(toolbar)
-        toolbar.setNavigationIcon(R.drawable.abc_ic_ab_back_material)
-        toolbar.setNavigationOnClickListener { NavUtils.navigateUpFromSameTask(this) }
-
 
         food_recycler_view.setHasFixedSize(true)
 
@@ -81,7 +75,7 @@ class FoodActivity : AppCompatActivity() {
         food_recycler_view.adapter = mAdapter
 
         mAdapter?.clear()
-        Fuel.get("https://api.skhema.silenz.se/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
+        Fuel.get("http://api.skhema.silenz.se/food?query=" + SaveMultipleUsers.getLastSchoolId(baseContext)).responseJson {
             request, response, result ->
             run {
                 when (result) {
@@ -93,7 +87,7 @@ class FoodActivity : AppCompatActivity() {
                         val (resultdata, e) = result
                         val pageContent = resultdata?.obj()
                         if (pageContent?.getString("food") != "null" && pageContent?.getString("food") != null) {
-                            changeDataInList(pageContent?.getString("food")!!)
+                            changeDataInList(pageContent.getString("food")!!)
                         } else {
                             mAdapter?.clear()
                             mAdapter?.add(getString(R.string.no_food_yet))

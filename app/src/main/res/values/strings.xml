@@ -10,7 +10,7 @@
     <string name="action_search">Search</string>
     <string name="banner_ad_unit_id">***REMOVED***</string>
     <string name="write_your_own_id">Input your own id</string>
-    <string name="continue_with">Continue with</string>
+    <string name="continue_with">Continue with %1$s</string>
     <string name="choose_another">Choose another</string>
     <string name="food">Food</string>
     <string name="error_network">An error occurred while receiving</string>

@@ -117,7 +117,8 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:hint="@string/school_search" />
+                android:hint="@string/school_search"
+                android:inputType="text" />
 
         </android.support.design.widget.TextInputLayout>
 

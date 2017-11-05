@@ -46,15 +46,15 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     }
 
-    var adapter: DayPagerAdapter? = null
-    var tabsLoaded: Boolean = false
-    val TABVIEW_INDEX_IN_VIEWFLIPPER = 0
-    val WEEKVIEW_INDEX_IN_VIEWFLIPPER = 1
-    fun GestureImageView.loadUrl(url: String) {
+    private var adapter: DayPagerAdapter? = null
+    private var tabsLoaded: Boolean = false
+    private val tabviewIndexInWeekflipper = 0
+    private val weekviewIndexInWeekflipper = 1
+    private fun GestureImageView.loadUrl(url: String) {
         Glide.with(context).load(url).skipMemoryCache(true).into(this)
     }
 
-    fun loadSchema(date: DateTime) {
+    private fun loadSchema(date: DateTime) {
         //Add adview back, in case it was hidden while zooming.
         adView.visibility = View.VISIBLE
 
@@ -65,7 +65,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             tabs.visibility = View.GONE
 
             //Switch to week and load
-            viewFlipper.displayedChild = WEEKVIEW_INDEX_IN_VIEWFLIPPER
+            viewFlipper.displayedChild = weekviewIndexInWeekflipper
             schemaImageView.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(baseContext), SaveMultipleUsers.getLastUser(baseContext), date = date).getUrlThisWeek(applicationContext))
 
         } else {
@@ -74,7 +74,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             tabs.visibility = View.VISIBLE
 
             //Switch to dayview and load tabs
-            viewFlipper.displayedChild = TABVIEW_INDEX_IN_VIEWFLIPPER
+            viewFlipper.displayedChild = tabviewIndexInWeekflipper
             if (!tabsLoaded) {
 
                 val tabs = findViewById<TabLayout?>(R.id.tabs)
@@ -98,13 +98,9 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
                         viewPager?.currentItem = tab.position
                     }
 
-                    override fun onTabUnselected(tab: TabLayout.Tab) {
+                    override fun onTabUnselected(tab: TabLayout.Tab) = Unit
 
-                    }
-
-                    override fun onTabReselected(tab: TabLayout.Tab) {
-
-                    }
+                    override fun onTabReselected(tab: TabLayout.Tab) = Unit
                 })
 
                 when (DateTime.now().dayOfWeek) {
@@ -121,11 +117,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
             var lastzoom: Float = 0f
             override fun onStateChanged(state: State) {
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
-                if (state.y == 0f) {
-                    swiperefresh.isEnabled = true
-                } else {
-                    swiperefresh.isEnabled = false
-                }
+                swiperefresh.isEnabled = state.y == 0f
                 if (lastzoom != 0f && lastzoom <= state.zoom)
                     adView.visibility = View.INVISIBLE
                 else
@@ -134,9 +126,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
             }
 
-            override fun onStateReset(oldState: State?, newState: State?) {
-
-            }
+            override fun onStateReset(oldState: State?, newState: State?) = Unit
 
         })
     }
@@ -147,18 +137,16 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
 
     }
 
-    fun getNextWorkDay(date: DateTime): DateTime {
-        // If weekend
-        if (date.dayOfWeek > 5) {
-            Log.d("Datetime", "It's the weekend now")
-            var now = date
-            now = now.plusDays(8 - date.dayOfWeek) // Move to monday
-            Log.d("DatetimeChanged", now.dayOfWeek.toString())
-            return now
-        } else {
-            return date
-        }
-    }
+    private fun getNextWorkDay(date: DateTime): DateTime =
+            if (date.dayOfWeek > 5) { // If weekend
+                Log.d("Datetime", "It's the weekend now")
+                var now = date
+                now = now.plusDays(8 - date.dayOfWeek) // Move to monday
+                Log.d("DatetimeChanged", now.dayOfWeek.toString())
+                now
+            } else {
+                date
+            }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -181,7 +169,7 @@ class MainActivity : AppCompatActivity(), CalendarDatePickerDialogFragment.OnDat
         val swipeRefreshLayout = findViewById<SwipeRefreshLayout>(R.id.swiperefresh)
         swipeRefreshLayout.setOnRefreshListener {
 
-            doAsync() {
+            doAsync {
                 Log.w("Glide", "Clearing memory")
                 Glide.get(applicationContext).clearDiskCache()
 

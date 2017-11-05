@@ -15,20 +15,17 @@ import com.bumptech.glide.request.target.Target
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.tab_fragment.view.*
 import org.joda.time.DateTime
-import java.util.*
 
-class DayTabFragment(val input: String, val date: DateTime) : Fragment(), UpdateableFragment {
+class DayTabFragment(private val input: String, val date: DateTime) : Fragment(), UpdateableFragment {
     override fun update(date: DateTime) {
 
         view?.daySchemaImageView?.loadUrl(Schema(context?.let { SaveMultipleUsers.getLastSchoolId(it) }!!, SaveMultipleUsers.getLastUser(context!!), input, date).getUrlThisDay(context!!))
 
     }
 
-    constructor() : this("0", DateTime.now()) {
+    constructor() : this("0", DateTime.now())
 
-    }
-
-    fun GestureImageView.loadUrl(url: String) {
+    private fun GestureImageView.loadUrl(url: String) {
         view?.loadingPanel?.visibility = View.VISIBLE
         view?.noNetWorkError?.visibility = View.GONE
         Glide
@@ -68,7 +65,7 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
 
         try {
             view?.daySchemaImageView?.loadUrl(Schema(SaveMultipleUsers.getLastSchoolId(context!!), SaveMultipleUsers.getLastUser(context!!), input, date).getUrlThisDay(context!!))
-        } catch (e: InputMismatchException) {
+        } catch (e: Throwable) {
             Log.w("Schedule loading", "Not yet loaded")
         }
         // Image sticks to top of display
@@ -81,11 +78,7 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
             override fun onStateChanged(state: State) {
                 // Enable swipe to refresh at the top of the image. (Note that state.y is negativ when the image is scrolled down)
                 try {
-                    if (state.y == 0f) {
-                        activity!!.swiperefresh.isEnabled = true
-                    } else {
-                        activity!!.swiperefresh.isEnabled = false
-                    }
+                    activity!!.swiperefresh.isEnabled = state.y == 0f
                 } catch (e: NullPointerException) {
                     Log.w("DayTabFragment", "swiperefresh not yet instantiated")
                 }
@@ -94,9 +87,7 @@ class DayTabFragment(val input: String, val date: DateTime) : Fragment(), Update
 
             }
 
-            override fun onStateReset(oldState: State?, newState: State?) {
-
-            }
+            override fun onStateReset(oldState: State?, newState: State?) = Unit
 
         })
     }

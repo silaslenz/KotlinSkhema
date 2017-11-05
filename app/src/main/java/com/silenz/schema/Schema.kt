@@ -6,7 +6,7 @@ import android.view.WindowManager
 import org.joda.time.DateTime
 import java.util.*
 
-class Schema(var schoolID: String, var userID: String, val day: String = "0", val date: DateTime) {
+class Schema(private var schoolID: String, private var userID: String, private val day: String = "0", val date: DateTime) {
 
     // Get the schedule url for the specified day.
     fun getUrlThisDay(context: Context): String {
@@ -15,10 +15,10 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", va
 
         val display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         var week = ""
-        if (SaveMultipleUsers.getLastHasWeek(context)) {
-            week = date.weekOfWeekyear.toString()
+        week = if (SaveMultipleUsers.getLastHasWeek(context)) {
+            date.weekOfWeekyear.toString()
         } else {
-            week = ""
+            ""
         }
 
 
@@ -37,10 +37,10 @@ class Schema(var schoolID: String, var userID: String, val day: String = "0", va
         println("LOADING WEEK")
         val display = (context.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay
         var week = ""
-        if (SaveMultipleUsers.getLastHasWeek(context)) {
-            week = date.weekOfWeekyear.toString()
+        week = if (SaveMultipleUsers.getLastHasWeek(context)) {
+            date.weekOfWeekyear.toString()
         } else {
-            week = ""
+            ""
         }
         val scale = context.resources.displayMetrics.density / 1.3
 

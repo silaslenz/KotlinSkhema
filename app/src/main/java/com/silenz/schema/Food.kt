@@ -7,7 +7,7 @@ import java.util.*
  * @param pageContent html from skolmaten.se
  * @param day index of day
  */
-fun getDateOfDay(pageContent: String, day: Int) = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(pageContent.split("<span class=\"weekday\">")[day].split("<span class=\"date\">")[1].split("</span>")[0])
+fun getDateOfDay(pageContent: String, day: Int): Date = SimpleDateFormat("yyyy-mm-dd", Locale.getDefault()).parse(pageContent.split("<span class=\"weekday\">")[day].split("<span class=\"date\">")[1].split("</span>")[0])
 
 /**
  * @param pageContent html from skolmaten.se
