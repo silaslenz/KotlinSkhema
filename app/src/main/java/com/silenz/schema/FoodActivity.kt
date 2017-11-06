@@ -24,7 +24,6 @@ class FoodActivity : AppCompatActivity() {
                                 for (item in 1 until getNumberOfItemsOnDay(pageContent, day)) {
                                     dayStr += getItemInDay(pageContent, day, item)
                                 }
-                                print(pageContent)
                                 try {
                                     val date = getDateOfDay(pageContent, day)
                                     mAdapter?.add(getDaynameOfDay(day, pageContent), dayStr, date)
@@ -37,7 +36,7 @@ class FoodActivity : AppCompatActivity() {
 
                             }
                             if (mAdapter?.titleDataset?.size == 0) {
-                                if (pageContent.contains("weekReason")) {
+                                if (pageContent.contains("week-reason")) {
                                     mAdapter?.add(getWeekReason(pageContent))
                                 } else {
                                     mAdapter?.add("Could not load")
